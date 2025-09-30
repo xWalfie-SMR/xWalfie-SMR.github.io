@@ -5,19 +5,17 @@
     --accent: #3B82F6;
     --correct: #22c55e;
     --wrong: #ef4444;
-    --active: #6247a3;
+    --active: #7354bd;
 }
 
 body {
     font-family: 'Montserrat', sans-serif;
     margin: 0;
     min-height: 100vh;
-    background: linear-gradient(135deg,
-            #1E1E2F 0%,
-            #2A2A40 25%,
-            #4B3B8F 50%,
-            #6247A3 75%,
-            #A45DE1 100%);
+    background: linear-gradient(0deg,
+            #2f265a 0%,
+            #6247A3 50%,
+            #8f51c5 100%);
     background-size: 100% 100vh;
     background-attachment: fixed;
     display: flex;
