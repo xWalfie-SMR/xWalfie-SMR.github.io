@@ -61,7 +61,9 @@ body {
 }
 
 @keyframes blink {
-  50% { background-color: transparent; }
+  50% {
+    background-color: transparent;
+  }
 }
 
 #cards {
@@ -96,14 +98,16 @@ body {
 }
 
 .title-heading {
-  font-size: clamp(1.4rem, 2vw, 2rem); /* bigger max */
+  font-size: clamp(1.4rem, 2vw, 2rem);
+  /* bigger max */
   margin: 10px 0 0;
   font-weight: 400;
   color: #E4E4E7;
 }
 
 .card-text {
-  font-size: clamp(1.2rem, 2vw, 1.6rem); /* larger text */
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  /* larger text */
   color: #F5F5F7;
   font-weight: 400;
   margin-bottom: 1.5rem;
@@ -111,12 +115,15 @@ body {
 
 .card-button {
   display: inline-block;
-  padding: clamp(14px, 2vw, 20px) clamp(28px, 4vw, 44px); /* more padding */
+  padding: clamp(14px, 2vw, 20px) clamp(28px, 4vw, 44px);
+  /* more padding */
   background: linear-gradient(135deg, #3B82F6, #2563EB);
   color: #F5F5F7;
   letter-spacing: 1px;
-  font-size: clamp(1.2rem, 2vw, 1.6rem); /* larger button text */
-  width: 56%; /* keep your width rule */
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  /* larger button text */
+  width: 56%;
+  /* keep your width rule */
   margin: 0 auto 24px;
   text-decoration: none;
   border-radius: 10px;
@@ -164,8 +171,9 @@ footer p {
   .card {
     padding: 16px;
   }
+
   #terminal-banner {
     font-size: 1.4rem;
     padding: 8px 14px;
   }
-} 
+}
