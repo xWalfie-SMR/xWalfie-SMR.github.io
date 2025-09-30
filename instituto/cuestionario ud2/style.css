@@ -1,5 +1,4 @@
 :root {
-    --bg: #1E1E2F;
     --card: #2A2A40;
     --text: #F5F5F7;
     --muted: #E4E4E7;
@@ -13,7 +12,14 @@ body {
     font-family: 'Montserrat', sans-serif;
     margin: 0;
     min-height: 100vh;
-    background-color: var(--bg);
+    background: linear-gradient(135deg,
+            #1E1E2F 0%,
+            #2A2A40 25%,
+            #4B3B8F 50%,
+            #6247A3 75%,
+            #A45DE1 100%);
+    background-size: 100% 100vh;
+    background-attachment: fixed;
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -112,8 +118,7 @@ input[type="radio"]:checked+label.option {
 .controls {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.8rem;
-    justify-content: flex-end;
+    justify-content: space-between;
     margin-top: 1rem;
 }
 
@@ -122,9 +127,11 @@ button {
     font-size: 0.95rem;
     font-weight: 500;
     border-radius: 10px;
+    width: 28%;
     border: none;
     cursor: pointer;
     background: linear-gradient(135deg, var(--accent), #2563eb);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
     color: var(--text);
     transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
 }
@@ -132,13 +139,7 @@ button {
 button:hover {
     transform: translateY(-3px);
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
-    background: linear-gradient(135deg, #2563eb, #1d4ed8);
-}
-
-button.secondary {
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: var(--muted);
+    background: linear-gradient(135deg, #2563eb, #466bcf);
 }
 
 .result {
@@ -167,9 +168,10 @@ button.secondary {
 
 footer {
     text-align: center;
-    font-size: 0.8rem;
+    font-size: 1.5rem;
     color: var(--muted);
     margin-top: 2rem;
+    padding: 0 0 2rem 0;
 }
 
 @media (max-width: 768px) {
@@ -179,6 +181,11 @@ footer {
 
     .card {
         padding: 1.5rem;
+    }
+
+    .controls {
+        margin-top: 0.5rem;
+        gap: 2rem;
     }
 
     button {
