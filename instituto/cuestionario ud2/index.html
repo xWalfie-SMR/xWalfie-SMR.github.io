@@ -1,43 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Cuestionario</title>
-  <style>
-    :root{
-      --bg:#0f1720;
-      --card:#0b1220;
-      --muted:#9aa6b2;
-      --accent:#22c55e;
-      --danger:#ef4444;
-      --glass: rgba(255,255,255,0.03);
-    }
-    *{box-sizing:border-box}
-    body{font-family:Inter,Segoe UI,Roboto,Arial; margin:0; padding:30px; background:linear-gradient(180deg,#071226 0%, #0b1b2a 100%); color:#e6eef6;}
-    .wrap{max-width:900px; margin:0 auto;}
-    h1{text-align:center; margin:0 0 18px; font-size:22px}
-    p.lead{color:var(--muted); text-align:center; margin-top:6px}
-    .card{background:var(--card); padding:16px; border-radius:12px; box-shadow:0 6px 20px rgba(2,6,23,0.7); margin-bottom:14px;}
-    .qtitle{display:flex; justify-content:space-between; gap:12px; align-items:center}
-    .qnum{background:var(--glass); padding:6px 10px; border-radius:8px; color:var(--muted); font-size:13px}
-    .question-text{font-weight:600; margin:10px 0}
-    .options{display:flex; flex-direction:column; gap:8px}
-    label.option{background:rgba(255,255,255,0.03); padding:10px; border-radius:8px; cursor:pointer; user-select:none}
-    input[type="radio"]{margin-right:10px}
-    .controls{display:flex; gap:8px; align-items:center; justify-content:flex-end; margin-top:12px}
-    button{background:linear-gradient(180deg,#1f6f42,#19803a); color:white; border:0; padding:8px 12px; border-radius:8px; cursor:pointer}
-    button.secondary{background:transparent; border:1px solid rgba(255,255,255,0.06); color:var(--muted)}
-    .result{padding:12px; margin-top:12px; border-radius:8px}
-    .correct{color:var(--accent); font-weight:700}
-    .wrong{color:var(--danger); font-weight:700}
-    .per-question-feedback{margin-top:8px; font-size:14px}
-    footer{color:var(--muted); text-align:center; margin-top:18px; font-size:13px}
-    @media (max-width:600px){
-      body{padding:14px}
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
   <div class="wrap">
     <h1>Cuestionario: arquitectura de redes</h1>
@@ -56,116 +26,7 @@
     <footer>Hecho por xWalfie</footer>
   </div>
 
-<script>
-const preguntas = [
-  {q:"¿Cuantas capas tiene el modelo OSI?", opts:["5","6","7","4"], ans:2, explain:"osi = 7 capas."},
-  {q:"¿Que capa se encarga del direccionamiento IP?", opts:["Enlace","Red","Transporte","Aplicacion"], ans:1, explain:"la capa de red gestiona direcciones ip y encaminamiento."},
-  {q:"¿Que protocolo garantiza entrega fiable y orientada a conexion?", opts:["UDP","ICMP","TCP","ARP"], ans:2, explain:"tcp es orientado a conexion y fiable."},
-  {q:"La PDU de la capa de enlace se llama:", opts:["Trama","Paquete","Segmento","Bit"], ans:0, explain:"enlace -> trama."},
-  {q:"La PDU de la capa de transporte se llama:", opts:["Trama","Datagrama","Segmento","Frame"], ans:2, explain:"transporte -> segmento."},
-  {q:"En el modelo TCP/IP, cuantas capas hay (modelo clasico simplificado)?", opts:["4","5","6","7"], ans:0, explain:"tcp/ip clasico: acceso a red, internet, transporte, aplicacion = 4."},
-  {q:"¿Que hace la capa de presentacion?", opts:["Encaminar paquetes","Comprimir y cifrar datos","Control de enlace","Acceso fisico"], ans:1, explain:"presentacion formatea, cifra y comprime datos."},
-  {q:"¿Que subcapa gestiona direccionamiento MAC y acceso al medio?", opts:["LLC","IP","MAC (enlace)","Transporte"], ans:2, explain:"mac = media access control en capa enlace."},
-  {q:"Protocolo que resuelve nombres de dominio a direcciones IP:", opts:["DHCP","DNS","FTP","SMTP"], ans:1, explain:"dns traduce nombres a ip."},
-  {q:"Protocolo usado para enviar correo (envio):", opts:["POP3","IMAP","SMTP","HTTP"], ans:2, explain:"smtp envia correo."},
-  {q:"¿Que hace ARP?", opts:["encapsula datos","obtiene direccion mac desde ip","rutea paquetes","encripta conexion"], ans:1, explain:"arp resuelve ip -> direccion mac en la misma red."},
-  {q:"¿En que capa trabaja un router principalmente?", opts:["Capa de aplicacion","Capa fisica","Capa de red","Capa de enlace"], ans:2, explain:"router opera en capa de red para encaminar paquetes."},
-  {q:"¿En que capa trabaja un switch (capa 2) principalmente?", opts:["Red","Fisica","Enlace","Aplicacion"], ans:2, explain:"switch opera en enlace (mac) para conmutacion de tramas."},
-  {q:"¿Que protocolo es no orientado a conexion y rapido?", opts:["TCP","UDP","FTP","HTTP"], ans:1, explain:"udp no garantiza entrega pero es rapido."},
-  {q:"¿Que capa añade puertos (puntos de servicio) para dirigir a aplicaciones?", opts:["Aplicacion","Transporte","Red","Enlace"], ans:1, explain:"transporte usa puertos (ej: 80 para http sobre tcp)."},
-  {q:"¿Que estandar normaliza las capas fisica y enlace para LANs (ej: ethernet)?", opts:["IEEE 802","ISO 9001","RFC 791","IEEE 1394"], ans:0, explain:"ieee 802 incluye ethernet y wifi."},
-  {q:"¿Que hace la encapsulacion?", opts:["abrir sobres","anadir informacion de control a datos","borrar datos","enviar bits por cable"], ans:1, explain:"cada capa añade su control al bajar."},
-  {q:"¿Que es SDU en el contexto de PDU?", opts:["servicio de datos del nivel superior","segmento de datos unico","protocolo de transporte","direccion fisica"], ans:0, explain:"sdu = service data unit = datos del nivel superior."},
-  {q:"¿Que es PCI en PDU?", opts:["payload de aplicacion","informacion de control del protocolo","mac address","ip address"], ans:1, explain:"pci = protocol control information."},
-  {q:"¿Que protocolo informa sobre errores e informacion de red (ping usa esto)?", opts:["ICMP","ARP","DNS","FTP"], ans:0, explain:"icmp se usa para mensajes de control (echo request/reply)."},
-  {q:"¿Cual es la principal diferencia entre OSI y TCP/IP?", opts:["OSI es practico y TCP/IP teorico","OSI es modelo de referencia, TCP/IP es implementacion practica","No hay diferencia","TCP/IP tiene 7 capas"], ans:1, explain:"osi = modelo, tcp/ip = pila de protocolos implementada."},
-  {q:"¿Que hace la capa de sesion?", opts:["control de dialogos y puntos de sincronizacion","encriptacion de bits","enrutamiento global","asignar ip"], ans:0, explain:"sesion controla dialogos y sincronizacion entre apps."},
-  {q:"¿Que hace la capa de transporte cuando divide datos en trozos?", opts:["encapsulacion","segmentacion","enrutamiento","compresion"], ans:1, explain:"segmentacion divide mensajes grandes en segmentos."},
-  {q:"¿Que es DHCP?", opts:["protocolo para gestionar direcciones dinamicas","protocolo de enrutamiento","capa fisica","servicio de correo"], ans:0, explain:"dhcp asigna ip dinamicamente en una red."},
-  {q:"¿Que es una LAN?", opts:["red local que conecta equipos en area limitada","red global","tipo de protocolo","servicio de aplicacion"], ans:0, explain:"lan = red local (oficina, casa, campus)."},
-  {q:"¿Que subcapa provee interfaz con niveles superiores en enlace?", opts:["MAC","LLC","ARP","IP"], ans:1, explain:"llc = logical link control."},
-  {q:"¿Que mecanismo evita que muchas estaciones colisionen en un medio compartido?", opts:["control de acceso al medio","dns","icmp","smtp"], ans:0, explain:"control de acceso al medio (ej: CSMA/CD)."},
-  {q:"¿Que tarea realiza un router que no hace un switch basico?", opts:["transmitir bits","encaminar entre redes distintas","conmutar tramas dentro de la misma red","añadir padding"], ans:1, explain:"router conecta distintas redes y decide rutas."},
-  {q:"¿Cual de estos es ejemplo de protocolo de aplicacion?", opts:["IP","TCP","HTTP","Ethernet"], ans:2, explain:"http es protocolo de aplicacion."}
-];
-
-function mkQuiz(){
-  const root = document.getElementById('quiz-area');
-  root.innerHTML = '';
-  preguntas.forEach((p,i)=>{
-    const card = document.createElement('div');
-    card.className = 'card';
-    const qtitle = document.createElement('div');
-    qtitle.className = 'qtitle';
-    qtitle.innerHTML = `<div class="qnum">Pregunta ${i+1}</div>`;
-    const qtext = document.createElement('div');
-    qtext.className = 'question-text';
-    qtext.textContent = p.q;
-    card.appendChild(qtitle);
-    card.appendChild(qtext);
-    const opts = document.createElement('div');
-    opts.className = 'options';
-    p.opts.forEach((opt,j)=>{
-      const id = `q${i}_opt${j}`;
-      const label = document.createElement('label');
-      label.className = 'option';
-      label.htmlFor = id;
-      label.innerHTML = `<input type="radio" name="q${i}" id="${id}" value="${j}"> ${opt}`;
-      opts.appendChild(label);
-    });
-    card.appendChild(opts);
-    const feed = document.createElement('div');
-    feed.className = 'per-question-feedback';
-    feed.id = `fb${i}`;
-    card.appendChild(feed);
-    root.appendChild(card);
-  });
-}
-
-function checkAnswers(){
-  let correct = 0;
-  preguntas.forEach((p,i)=>{
-    const els = document.getElementsByName(`q${i}`);
-    let picked = -1;
-    for(const e of els) if(e.checked) picked = parseInt(e.value);
-    const fb = document.getElementById('fb'+i);
-    if(picked === p.ans){
-      correct++;
-      fb.innerHTML = `<span class="correct">Correcto</span> — ${p.explain}`;
-    } else if(picked === -1){
-      fb.innerHTML = `<span class="wrong">Sin responder</span> — Respuesta: <strong>${p.opts[p.ans]}</strong>. ${p.explain}`;
-    } else {
-      fb.innerHTML = `<span class="wrong">Incorrecto</span> — Correcta: <strong>${p.opts[p.ans]}</strong>. ${p.explain}`;
-    }
-  });
-  const summary = document.getElementById('summary');
-  summary.style.display = 'block';
-  const pct = Math.round((correct / preguntas.length) * 100);
-  let grade = '';
-  if(pct >= 90) grade = 'Excelente';
-  else if(pct >= 75) grade = 'Bueno';
-  else if(pct >= 50) grade = 'Suficiente';
-  else grade = 'Insuficiente';
-  summary.innerHTML = `<div><strong>Resultado:</strong> ${correct} / ${preguntas.length} (${pct}%). Nivel: <span class="${pct>=50?'correct':'wrong'}">${grade}</span></div>`;
-  window.scrollTo({top:0, behavior:'smooth'});
-}
-
-document.getElementById('checkBtn').addEventListener('click', checkAnswers);
-document.getElementById('resetBtn').addEventListener('click', ()=>{
-  mkQuiz();
-  document.getElementById('summary').style.display = 'none';
-});
-document.getElementById('showAnswers').addEventListener('click', ()=>{
-  preguntas.forEach((p,i)=>{
-    document.getElementById('fb'+i).innerHTML = `respuesta: <strong>${p.opts[p.ans]}</strong>. ${p.explain}`;
-  });
-  document.getElementById('summary').style.display='block';
-  document.getElementById('summary').innerHTML = '<strong>respuestas mostradas</strong>';
-  window.scrollTo({top:0, behavior:'smooth'});
-});
-
-mkQuiz();
-
-</script>
+  <script src="script.js"></script>
 </body>
+
 </html>

@@ -1,0 +1,140 @@
+:root {
+    --bg: #0f1720;
+    --card: #0b1220;
+    --muted: #9aa6b2;
+    --accent: #22c55e;
+    --danger: #ef4444;
+    --glass: rgba(255, 255, 255, 0.03);
+}
+
+* {
+    box-sizing: border-box
+}
+
+body {
+    font-family: Inter, Segoe UI, Roboto, Arial;
+    margin: 0;
+    padding: 30px;
+    background: linear-gradient(180deg, #071226 0%, #0b1b2a 100%);
+    color: #e6eef6;
+}
+
+.wrap {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+    margin: 0 0 18px;
+    font-size: 22px
+}
+
+p.lead {
+    color: var(--muted);
+    text-align: center;
+    margin-top: 6px
+}
+
+.card {
+    background: var(--card);
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(2, 6, 23, 0.7);
+    margin-bottom: 14px;
+}
+
+.qtitle {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: center
+}
+
+.qnum {
+    background: var(--glass);
+    padding: 6px 10px;
+    border-radius: 8px;
+    color: var(--muted);
+    font-size: 13px
+}
+
+.question-text {
+    font-weight: 600;
+    margin: 10px 0
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px
+}
+
+label.option {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    user-select: none
+}
+
+input[type="radio"] {
+    margin-right: 10px
+}
+
+.controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 12px
+}
+
+button {
+    background: linear-gradient(180deg, #1f6f42, #19803a);
+    color: white;
+    border: 0;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer
+}
+
+button.secondary {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    color: var(--muted)
+}
+
+.result {
+    padding: 12px;
+    margin-top: 12px;
+    border-radius: 8px
+}
+
+.correct {
+    color: var(--accent);
+    font-weight: 700
+}
+
+.wrong {
+    color: var(--danger);
+    font-weight: 700
+}
+
+.per-question-feedback {
+    margin-top: 8px;
+    font-size: 14px
+}
+
+footer {
+    color: var(--muted);
+    text-align: center;
+    margin-top: 18px;
+    font-size: 13px
+}
+
+@media (max-width:600px) {
+    body {
+        padding: 14px
+    }
+}
