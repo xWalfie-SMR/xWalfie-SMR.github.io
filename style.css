@@ -138,40 +138,12 @@ body {
 }
 
 .card-details {
-  max-height: 0;
   overflow: hidden;
-  transition: max-height 0.6s ease;
-  pointer-events: none;
+  will-change: height;
 }
-
-.card.expanded .card-details {
-  max-height: 500px;
+.card-details.expanded {
   pointer-events: auto;
 }
-
-.card-details-content {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.card.expanded .card-details-content {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 0.4s ease forwards;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-
 
 footer {
   text-align: center;
