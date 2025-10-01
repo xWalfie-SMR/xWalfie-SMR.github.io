@@ -1,13 +1,14 @@
 body {
-  font-family: 'Montserrat', sans-serif;
-  background-color: #1E1E2F;
+  font-family: "Montserrat", sans-serif;
+  background: linear-gradient(0deg, #1e1e2f 0%, #2f6ac9 100%);
+  background-size: 100% 100vh;
+  background-attachment: fixed;
   margin: 0;
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
 .page-container {
   display: flex;
   flex-direction: column;
@@ -21,7 +22,8 @@ body {
 #hero {
   text-align: center;
   margin-top: clamp(2vh, 8vh, 12vh);
-  color: #F5F5F7;
+  color: #f5f5f7;
+  text-shadow: 0 0 12px #1e1e2f;
 }
 
 #hero h1 {
@@ -33,19 +35,19 @@ body {
 #hero p {
   font-size: clamp(1rem, 1.6vw, 1.4rem);
   font-weight: 400;
-  color: #E4E4E7;
+  color: #e4e4e7;
   margin-top: 12px;
 }
 
 #terminal-banner {
-  font-family: 'Fira Code', monospace;
+  font-family: "Fira Code", monospace;
   background-color: #111122;
-  color: #3B82F6;
+  color: #3b82f6;
   padding: 12px 20px;
   border-radius: 6px;
   display: inline-block;
   margin-bottom: 16px;
-  box-shadow: 0 0 12px #1E1E2F;
+  box-shadow: 0 0 12px #1e1e2f;
   font-size: clamp(1.8rem, 4vw, 3rem);
 }
 
@@ -53,7 +55,7 @@ body {
   display: inline-block;
   width: 0.4ch;
   height: 1.1em;
-  background-color: #3B82F6;
+  background-color: #3b82f6;
   margin-left: 0.4ch;
   transform: translateY(-0.04em);
   vertical-align: text-bottom;
@@ -79,11 +81,12 @@ body {
 .card {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   gap: clamp(2rem, 3.4vw, 4rem);
-  background-color: #2A2A40;
-  color: #F5F5F7;
+  background-color: #2a2a40;
+  color: #f5f5f7;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
   text-align: center;
   padding: clamp(22px, 2.8vw, 48px);
   border-radius: 14px;
@@ -99,16 +102,14 @@ body {
 
 .title-heading {
   font-size: clamp(1.4rem, 2vw, 2rem);
-  /* bigger max */
   margin: 10px 0 0;
   font-weight: 400;
-  color: #E4E4E7;
+  color: #e4e4e7;
 }
 
 .card-text {
   font-size: clamp(1.2rem, 2vw, 1.6rem);
-  /* larger text */
-  color: #F5F5F7;
+  color: #f5f5f7;
   font-weight: 400;
   margin-bottom: 1.5rem;
 }
@@ -116,35 +117,70 @@ body {
 .card-button {
   display: inline-block;
   padding: clamp(14px, 2vw, 20px) clamp(28px, 4vw, 44px);
-  /* more padding */
-  background: linear-gradient(135deg, #3B82F6, #2563EB);
-  color: #F5F5F7;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #f5f5f7;
   letter-spacing: 1px;
   font-size: clamp(1.2rem, 2vw, 1.6rem);
-  /* larger button text */
+  box-shadow: 0 1.5px 4.5px rgba(0, 0, 0, 0.35);
   width: 56%;
-  /* keep your width rule */
   margin: 0 auto 24px;
   text-decoration: none;
   border-radius: 10px;
   font-weight: 500;
-  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  transition: background 1s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card-button:hover {
-  background: linear-gradient(135deg, #2563EB, #1D4ED8);
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
   transform: translateY(-4px);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
 }
 
+.card-details {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.6s ease;
+  pointer-events: none;
+}
+
+.card.expanded .card-details {
+  max-height: 500px;
+  pointer-events: auto;
+}
+
+.card-details-content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card.expanded .card-details-content {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.4s ease forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+
 footer {
   text-align: center;
-  color: #A1A1AA;
+  color: #a1a1aa;
   font-size: 0.8rem;
   padding: 16px 0;
   width: 100%;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
-  margin-top: auto;
+  margin-top: 80px;
 }
 
 footer p {
