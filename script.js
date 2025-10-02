@@ -1,41 +1,38 @@
 const button = document.querySelector("#content-card .card-button");
 const cardDetails = document.querySelector("#content-card .card-details");
 
+let animating = false;
+const duration = 600;
+
 button.addEventListener("click", () => {
+  if (animating) return;
+  animating = true;
+
   if (cardDetails.classList.contains("expanded")) {
-    cardDetails.style.height = cardDetails.scrollHeight + "px";
+    const startHeight = cardDetails.scrollHeight;
+    cardDetails.style.height = startHeight + "px";
     cardDetails.getBoundingClientRect();
-    cardDetails.style.transition = "height 600ms ease";
+    cardDetails.style.transition = `height ${duration}ms ease`;
+    cardDetails.style.height = "0px";
 
-    requestAnimationFrame(() => {
-      cardDetails.style.height = "0px";
-    });
-
-    const onCollapseEnd = (e) => {
-      if (e.propertyName !== "height") return;
+    setTimeout(() => {
       cardDetails.classList.remove("expanded");
-      cardDetails.style.height = "0";
+      cardDetails.style.removeProperty("height");
       cardDetails.style.removeProperty("transition");
-      cardDetails.removeEventListener("transitionend", onCollapseEnd);
-    };
-    cardDetails.addEventListener("transitionend", onCollapseEnd);
+      animating = false;
+    }, duration);
 
   } else {
     cardDetails.classList.add("expanded");
     cardDetails.style.height = "0px";
     cardDetails.getBoundingClientRect();
-    cardDetails.style.transition = "height 600ms ease";
+    cardDetails.style.transition = `height ${duration}ms ease`;
+    cardDetails.style.height = cardDetails.scrollHeight + "px";
 
-    requestAnimationFrame(() => {
-      cardDetails.style.height = cardDetails.scrollHeight + "px";
-    });
-
-    const onExpandEnd = (e) => {
-      if (e.propertyName !== "height") return;
+    setTimeout(() => {
       cardDetails.style.removeProperty("height");
       cardDetails.style.removeProperty("transition");
-      cardDetails.removeEventListener("transitionend", onExpandEnd);
-    };
-    cardDetails.addEventListener("transitionend", onExpandEnd);
+      animating = false;
+    }, duration);
   }
 });
