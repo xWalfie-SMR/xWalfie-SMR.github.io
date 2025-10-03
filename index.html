@@ -4,8 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>xWalfie's Portfolio</title>
+  <title>xWalfie's Portfolio - Python AI Developer</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
@@ -15,41 +16,136 @@
         Your screen looks better in landscape, please rotate your device
       </div>
     </div>
+    
+    <!-- Background Effects -->
+    <div class="bg-gradient"></div>
+    <div class="bg-particles"></div>
+    
     <div class="page-container">
       <header id="hero">
-        <h1>Python AI Developer</h1>
-        <p>Building intelligent systems with code and curiosity</p>
+        <h1 class="hero-title">Python AI Developer</h1>
+        <p class="hero-subtitle">Building intelligent systems with code and curiosity</p>
+        
+        <!-- Social Links -->
+        <div class="social-links">
+          <a href="#" class="social-link" title="GitHub">
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="#" class="social-link" title="LinkedIn">
+            <i class="fab fa-linkedin"></i>
+          </a>
+          <a href="#" class="social-link" title="Twitter">
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a href="#" class="social-link" title="Email">
+            <i class="fas fa-envelope"></i>
+          </a>
+        </div>
       </header>
+      
       <section id="cards">
+        <!-- Main Title Card -->
         <div class="card" id="title-card">
           <div id="terminal-banner">
-            <code>>> import xWalfie</code><span class="cursor"></span>
+            <span class="terminal-prompt">>>> </span>
+            <code id="typing-code"></code><span class="cursor"></span>
           </div>
           <h2 class="title-heading">Traceback? I trace it forward</h2>
+          <p class="card-subtitle">Turning exceptions into exceptional solutions</p>
+          
+          <!-- Tech Stack Icons -->
+          <div class="tech-stack">
+            <div class="tech-item" title="Python">
+              <i class="fab fa-python"></i>
+            </div>
+            <div class="tech-item" title="TensorFlow">
+              <i class="fas fa-brain"></i>
+            </div>
+            <div class="tech-item" title="PyTorch">
+              <i class="fas fa-fire"></i>
+            </div>
+            <div class="tech-item" title="Scikit-learn">
+              <i class="fas fa-robot"></i>
+            </div>
+            <div class="tech-item" title="Pandas">
+              <i class="fas fa-table"></i>
+            </div>
+          </div>
         </div>
+        
+        <!-- Content Card -->
         <div class="card" id="content-card">
-          <h3 class="card-text">Want to learn more about me?</h3>
-          <button class="card-button" tabindex="0">Let's see more</button>
+          <div class="card-header">
+            <i class="fas fa-user-astronaut card-icon"></i>
+            <h3 class="card-text">Want to learn more about me?</h3>
+          </div>
+          
+          <button class="card-button" tabindex="0">
+            Let's see more
+            <i class="fas fa-chevron-down button-arrow"></i>
+          </button>
+          
           <div class="card-details">
             <div class="card-details-content">
-              <p>
-                Hi, I'm xWalfie, a Python developer who loves building AI
-                systems that learn and adapt.
-              </p>
-              <p>
-                From neural networks to natural language processing, I turn data
-                into decisions.
-              </p>
+              <div class="detail-section">
+                <h4><i class="fas fa-code"></i> Who I Am</h4>
+                <p>
+                  Hi, I'm xWalfie, a Python developer who loves building AI
+                  systems that learn and adapt. From neural networks to natural 
+                  language processing, I turn data into decisions.
+                </p>
+              </div>
+              
+              <div class="detail-section">
+                <h4><i class="fas fa-rocket"></i> What I Do</h4>
+                <div class="skills-list">
+                  <span class="skill-tag">Machine Learning</span>
+                  <span class="skill-tag">Deep Learning</span>
+                  <span class="skill-tag">Computer Vision</span>
+                  <span class="skill-tag">NLP</span>
+                  <span class="skill-tag">Data Science</span>
+                  <span class="skill-tag">Neural Networks</span>
+                </div>
+              </div>
+              
+              <div class="detail-section">
+                <h4><i class="fas fa-trophy"></i> Recent Projects</h4>
+                <div class="mini-projects">
+                  <div class="mini-project">
+                    <i class="fas fa-comments"></i>
+                    <span>AI Chatbot with BERT</span>
+                  </div>
+                  <div class="mini-project">
+                    <i class="fas fa-eye"></i>
+                    <span>Real-time Object Detection</span>
+                  </div>
+                  <div class="mini-project">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Stock Price Predictor</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="contact-buttons">
+                <button class="contact-btn primary">
+                  <i class="fas fa-paper-plane"></i>
+                  Get in Touch
+                </button>
+                <button class="contact-btn secondary">
+                  <i class="fas fa-download"></i>
+                  Download CV
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </section>
+      
       <footer>
-        <p>&copy; 2025 xWalfie</p>
+        <p>&copy; 2025 xWalfie | <span class="footer-tag">Python Enthusiast</span></p>
       </footer>
     </div>
   </div>
-
 
   <script src="script.js"></script>
 </body>
