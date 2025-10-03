@@ -68,3 +68,4 @@ function checkTabletOrientation() {
 
 window.addEventListener("resize", checkTabletOrientation);
 window.addEventListener("load",   checkTabletOrientation);
+
