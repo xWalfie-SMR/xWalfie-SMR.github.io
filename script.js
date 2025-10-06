@@ -8,12 +8,12 @@ let typingSpeed = 80;
 
 function typeCommand() {
   const typingElement = document.getElementById('typing-code');
-  
+
   if (typingElement) {
     if (!isDeleting) {
       typingElement.textContent = terminalText.substring(0, charIndex);
       charIndex++;
-      
+
       if (charIndex > terminalText.length) {
         isDeleting = true;
         typingSpeed = 1500;
@@ -22,7 +22,7 @@ function typeCommand() {
       }
     }
   }
-  
+
   setTimeout(typeCommand, typingSpeed);
 }
 
@@ -41,20 +41,20 @@ if (button && cardDetails) {
 
     button.classList.toggle("expanded");
     cardDetails.classList.toggle("expanded");
-    
+
     open = !open;
-    
+
     // Update ARIA attributes for accessibility
     button.setAttribute('aria-expanded', open);
     cardDetails.setAttribute('aria-hidden', !open);
-    
+
     // Prevent tabbing to hidden elements
     if (open) {
       cardDetails.removeAttribute('inert');
     } else {
       cardDetails.setAttribute('inert', '');
     }
-    
+
     // If opening, set overflow to visible after animation and focus on content
     if (open) {
       const handleTransitionEnd = (e) => {
@@ -74,7 +74,7 @@ if (button && cardDetails) {
       // If closing, set overflow to hidden immediately
       cardDetails.style.overflow = 'hidden';
     }
-    
+
     setTimeout(() => {
       animating = false;
     }, duration);
@@ -96,11 +96,11 @@ function checkTabletOrientation() {
 
 // Add hover effects to social links
 document.querySelectorAll('.social-link').forEach(link => {
-  link.addEventListener('mouseenter', function() {
+  link.addEventListener('mouseenter', function () {
     this.style.transform = 'translateY(-5px) scale(1.1)';
   });
-  
-  link.addEventListener('mouseleave', function() {
+
+  link.addEventListener('mouseleave', function () {
     this.style.transform = 'translateY(0) scale(1)';
   });
 });
@@ -121,17 +121,17 @@ function createFloatingParticle() {
   particle.style.left = Math.random() * window.innerWidth + 'px';
   particle.style.top = Math.random() * window.innerHeight + 'px';
   particle.style.boxShadow = '0 0 12px rgba(59, 130, 246, 0.9), 0 0 20px rgba(59, 130, 246, 0.5)';
-  
+
   document.querySelector('.bg-particles').appendChild(particle);
-  
+
   const lifetime = Math.random() * 4000 + 3000;
   const xMove = (Math.random() - 0.5) * 200;
   const yMove = (Math.random() - 0.5) * 200;
-  
+
   // Track particle for line drawing with opacity tracking
   const particleData = { element: particle, opacity: 0, startTime: Date.now(), lifetime: lifetime };
   activeParticles.push(particleData);
-  
+
   particle.animate([
     { transform: 'translate(0, 0) scale(0.5)', opacity: 0 },
     { transform: `translate(${xMove * 0.5}px, ${yMove * 0.5}px) scale(1)`, opacity: 1, offset: 0.2 },
@@ -165,56 +165,54 @@ document.addEventListener('mousemove', (e) => {
 });
 
 // Draw lines between cursor and nearby particles
+let lastFrameTime = Date.now();
+let frameCount = 0;
+let fps = 60;
+
 function drawParticleLines() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
-  
-  const radius = Math.min(window.innerWidth, window.innerHeight) * 0.35; // 35vmin - larger radius
-  
+
+  const radius = Math.min(window.innerWidth, window.innerHeight) * 0.35;
+
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  
+
   const now = Date.now();
-  
+
   activeParticles.forEach(particleData => {
-    // Calculate current particle opacity based on animation progress
     const elapsed = now - particleData.startTime;
     const progress = elapsed / particleData.lifetime;
-    
+
     let particleOpacity = 0;
     if (progress < 0.2) {
-      // Fade in (0 to 1)
       particleOpacity = progress / 0.2;
     } else if (progress < 0.8) {
-      // Fully visible
       particleOpacity = 1;
     } else if (progress < 1) {
-      // Fade out (1 to 0)
       particleOpacity = 1 - ((progress - 0.8) / 0.2);
     }
-    
-    // Skip if particle is essentially invisible
-    if (particleOpacity < 0.01) return;
-    
+
+    if (particleOpacity < 0.05) return;
+
     const rect = particleData.element.getBoundingClientRect();
     const particleX = rect.left + rect.width / 2;
     const particleY = rect.top + rect.height / 2;
-    
+
     const dx = mouseX - particleX;
     const dy = mouseY - particleY;
     const distance = Math.sqrt(dx * dx + dy * dy);
-    
+
     if (distance < radius) {
       const distanceOpacity = 1 - (distance / radius);
-      
+
       let lineStrength = 0;
       if (particleOpacity >= 0.1) {
-        // Map particle opacity to line strength with threshold
         lineStrength = Math.pow(particleOpacity, 0.7);
       }
-      
+
       // Combine distance opacity with scaled particle opacity
       const finalOpacity = distanceOpacity * lineStrength * 0.8;
-      
+
       // Only draw if opacity is meaningful
       if (finalOpacity > 0.05) {
         ctx.strokeStyle = `rgba(59, 130, 246, ${finalOpacity})`;
@@ -226,7 +224,7 @@ function drawParticleLines() {
       }
     }
   });
-  
+
   requestAnimationFrame(drawParticleLines);
 }
 
@@ -235,7 +233,7 @@ function drawParticleLines() {
 document.addEventListener("DOMContentLoaded", () => {
   typeCommand();
   checkTabletOrientation();
-  
+
   // Set initial inert state on collapsed card details
   const cardDetails = document.querySelector("#content-card .card-details");
   if (cardDetails) {
@@ -250,10 +248,10 @@ window.addEventListener("load", () => {
   if (bgParticles) {
     bgParticles.appendChild(canvas);
   }
-  
+
   // Start line drawing animation
   drawParticleLines();
-  
+
   // Spawn delay before particles start appearing
   setTimeout(() => {
     setInterval(createFloatingParticle, 150); // More frequent spawning (every 150ms)
@@ -262,21 +260,26 @@ window.addEventListener("load", () => {
 
 window.addEventListener("resize", checkTabletOrientation);
 
-// Smooth scroll with momentum accumulation
+// Ultra-smooth scroll with perfect frame timing
 let targetScrollPosition = window.scrollY;
 let currentScrollPosition = window.scrollY;
 let scrollAnimationFrame = null;
+let scrollLastFrameTime = performance.now();
 
-function smoothScrollAnimation() {
+function smoothScrollAnimation(currentTime) {
+  const deltaTime = (currentTime - scrollLastFrameTime) / 16.67; // Normalize to 60fps
+  scrollLastFrameTime = currentTime;
+
   const diff = targetScrollPosition - currentScrollPosition;
-  const delta = diff * 0.1; // Smoothing factor
-  
+  const delta = diff * 0.12 * Math.min(deltaTime, 2); // Frame-independent, capped at 2x
+
   if (Math.abs(diff) < 0.5) {
     currentScrollPosition = targetScrollPosition;
+    window.scrollTo(0, currentScrollPosition);
     scrollAnimationFrame = null;
     return;
   }
-  
+
   currentScrollPosition += delta;
   window.scrollTo(0, currentScrollPosition);
   scrollAnimationFrame = requestAnimationFrame(smoothScrollAnimation);
@@ -284,28 +287,29 @@ function smoothScrollAnimation() {
 
 window.addEventListener('wheel', (e) => {
   e.preventDefault();
-  
-  const scrollAmount = e.deltaY * 1.2; // Scroll speed multiplier
+
+  const scrollAmount = e.deltaY * 1.2;
   targetScrollPosition += scrollAmount;
-  
+
   // Clamp to valid scroll range
   const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
   targetScrollPosition = Math.max(0, Math.min(targetScrollPosition, maxScroll));
-  
+
   // Start animation if not already running
   if (!scrollAnimationFrame) {
     currentScrollPosition = window.scrollY;
+    scrollLastFrameTime = performance.now();
     scrollAnimationFrame = requestAnimationFrame(smoothScrollAnimation);
   }
 }, { passive: false });
 
 // Add smooth hover for cards
 document.querySelectorAll('.card').forEach(card => {
-  card.addEventListener('mouseenter', function() {
+  card.addEventListener('mouseenter', function () {
     this.style.transform = 'translateY(-10px) scale(1.02)';
   });
-  
-  card.addEventListener('mouseleave', function() {
+
+  card.addEventListener('mouseleave', function () {
     this.style.transform = 'translateY(0) scale(1)';
   });
 });
