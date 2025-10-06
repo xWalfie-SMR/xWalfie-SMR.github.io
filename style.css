@@ -12,6 +12,39 @@
   --terminal-bg: #111122;
 }
 
+/* Skip to main content link (accessibility) */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--primary-blue);
+  color: white;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 0 0 4px 0;
+  z-index: 10000;
+  font-weight: 500;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: 2px solid var(--secondary-blue);
+  outline-offset: 2px;
+}
+
+/* Improved focus indicators for keyboard navigation */
+*:focus-visible {
+  outline: 2px solid var(--primary-blue);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--primary-blue);
+  outline-offset: 2px;
+}
+
 /* Wrapper */
 #wrapper {
   transform-origin: top left;
@@ -31,8 +64,10 @@
 .bg-particles {
   position: fixed;
   inset: 0;
-  z-index: -1;
-  opacity: 0.5;
+  z-index: 0;
+  opacity: 1;
+  pointer-events: none;
+  overflow: hidden;
 }
 
 .bg-particles::before,
@@ -94,6 +129,7 @@ overflow-y: auto; / Allow vertical scroll */
 /* Global Styles */
 html {
   overflow-anchor: none;
+  scroll-behavior: smooth;
 }
 
 .page-container {
@@ -105,6 +141,8 @@ html {
   width: 100%;
   box-sizing: border-box;
   padding: 2rem 2rem 5rem;
+  position: relative;
+  z-index: 1;
 }
 
 /* Hero Section - Enhanced */
