@@ -113,7 +113,7 @@ body::-webkit-scrollbar {
 }
 
 body {
-  font-family: "Montserrat", sans-serif;
+  font-family: "Montserrat", "Montserrat Fallback", Arial, sans-serif;
   margin: 0;
   min-height: 100vh;
   overflow-x: hidden; /* Only hide horizontal scroll /
@@ -175,6 +175,7 @@ html {
   justify-content: center;
   gap: 1.5rem;
   margin-top: 1rem;
+  min-height: 32px; /* Reserve space for icons to prevent layout shift */
 }
 
 .social-link {
@@ -182,6 +183,19 @@ html {
   font-size: 1.3rem;
   transition: all 0.3s ease;
   position: relative;
+  width: 1.3rem; /* Fixed width to prevent layout shift when icons load */
+  height: 1.3rem; /* Fixed height to prevent layout shift when icons load */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.social-link i {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .social-link:hover {
@@ -208,13 +222,14 @@ html {
 
 /* Terminal Banner */
 #terminal-banner {
-  font-family: "Fira Code", monospace;
+  font-family: "Fira Code", "Fira Code Fallback", "Courier New", monospace;
   background: var(--terminal-bg);
   color: var(--primary-blue);
   padding: 14px 20px;
   border-radius: 10px;
   width: fit-content;
   max-width: 80%;
+  min-height: 48px; /* Reserve space to prevent layout shift */
   margin: 0 auto 20px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
   font-size: clamp(0.9rem, 1.8vw, 1.2rem);
@@ -290,6 +305,7 @@ html {
   width: min(90vw, 800px);
   padding: 0;
   box-sizing: border-box;
+  contain: layout style paint; /* Optimize rendering and reduce layout shifts */
 }
 
 .card {
@@ -367,6 +383,7 @@ html {
   margin-top: 1.5rem;
   flex-wrap: wrap;
   padding: 0.5rem;
+  min-height: 80px; /* Reserve space to prevent layout shift */
 }
 
 .tech-item {
@@ -384,10 +401,20 @@ html {
   justify-content: center;
   min-width: clamp(50px, 10vw, 65px);
   min-height: clamp(50px, 10vw, 65px);
+  width: clamp(50px, 10vw, 65px); /* Fixed width to prevent layout shift */
+  height: clamp(50px, 10vw, 65px); /* Fixed height to prevent layout shift */
   backdrop-filter: blur(5px);
   user-select: none;
   -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;
+}
+
+.tech-item i {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .tech-item:hover {
@@ -490,6 +517,7 @@ html {
   font-weight: 500;
   box-shadow: 0 4px 15px rgba(14, 85, 236, 0.3);
   width: 100%;
+  min-height: 52px; /* Reserve minimum height to prevent layout shift */
   text-decoration: none;
   border-radius: 12px;
   cursor: pointer;
@@ -541,6 +569,7 @@ html {
   justify-content: center;
   width: 1em;
   height: 1em;
+  flex-shrink: 0; /* Prevent icon from shrinking */
 }
 
 .card-button.expanded .button-arrow {
@@ -577,10 +606,16 @@ html {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  min-height: 1.5rem; /* Reserve space to prevent layout shift */
 }
 
 .detail-section h4 i {
   font-size: 1rem;
+  width: 1rem; /* Fixed width for icon */
+  height: 1rem; /* Fixed height for icon */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .detail-section p {
@@ -639,6 +674,12 @@ html {
 .mini-project i {
   color: var(--primary-blue);
   font-size: 1.2rem;
+  width: 1.2rem; /* Fixed width for icon */
+  height: 1.2rem; /* Fixed height for icon */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0; /* Prevent icon from shrinking */
 }
 
 .mini-project span {
@@ -743,6 +784,12 @@ html {
 .contact-btn i {
   font-size: 1.1em;
   transition: transform 0.3s ease;
+  width: 1.1em; /* Fixed width for icon */
+  height: 1.1em; /* Fixed height for icon */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0; /* Prevent icon from shrinking */
 }
 
 .contact-btn:hover i {
