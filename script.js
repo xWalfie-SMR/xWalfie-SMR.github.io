@@ -16,7 +16,7 @@ function typeCommand() {
       
       if (charIndex > terminalText.length) {
         isDeleting = true;
-        typingSpeed = 1500; // Pause at end
+        typingSpeed = 1500;
       } else {
         typingSpeed = 80;
       }
