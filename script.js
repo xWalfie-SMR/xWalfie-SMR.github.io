@@ -44,6 +44,24 @@ if (button && cardDetails) {
     
     open = !open;
     
+    // Update ARIA attributes for accessibility
+    button.setAttribute('aria-expanded', open);
+    cardDetails.setAttribute('aria-hidden', !open);
+    
+    // If opening, set overflow to visible after animation
+    if (open) {
+      const handleTransitionEnd = (e) => {
+        if (e.propertyName === 'max-height') {
+          cardDetails.style.overflow = 'visible';
+          cardDetails.removeEventListener('transitionend', handleTransitionEnd);
+        }
+      };
+      cardDetails.addEventListener('transitionend', handleTransitionEnd);
+    } else {
+      // If closing, set overflow to hidden immediately
+      cardDetails.style.overflow = 'hidden';
+    }
+    
     setTimeout(() => {
       animating = false;
     }, duration);
@@ -102,13 +120,17 @@ function createFloatingParticle() {
   }).onfinish = () => particle.remove();
 }
 
-// Initialize on load
-window.addEventListener("load", () => {
+// Initialize on DOM ready (better performance)
+document.addEventListener("DOMContentLoaded", () => {
   typeCommand();
   checkTabletOrientation();
-  
-  // Create particles periodically
-  setInterval(createFloatingParticle, 500);
+});
+
+// Start particle animations after page fully loads (performance optimization)
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    setInterval(createFloatingParticle, 500);
+  }, 1000);
 });
 
 window.addEventListener("resize", checkTabletOrientation);
