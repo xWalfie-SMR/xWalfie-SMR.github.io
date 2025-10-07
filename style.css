@@ -631,10 +631,11 @@ html {
   font-size: 1.2rem;
   width: 1.2rem; /* Fixed width for icon */
   height: 1.2rem; /* Fixed height for icon */
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0; /* Prevent icon from shrinking */
+  line-height: 1;
 }
 
 .mini-project span {
