@@ -206,7 +206,7 @@ function drawParticleLines() {
       const distanceOpacity = 1 - (distance / radius);
 
       let lineStrength = 0;
-      if (particleOpacity >= 0.1) {
+      if (particleOpacity >= 0.3) {
         lineStrength = Math.pow(particleOpacity, 0.7);
       }
 
