@@ -67,7 +67,7 @@ body::-webkit-scrollbar {
 }
 
 body {
-  font-family: "Montserrat", "Montserrat Fallback", Arial, sans-serif;
+  font-family: "Montserrat", sans-serif;
   margin: 0;
   min-height: 100vh;
   overflow-x: hidden;
@@ -106,7 +106,6 @@ html {
   margin-bottom: 3vh;
   color: var(--text-primary);
   animation: fadeInDown 0.8s ease;
-  min-height: 180px; /* Reserve space to prevent layout shift during font loading */
 }
 
 .hero-title {
@@ -115,7 +114,6 @@ html {
   margin: 0;
   text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
   letter-spacing: -0.02em;
-  min-height: 3.8rem; /* Reserve space to prevent layout shift during font loading */
 }
 
 .hero-subtitle {
@@ -124,7 +122,6 @@ html {
   color: var(--text-secondary);
   margin-top: 12px;
   margin-bottom: 1.5rem;
-  min-height: 1.6rem; /* Reserve space to prevent layout shift during font loading */
 }
 
 /* Social Links */
@@ -133,7 +130,6 @@ html {
   justify-content: center;
   gap: 1.5rem;
   margin-top: 1rem;
-  min-height: 32px; /* Reserve space for icons to prevent layout shift */
 }
 
 .social-link {
@@ -141,19 +137,6 @@ html {
   font-size: 1.3rem;
   transition: all 0.3s ease;
   position: relative;
-  width: 1.3rem; /* Fixed width to prevent layout shift when icons load */
-  height: 1.3rem; /* Fixed height to prevent layout shift when icons load */
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.social-link i {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .social-link:hover {
@@ -180,14 +163,13 @@ html {
 
 /* Terminal Banner */
 #terminal-banner {
-  font-family: "Fira Code", "Fira Code Fallback", "Courier New", monospace;
+  font-family: "Fira Code", monospace;
   background: var(--terminal-bg);
   color: var(--primary-blue);
   padding: 14px 20px;
   border-radius: 10px;
   width: fit-content;
   max-width: 80%;
-  min-height: 48px; /* Reserve space to prevent layout shift */
   margin: 0 auto 20px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
   font-size: clamp(0.9rem, 1.8vw, 1.2rem);
@@ -262,7 +244,6 @@ html {
   width: min(90vw, 800px);
   padding: 0;
   box-sizing: border-box;
-  contain: layout style paint; /* Optimize rendering and reduce layout shifts */
 }
 
 .card {
@@ -321,7 +302,6 @@ html {
   margin: 10px 0;
   font-weight: 500;
   color: var(--text-secondary);
-  min-height: 2.4rem; /* Reserve space to prevent layout shift */
 }
 
 .card-subtitle {
@@ -329,7 +309,6 @@ html {
   font-size: clamp(0.9rem, 1.2vw, 1rem);
   margin-top: 0.5rem;
   font-style: italic;
-  min-height: 1.2rem; /* Reserve space to prevent layout shift */
 }
 
 /* Tech Stack */
@@ -340,7 +319,6 @@ html {
   margin-top: 1.5rem;
   flex-wrap: wrap;
   padding: 0.5rem;
-  min-height: 80px; /* Reserve space to prevent layout shift */
 }
 
 .tech-item {
@@ -358,20 +336,10 @@ html {
   justify-content: center;
   min-width: clamp(50px, 10vw, 65px);
   min-height: clamp(50px, 10vw, 65px);
-  width: clamp(50px, 10vw, 65px); /* Fixed width to prevent layout shift */
-  height: clamp(50px, 10vw, 65px); /* Fixed height to prevent layout shift */
   backdrop-filter: blur(5px);
   user-select: none;
   -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;
-}
-
-.tech-item i {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .tech-item:hover {
@@ -472,7 +440,6 @@ html {
   font-weight: 500;
   box-shadow: 0 4px 15px rgba(14, 85, 236, 0.3);
   width: 100%;
-  min-height: 52px; /* Reserve minimum height to prevent layout shift */
   text-decoration: none;
   border-radius: 12px;
   cursor: pointer;
@@ -524,7 +491,6 @@ html {
   justify-content: center;
   width: 1em;
   height: 1em;
-  flex-shrink: 0; /* Prevent icon from shrinking */
 }
 
 .card-button.expanded .button-arrow {
@@ -561,16 +527,10 @@ html {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  min-height: 1.5rem; /* Reserve space to prevent layout shift */
 }
 
 .detail-section h4 i {
   font-size: 1rem;
-  width: 1rem; /* Fixed width for icon */
-  height: 1rem; /* Fixed height for icon */
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .detail-section p {
@@ -629,12 +589,6 @@ html {
 .mini-project i {
   color: var(--primary-blue);
   font-size: 1.2rem;
-  width: 1.2rem; /* Fixed width for icon */
-  height: 1.2rem; /* Fixed height for icon */
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0; /* Prevent icon from shrinking */
 }
 
 .mini-project span {
@@ -737,12 +691,6 @@ html {
 .contact-btn i {
   font-size: 1.1em;
   transition: transform 0.3s ease;
-  width: 1.1em; /* Fixed width for icon */
-  height: 1.1em; /* Fixed height for icon */
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0; /* Prevent icon from shrinking */
 }
 
 .contact-btn:hover i {
@@ -759,7 +707,6 @@ footer {
   color: var(--text-muted);
   font-size: 0.85rem;
   padding: 1rem 0;
-  min-height: 50px; /* Reserve space to prevent layout shift */
   background: linear-gradient(0deg, #1e1e2f 0%, #2f6ac9 100%);
   background-size: 100% 100vh;
   background-attachment: fixed;
@@ -854,8 +801,6 @@ footer p {
     font-size: 1.4rem;
     min-width: 48px;
     min-height: 48px;
-    width: 48px; /* Fixed width on mobile to prevent layout shift */
-    height: 48px; /* Fixed height on mobile to prevent layout shift */
     padding: 0.5rem;
   }
 
