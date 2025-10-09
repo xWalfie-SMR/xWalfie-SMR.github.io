@@ -313,3 +313,166 @@ document.querySelectorAll('.card').forEach(card => {
     this.style.transform = 'translateY(0) scale(1)';
   });
 });
+
+/* Contact Modal Behavior */
+(() => {
+  const openBtn = document.getElementById('contact-open');
+  const modal = document.getElementById('contact-modal');
+  const closeBtns = modal ? modal.querySelectorAll('.modal-close, #contact-cancel') : [];
+  const form = document.getElementById('contact-form');
+  let lastFocused = null;
+
+  if (!modal || !openBtn) return;
+
+  function setAriaOpen(isOpen) {
+    modal.setAttribute('aria-hidden', String(!isOpen));
+    openBtn.setAttribute('aria-expanded', String(isOpen));
+  }
+
+  function openModal() {
+    lastFocused = document.activeElement;
+    setAriaOpen(true);
+    document.body.style.overflow = 'hidden';
+    // focus first input
+    const first = modal.querySelector('input, textarea, button');
+    if (first) first.focus();
+  }
+
+  function closeModal() {
+    setAriaOpen(false);
+    document.body.style.overflow = '';
+    // restore focus
+    if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+  }
+
+  openBtn.addEventListener('click', () => {
+    openModal();
+  });
+
+  closeBtns.forEach(btn => btn.addEventListener('click', () => closeModal()));
+
+  // Close when clicking outside dialog
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  // Close on Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') {
+      e.preventDefault();
+      closeModal();
+    }
+  });
+
+  // Focus trap
+  modal.addEventListener('keydown', (e) => {
+    if (e.key !== 'Tab' || modal.getAttribute('aria-hidden') === 'true') return;
+    const focusable = modal.querySelectorAll('a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])');
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    if (e.shiftKey) { // Shift+Tab
+      if (document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      }
+    } else { // Tab
+      if (document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  });
+
+  // Replace mailto with POST to server backend
+  // Add a status element below the form for feedback
+  const status = document.createElement('p');
+  status.className = 'contact-status';
+  form.parentElement.appendChild(status);
+
+  // Create spinner element for the submit button
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const spinner = document.createElement('span');
+  spinner.className = 'btn-spinner';
+  spinner.setAttribute('aria-hidden', 'true');
+
+  if (submitBtn) submitBtn.appendChild(spinner);
+
+  // Simple inline validation helper
+  function validate() {
+    const name = document.getElementById('contact-name').value.trim();
+    const email = document.getElementById('contact-email').value.trim();
+    const message = document.getElementById('contact-message').value.trim();
+    if (!name) return 'Please enter your name.';
+    if (!email) return 'Please enter a valid email.';
+    if (!message) return 'Please enter a message.';
+    return '';
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    status.textContent = '';
+    status.classList.remove('success', 'error');
+
+    const validationError = validate();
+    if (validationError) {
+      status.textContent = validationError;
+      status.classList.add('error');
+      return;
+    }
+
+    const data = {
+      name: document.getElementById('contact-name').value.trim(),
+      email: document.getElementById('contact-email').value.trim(),
+      message: document.getElementById('contact-message').value.trim()
+    };
+
+    try {
+      // disable UI while sending
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        spinner.classList.add('spinning');
+      }
+
+      const res = await fetch('https://portfolio-backend-sadj.onrender.com/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      const result = await res.json().catch(() => ({}));
+
+      if (res.ok) {
+        status.textContent = 'Message sent successfully!';
+        status.classList.add('success');
+        form.reset();
+        // optionally close modal after a short delay
+        setTimeout(() => closeModal(), 900);
+      } else {
+        status.textContent = 'Error: ' + (result.error || 'Something went wrong');
+        status.classList.add('error');
+      }
+    } catch (err) {
+      status.textContent = 'Error: ' + err.message;
+      status.classList.add('error');
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        spinner.classList.remove('spinning');
+      }
+    }
+  });
+
+  // cancel button resets form and closes modal
+  const cancelBtn = document.getElementById('contact-cancel');
+  if (cancelBtn) {
+    cancelBtn.addEventListener('click', () => {
+      form.reset();
+      status.textContent = '';
+      status.classList.remove('success', 'error');
+      closeModal();
+    });
+  }
+})();

@@ -571,7 +571,7 @@ html {
 .mini-project {
   display: flex;
   align-items: center;
-  gap: 0.8rem;
+  gap: 0.5rem;
   padding: 0.5rem;
   background: rgba(255, 255, 255, 0.02);
   border-radius: 8px;
@@ -589,12 +589,16 @@ html {
 .mini-project i {
   color: var(--primary-blue);
   font-size: 1.2rem;
+  width: 1.5rem;
+  text-align: center;
+  flex-shrink: 0;
 }
 
 .mini-project span {
   color: var(--text-secondary);
   font-size: 0.9rem;
 }
+
 
 /* Contact Buttons */
 .contact-buttons {
@@ -606,6 +610,7 @@ html {
 
 .contact-btn {
   flex: 1;
+  font-family: "Montserrat", sans-serif;
   min-width: 140px;
   padding: clamp(0.75rem, 2vw, 1rem) clamp(1.25rem, 3vw, 1.75rem);
   border-radius: 10px;
@@ -845,4 +850,124 @@ footer p {
   #rotate-popup {
     display: flex;
   }
+}
+
+/* Contact Modal (global) */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 18, 30, 0.7);
+  z-index: 99999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease, transform 0.3s ease;
+}
+
+.modal[aria-hidden="false"] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-content {
+  width: min(760px, 92vw);
+  background: rgba(30, 30, 47, 0.98);
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  border: 1px solid rgba(59,130,246,0.08);
+  color: var(--text-primary);
+}
+
+.modal-content h2 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.25rem;
+  color: var(--primary-blue);
+}
+
+.modal-subtitle {
+  color: var(--text-secondary);
+  margin: 0 0 1rem 0;
+}
+
+.modal-content label {
+  display: block;
+  margin-top: 0.8rem;
+  margin-bottom: 0.25rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.modal-content input,
+.modal-content textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.04);
+  color: var(--text-primary);
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+}
+
+.modal-content textarea { resize: vertical; }
+
+.modal-actions {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  justify-content: flex-end;
+}
+
+.contact-status {
+  margin-top: 0.8rem;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+/* Spinner inside submit button */
+.btn-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-left: 8px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.15);
+  border-top-color: rgba(255,255,255,0.85);
+  vertical-align: middle;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.btn-spinner.spinning {
+  opacity: 1;
+  transform: scale(1);
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.contact-status.success { color: #4ade80; }
+.contact-status.error { color: #fb7185; }
+
+.modal-close {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+@media (max-width: 480px) {
+  .modal-content { padding: 1rem; }
+  .modal-close { right: 0.6rem; top: 0.6rem; }
 }
