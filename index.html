@@ -281,12 +281,14 @@
                     Get in Touch
                   </button>
                   <a
-                    href="path/to/your-cv.pdf"
+                    href="cvs/index.html"
                     class="contact-btn secondary"
-                    download
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="View and download my CV"
                   >
                     <i class="fas fa-download"></i>
-                    Download CV
+                    My CV
                   </a>
                 </div>
               </div>
@@ -305,7 +307,7 @@
           <div class="modal-content" role="document">
             <button class="modal-close" aria-label="Close contact form">&times;</button>
             <h2 id="contact-modal-title">Contact Me</h2>
-            <p class="modal-subtitle">Send me a message — I'll reply as soon as I can.</p>
+            <p class="modal-subtitle">Send me a message - I'll reply as soon as I can.</p>
             <form id="contact-form">
               <label for="contact-name">Name</label>
               <input id="contact-name" name="name" type="text" required minlength="2" placeholder="Your name">

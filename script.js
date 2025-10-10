@@ -384,9 +384,7 @@ document.querySelectorAll('.card').forEach(card => {
       }
     }
   });
-
-  // Replace mailto with POST to server backend
-  // Add a status element below the form for feedback
+  
   const status = document.createElement('p');
   status.className = 'contact-status';
   form.parentElement.appendChild(status);

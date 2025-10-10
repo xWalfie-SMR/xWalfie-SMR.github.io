@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Currículum Vitae</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary-blue: #3b82f6;
+        --secondary-blue: #60a5fa;
+        --dark-blue: #1e1e2f;
+        --card-bg: #2a2a40;
+        --button-primary: #326dee;
+        --button-secondary: #78a5ee;
+        --text-primary: #f5f5f7;
+        --text-secondary: #e4e4e7;
+        --text-muted: #a1a1aa;
+        --gradient-bg: linear-gradient(0deg, #1e1e2f 0%, #2f6ac9 100%);
+        --terminal-bg: #111122;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Montserrat", sans-serif;
+        background: var(--gradient-bg);
+        background-attachment: fixed;
+        color: var(--text-primary);
+        line-height: 1.6;
+        padding: 2rem 1rem;
+      }
+
+      .cv-container {
+        max-width: 900px;
+        margin: 0 auto;
+        animation: fadeIn 0.8s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Header Section */
+      .cv-header {
+        background: rgba(42, 42, 64, 0.7);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        padding: 2.5rem 2rem;
+        text-align: center;
+        margin-bottom: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .cv-header::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 16px;
+        padding: 1px;
+        background: linear-gradient(
+          135deg,
+          rgba(59, 130, 246, 0.3),
+          rgba(139, 92, 246, 0.3)
+        );
+        -webkit-mask: linear-gradient(#fff 0 0) content-box,
+          linear-gradient(#fff 0 0);
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        pointer-events: none;
+      }
+
+      .cv-name {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+        letter-spacing: -0.02em;
+      }
+
+      .cv-title {
+        font-size: 1.3rem;
+        color: var(--secondary-blue);
+        font-weight: 500;
+        margin-bottom: 1rem;
+      }
+
+      .cv-contact {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+        margin-top: 1.5rem;
+      }
+
+      .contact-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+      }
+
+      .contact-item:hover {
+        color: var(--primary-blue);
+        transform: translateY(-2px);
+      }
+
+      .contact-item i {
+        color: var(--primary-blue);
+        font-size: 1.1rem;
+      }
+
+      /* Ensure anchors in the CV do not show underlines (GitHub/Pages preview can inject styles) */
+      .cv-container a,
+      .cv-container .contact-item a,
+      .cv-container .cv-header a {
+        color: inherit;
+        text-decoration: none !important;
+        border-bottom: none !important;
+      }
+
+      .cv-container a:hover,
+      .cv-container .contact-item a:hover {
+        color: var(--primary-blue);
+        text-decoration: none !important;
+      }
+
+      /* Terminal Banner */
+      .terminal-banner {
+        font-family: "Fira Code", monospace;
+        background: var(--terminal-bg);
+        color: var(--primary-blue);
+        padding: 1rem 1.5rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        font-size: 1rem;
+        border: 1px solid rgba(59, 130, 246, 0.2);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .terminal-banner::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(59, 130, 246, 0.1),
+          transparent
+        );
+        animation: scan 3s infinite;
+      }
+
+      @keyframes scan {
+        0% {
+          left: -100%;
+        }
+
+        100% {
+          left: 100%;
+        }
+      }
+
+      .terminal-prompt {
+        color: #4ade80;
+        font-weight: bold;
+      }
+
+      /* CV Sections */
+      .cv-section {
+        background: rgba(42, 42, 64, 0.7);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        animation: fadeInUp 0.8s ease backwards;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .cv-section:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .section-title {
+        font-size: 1.5rem;
+        color: var(--primary-blue);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        font-weight: 600;
+      }
+
+      .section-title i {
+        font-size: 1.3rem;
+      }
+
+      /* Experience/Education Items */
+      .cv-item {
+        margin-bottom: 1.8rem;
+        position: relative;
+        padding-left: 1.5rem;
+        border-left: 2px solid rgba(59, 130, 246, 0.3);
+      }
+
+      .cv-item:last-child {
+        margin-bottom: 0;
+      }
+
+      .cv-item::before {
+        content: "";
+        position: absolute;
+        left: -6px;
+        top: 0;
+        width: 10px;
+        height: 10px;
+        background: var(--primary-blue);
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+      }
+
+      .item-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 0.5rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .item-title {
+        font-size: 1.15rem;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .item-date {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        font-weight: 500;
+        padding: 0.25rem 0.75rem;
+        background: rgba(59, 130, 246, 0.1);
+        border-radius: 20px;
+        border: 1px solid rgba(59, 130, 246, 0.2);
+      }
+
+      .item-company {
+        font-size: 1rem;
+        color: var(--secondary-blue);
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+      }
+
+      .item-description {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        line-height: 1.7;
+      }
+
+      .item-description ul {
+        margin-top: 0.5rem;
+        padding-left: 1.2rem;
+      }
+
+      .item-description li {
+        margin-bottom: 0.4rem;
+      }
+
+      /* Skills Section */
+      .skills-grid {
+        display: grid;
+        /* Two columns: when there are 2 items they split 50/50. If there's 1 item it will be forced to span both columns. Additional items wrap into new rows of two. */
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.5rem;
+      }
+
+      /* If the grid contains exactly one child, make it span both columns (full width) */
+      .skills-grid > :only-child {
+        grid-column: 1 / -1;
+      }
+
+      /* Languages Section - similar to skills-grid but without flex-fill behavior */
+      .languages-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.5rem;
+      }
+
+      .languages-grid > :only-child {
+        grid-column: 1 / -1;
+      }
+
+      /* Languages categories size naturally to content (no flex-fill) */
+      .languages-grid .skill-category {
+        display: block;
+      }
+
+      .languages-grid .skill-tags {
+        flex: unset;
+        min-height: unset;
+        grid-template-rows: auto;
+      }
+
+      .skill-category {
+        background: rgba(59, 130, 246, 0.05);
+        padding: 1.2rem;
+        border-radius: 12px;
+        border: 1px solid rgba(59, 130, 246, 0.2);
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .skill-category:hover {
+        background: rgba(59, 130, 246, 0.1);
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(59, 130, 246, 0.2);
+      }
+
+      .skill-category-title {
+        color: var(--primary-blue);
+        font-weight: 600;
+        margin-bottom: 0.8rem;
+        font-size: 1.05rem;
+        flex-shrink: 0;
+      }
+
+      .skill-tags {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.5rem;
+        /* Explicit row sizing for strict fractional heights - defaults to two equal rows */
+        grid-template-rows: 1fr 1fr;
+        align-items: stretch;
+        justify-items: stretch;
+        /* Fill remaining height in the category to ensure consistent block size */
+        flex: 1;
+        min-height: 120px;
+      }
+
+      /* Single tag: span both columns, occupy full height */
+      .skill-tags > :only-child {
+        grid-column: 1 / -1;
+        grid-row: 1 / -1;
+      }
+
+      /* Three tags: top two occupy 50% height each (half width), third spans both columns (50% height, full width) */
+      .skill-tags > :nth-child(3):nth-last-child(1) {
+        grid-column: 1 / -1;
+      }
+
+      /* Four or more tags: each cell occupies exactly 1/4 of the total grid (strict fractional sizing) */
+      .skill-tag {
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        width: 100%;
+        height: 100%;
+        padding: 0.8rem;
+        box-sizing: border-box;
+      }
+
+      .skill-tag {
+        padding: 0.4rem 0.8rem;
+        background: rgba(59, 130, 246, 0.1);
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        border-radius: 20px;
+        color: var(--secondary-blue);
+        font-size: 0.85rem;
+        transition: all 0.3s ease;
+      }
+
+      .skill-tag:hover {
+        background: rgba(59, 130, 246, 0.2);
+        transform: scale(1.05);
+      }
+
+      /* Profile Section */
+      .profile-text {
+        color: var(--text-secondary);
+        font-size: 1rem;
+        line-height: 1.8;
+      }
+
+      /* Print Styles */
+      @media print {
+        * {
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+          color-adjust: exact !important;
+        }
+
+        html {
+          background: #1e1e2f !important;
+          background-color: #1e1e2f !important;
+          min-height: 100%;
+        }
+
+        body {
+          padding: 0;
+          background: #1e1e2f !important;
+          background-color: #1e1e2f !important;
+          min-height: 100%;
+        }
+
+        @page {
+          margin: 0;
+        }
+
+        .cv-container {
+          max-width: 100%;
+          background: #1e1e2f !important;
+          margin: 0 !important;
+          padding: 1.5cm !important;
+          padding-bottom: 16.57cm !important;
+        }
+
+        .terminal-banner {
+          display: none !important;
+        }
+
+        .download-cv-btn {
+          display: none !important;
+        }
+
+        .cv-section,
+        .cv-header {
+          background: #2a2a40 !important;
+          backdrop-filter: none;
+          box-shadow: none;
+          page-break-inside: avoid;
+        }
+
+        .cv-section {
+          margin-top: 1.5rem !important;
+        }
+
+        .cv-header {
+          margin-top: 0 !important;
+        }
+
+        .terminal-banner::before {
+          display: none;
+        }
+      }
+
+      @media (max-width: 768px) {
+        body {
+          padding: 1rem 0.5rem;
+        }
+
+        .cv-header {
+          padding: 1.5rem 1rem;
+        }
+
+        .cv-name {
+          font-size: 2rem;
+        }
+
+        .cv-title {
+          font-size: 1.1rem;
+        }
+
+        .cv-contact {
+          flex-direction: column;
+          gap: 0.8rem;
+          align-items: center;
+        }
+
+        .cv-section {
+          padding: 1.5rem 1rem;
+        }
+
+        .section-title {
+          font-size: 1.3rem;
+        }
+
+        .item-header {
+          flex-direction: column;
+        }
+
+        .skills-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Fixed Download CV button */
+      .download-cv-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        z-index: 2000;
+        background: linear-gradient(
+          180deg,
+          var(--primary-blue),
+          var(--button-primary)
+        );
+        color: #fff;
+        padding: 12px 16px;
+        border-radius: 10px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+        display: inline-flex;
+        gap: 10px;
+        align-items: center;
+        text-decoration: none;
+        font-weight: 600;
+        transition: transform 0.12s ease, box-shadow 0.12s ease;
+        border: none;
+        cursor: pointer;
+      }
+
+      .download-cv-btn i {
+        font-size: 1rem;
+      }
+
+      .download-cv-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+      }
+
+      @media (max-width: 480px) {
+        .download-cv-btn {
+          right: 12px;
+          bottom: 12px;
+          padding: 10px 12px;
+          font-size: 0.9rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="cv-container">
+      <!-- Terminal Banner -->
+      <div class="terminal-banner">
+        <span class="terminal-prompt">></span>
+        <span style="color: var(--text-primary)"
+          >curriculum-vitae --format=profesional --idioma=es</span
+        >
+      </div>
+
+      <!-- Header -->
+      <div class="cv-header">
+        <h1 class="cv-name">Aram Aljundi Alkhouli</h1>
+        <p class="cv-title">Aspirante desarrollador de Python</p>
+        <div class="cv-contact">
+          <div class="contact-item">
+            <i class="fas fa-envelope"></i>
+            <span
+              ><a href="mailto:aaljalk223@g.educaand.es"
+                >aaljalk223@g.educaand.es</a
+              ></span
+            >
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-phone"></i>
+            <span><a href="tel:+34691360673">+34 691 360 673</a></span>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Sevilla, España</span>
+          </div>
+          <div class="contact-item">
+            <i class="fab fa-linkedin"></i>
+            <span
+              ><a href="https://linkedin.com/in/xwalfie-smr">LinkedIn</a></span
+            >
+          </div>
+          <div class="contact-item">
+            <i class="fab fa-github"></i>
+            <span><a href="https://github.com/xwalfie-smr">GitHub</a></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Perfil Profesional -->
+      <div class="cv-section">
+        <h2 class="section-title">
+          <i class="fas fa-user"></i>
+          Perfil Profesional
+        </h2>
+        <p class="profile-text">
+          Soy un estudiante de 16 años apasionado por la tecnología y el
+          desarrollo de software. Actualmente, estoy cursando un Grado Medio en
+          Sistemas Microinformáticos y Redes, donde he adquirido conocimientos
+          sólidos en hardware, redes y administración de sistemas. Mi objetivo
+          es convertirme en un desarrollador de Python, especializándome en el
+          desarrollo de inteligencia artificial y su implementación en la
+          biotecnología. Me considero una persona proactiva, con ganas de
+          aprender y crecer profesionalmente en el mundo de la programación.
+        </p>
+      </div>
+
+      <!-- Formación Académica -->
+      <div class="cv-section">
+        <h2 class="section-title">
+          <i class="fas fa-graduation-cap"></i>
+          Formación Académica
+        </h2>
+
+        <div class="cv-item">
+          <div class="item-header">
+            <div>
+              <div class="item-title">Educación Primaria</div>
+              <div class="item-company">CEIP María Zambrano</div>
+            </div>
+            <div class="item-date">2014 - 2019</div>
+          </div>
+        </div>
+
+        <div class="cv-item">
+          <div class="item-header">
+            <div>
+              <div class="item-title">Educación Primaria</div>
+              <div class="item-company">CEIP Huerta de Santa Marina</div>
+            </div>
+            <div class="item-date">2019 - 2021</div>
+          </div>
+        </div>
+
+        <div class="cv-item">
+          <div class="item-header">
+            <div>
+              <div class="item-title">Educación Secundaria</div>
+              <div class="item-company">IES San Isidoro</div>
+            </div>
+            <div class="item-date">2021 - 2025</div>
+          </div>
+        </div>
+
+        <div class="cv-item">
+          <div class="item-header">
+            <div>
+              <div class="item-title">
+                Grado Medio en Sistemas Microinformáticos y Redes
+              </div>
+              <div class="item-company">IES Martínez Montañés</div>
+            </div>
+            <div class="item-date">2025 - Actualidad</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Experiencia Laboral -->
+      <div class="cv-section">
+        <h2 class="section-title">
+          <i class="fas fa-briefcase"></i>
+          Experiencia Laboral
+        </h2>
+
+        <div class="cv-item">
+          <div class="item-header">
+            <div>
+              <div class="item-title">TBA</div>
+              <div class="item-company">TBA</div>
+            </div>
+            <div class="item-date">TBA</div>
+          </div>
+          <div class="item-description">
+            <ul>
+              <li>TBA</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Habilidades Técnicas -->
+      <div class="cv-section">
+        <h2 class="section-title">
+          <i class="fas fa-code"></i>
+          Habilidades Técnicas
+        </h2>
+
+        <div class="skills-grid">
+          <div class="skill-category">
+            <div class="skill-category-title">Frontend</div>
+            <div class="skill-tags">
+              <span class="skill-tag">JavaScript - 70%</span>
+              <span class="skill-tag">HTML/CSS - 80%</span>
+            </div>
+          </div>
+
+          <div class="skill-category">
+            <div class="skill-category-title">Backend</div>
+            <div class="skill-tags">
+              <span class="skill-tag">Node.js - 20%</span>
+              <span class="skill-tag">Express - 30%</span>
+              <span class="skill-tag">REST APIs - 10%</span>
+            </div>
+          </div>
+
+          <div class="skill-category">
+            <div class="skill-category-title">Herramientas</div>
+            <div class="skill-tags">
+              <span class="skill-tag">GitHub - 90%</span>
+              <span class="skill-tag">Git - 80%</span>
+              <span class="skill-tag">VSCode - 100%</span>
+              <span class="skill-tag">Unity - 70%</span>
+            </div>
+          </div>
+
+          <div class="skill-category">
+            <div class="skill-category-title">Otros</div>
+            <div class="skill-tags">
+              <span class="skill-tag">Producción de música - 30%</span>
+              <span class="skill-tag">Modelado 3D - 50%</span>
+              <span class="skill-tag">Montaje de ordenadores - 75%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Proyectos Destacados -->
+      <div class="cv-section">
+        <h2 class="section-title">
+          <i class="fas fa-rocket"></i>
+          Proyectos Destacados
+        </h2>
+
+        <div class="cv-item">
+          <div class="item-header">
+            <div class="item-title">Portfolio online</div>
+            <div class="item-date">2025</div>
+          </div>
+          <div class="item-description">TBA</div>
+        </div>
+      </div>
+
+      <!-- Idiomas -->
+      <div class="cv-section">
+        <h2 class="section-title">
+          <i class="fas fa-language"></i>
+          Idiomas
+        </h2>
+
+        <div class="languages-grid">
+          <div class="skill-category">
+            <div class="skill-category-title">Español</div>
+            <div class="skill-tags">
+              <span class="skill-tag">Nativo</span>
+            </div>
+          </div>
+
+          <div class="skill-category">
+            <div class="skill-category-title">Inglés</div>
+            <div class="skill-tags">
+              <span class="skill-tag">Intermedio alto - B2</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fixed Download CV Button -->
+    <button
+      class="download-cv-btn"
+      onclick="window.print()"
+      aria-label="Descargar CV como PDF"
+    >
+      <i class="fas fa-download" aria-hidden="true"></i>
+      <span>Descargar CV (PDF)</span>
+    </button>
+
+    <script>
+      // Ultra-smooth scroll with perfect frame timing (from portfolio script.js)
+      let targetScrollPosition = window.scrollY;
+      let currentScrollPosition = window.scrollY;
+      let scrollAnimationFrame = null;
+      let scrollLastFrameTime = performance.now();
+
+      function smoothScrollAnimation(currentTime) {
+        const deltaTime = (currentTime - scrollLastFrameTime) / 16.67; // Normalize to 60fps
+        scrollLastFrameTime = currentTime;
+
+        const diff = targetScrollPosition - currentScrollPosition;
+        const delta = diff * 0.12 * Math.min(deltaTime, 2); // Frame-independent, capped at 2x
+
+        if (Math.abs(diff) < 0.5) {
+          currentScrollPosition = targetScrollPosition;
+          window.scrollTo(0, currentScrollPosition);
+          scrollAnimationFrame = null;
+          return;
+        }
+
+        currentScrollPosition += delta;
+        window.scrollTo(0, currentScrollPosition);
+        scrollAnimationFrame = requestAnimationFrame(smoothScrollAnimation);
+      }
+
+      window.addEventListener(
+        "wheel",
+        (e) => {
+          e.preventDefault();
+
+          const scrollAmount = e.deltaY * 1.2;
+          targetScrollPosition += scrollAmount;
+
+          // Clamp to valid scroll range
+          const maxScroll =
+            document.documentElement.scrollHeight - window.innerHeight;
+          targetScrollPosition = Math.max(
+            0,
+            Math.min(targetScrollPosition, maxScroll)
+          );
+
+          // Start animation if not already running
+          if (!scrollAnimationFrame) {
+            currentScrollPosition = window.scrollY;
+            scrollLastFrameTime = performance.now();
+            scrollAnimationFrame = requestAnimationFrame(smoothScrollAnimation);
+          }
+        },
+        { passive: false }
+      );
+    </script>
+  </body>
+</html>
