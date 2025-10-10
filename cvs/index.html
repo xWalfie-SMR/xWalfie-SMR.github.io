@@ -33,8 +33,15 @@
         box-sizing: border-box;
       }
 
-      html {
-        scroll-behavior: smooth;
+      /* No scrollbar */
+      body::-webkit-scrollbar {
+        display: none;
+      }
+      
+      @supports (scrollbar-width: none) {
+        html {
+          scrollbar-width: none;
+        }
       }
 
       body {
@@ -44,6 +51,8 @@
         color: var(--text-primary);
         line-height: 1.6;
         padding: 2rem 1rem;
+        overflow-x: hidden;
+        overflow-y: auto;
       }
 
       .cv-container {
@@ -76,6 +85,12 @@
         border: 1px solid rgba(255, 255, 255, 0.05);
         position: relative;
         overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .cv-header:hover {
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
       }
 
       .cv-header::before {
@@ -168,6 +183,7 @@
         border: 1px solid rgba(59, 130, 246, 0.2);
         position: relative;
         overflow: hidden;
+        transition: all 0.3s ease;
       }
 
       .terminal-banner::before {
@@ -196,6 +212,11 @@
         }
       }
 
+      .terminal-banner:hover {
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+        transform: scale(1.02);
+      }
+
       .terminal-prompt {
         color: #4ade80;
         font-weight: bold;
@@ -215,7 +236,7 @@
       }
 
       .cv-section:hover {
-        transform: translateY(-4px);
+        transform: translateY(-4px) scale(1.02);
         box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
       }
 
@@ -290,7 +311,7 @@
         font-weight: 500;
         padding: 0.25rem 0.75rem;
         background: rgba(59, 130, 246, 0.1);
-        border-radius: 20px;
+        border-radius: 8px;
         border: 1px solid rgba(59, 130, 246, 0.2);
       }
 
@@ -319,17 +340,14 @@
       /* Skills Section */
       .skills-grid {
         display: grid;
-        /* Two columns: when there are 2 items they split 50/50. If there's 1 item it will be forced to span both columns. Additional items wrap into new rows of two. */
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 1.5rem;
       }
 
-      /* If the grid contains exactly one child, make it span both columns (full width) */
       .skills-grid > :only-child {
         grid-column: 1 / -1;
       }
 
-      /* Languages Section - similar to skills-grid but without flex-fill behavior */
       .languages-grid {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -340,7 +358,6 @@
         grid-column: 1 / -1;
       }
 
-      /* Languages categories size naturally to content (no flex-fill) */
       .languages-grid .skill-category {
         display: block;
       }
@@ -363,7 +380,7 @@
 
       .skill-category:hover {
         background: rgba(59, 130, 246, 0.1);
-        transform: translateY(-4px);
+        transform: translateY(-4px) scale(1.02);
         box-shadow: 0 8px 20px rgba(59, 130, 246, 0.2);
       }
 
@@ -379,27 +396,22 @@
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 0.5rem;
-        /* Explicit row sizing for strict fractional heights - defaults to two equal rows */
         grid-template-rows: 1fr 1fr;
         align-items: stretch;
         justify-items: stretch;
-        /* Fill remaining height in the category to ensure consistent block size */
         flex: 1;
         min-height: 120px;
       }
 
-      /* Single tag: span both columns, occupy full height */
       .skill-tags > :only-child {
         grid-column: 1 / -1;
         grid-row: 1 / -1;
       }
 
-      /* Three tags: top two occupy 50% height each (half width), third spans both columns (50% height, full width) */
       .skill-tags > :nth-child(3):nth-last-child(1) {
         grid-column: 1 / -1;
       }
 
-      /* Four or more tags: each cell occupies exactly 1/4 of the total grid (strict fractional sizing) */
       .skill-tag {
         display: flex;
         align-items: flex-start;
@@ -414,7 +426,7 @@
         padding: 0.4rem 0.8rem;
         background: rgba(59, 130, 246, 0.1);
         border: 1px solid rgba(59, 130, 246, 0.3);
-        border-radius: 20px;
+        border-radius: 12px;
         color: var(--secondary-blue);
         font-size: 0.85rem;
         transition: all 0.3s ease;
@@ -540,22 +552,18 @@
         right: 20px;
         bottom: 20px;
         z-index: 2000;
-        background: linear-gradient(
-          180deg,
-          var(--primary-blue),
-          var(--button-primary)
-        );
-        color: #fff;
+        background: rgba(59, 130, 246, 0.15);
+        border: 1px solid rgba(59, 130, 246, 0.35);
+        color: var(--primary-blue);
         padding: 12px 16px;
         border-radius: 10px;
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         display: inline-flex;
         gap: 10px;
         align-items: center;
         text-decoration: none;
         font-weight: 600;
-        transition: transform 0.12s ease, box-shadow 0.12s ease;
-        border: none;
+        transition: all 0.3s ease;
         cursor: pointer;
       }
 
@@ -564,8 +572,9 @@
       }
 
       .download-cv-btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+        background: rgba(59, 130, 246, 0.25);
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
       }
 
       @media (max-width: 480px) {
@@ -772,7 +781,15 @@
             <div class="item-title">Portfolio online</div>
             <div class="item-date">2025</div>
           </div>
-          <div class="item-description">TBA</div>
+          <div class="item-description">
+            TBA
+            <div style="margin-top: 1rem;">
+              <a href="https://xwalfie-smr.github.io/" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 8px; color: var(--primary-blue); text-decoration: none; font-size: 0.9rem; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(59, 130, 246, 0.2)'; this.style.transform='scale(1.05)';" onmouseout="this.style.background='rgba(59, 130, 246, 0.1)'; this.style.transform='scale(1)';">
+                <i class="fas fa-external-link-alt"></i>
+                <span>Ver Portfolio</span>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -812,18 +829,17 @@
     </button>
 
     <script>
-      // Ultra-smooth scroll with perfect frame timing (from portfolio script.js)
       let targetScrollPosition = window.scrollY;
       let currentScrollPosition = window.scrollY;
       let scrollAnimationFrame = null;
       let scrollLastFrameTime = performance.now();
 
       function smoothScrollAnimation(currentTime) {
-        const deltaTime = (currentTime - scrollLastFrameTime) / 16.67; // Normalize to 60fps
+        const deltaTime = (currentTime - scrollLastFrameTime) / 16.67;
         scrollLastFrameTime = currentTime;
 
         const diff = targetScrollPosition - currentScrollPosition;
-        const delta = diff * 0.12 * Math.min(deltaTime, 2); // Frame-independent, capped at 2x
+        const delta = diff * 0.12 * Math.min(deltaTime, 2);
 
         if (Math.abs(diff) < 0.5) {
           currentScrollPosition = targetScrollPosition;

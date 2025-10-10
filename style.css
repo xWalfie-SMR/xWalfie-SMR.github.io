@@ -83,8 +83,6 @@ body {
 /* Global Styles */
 html {
   overflow-anchor: none;
-  scroll-behavior: smooth;
-  will-change: scroll-position;
 }
 
 .page-container {
@@ -100,7 +98,7 @@ html {
   z-index: 1;
 }
 
-/* Hero Section - Enhanced */
+/* Hero Section */
 #hero {
   text-align: center;
   margin-bottom: 3vh;
@@ -361,7 +359,7 @@ html {
 .tech-item::after {
   content: attr(title);
   position: absolute;
-  bottom: -40px; /* Increased from -35px for more space */
+  bottom: -40px;
   left: 50%;
   transform: translateX(-50%) translateY(5px);
   font-size: clamp(0.65rem, 1.2vw, 0.75rem);
@@ -383,7 +381,7 @@ html {
 .tech-item::before {
   content: "";
   position: absolute;
-  bottom: -13px; /* Increased from -8px to match the new tooltip spacing */
+  bottom: -13px;
   left: 50%;
   transform: translateX(-50%);
   width: 0;

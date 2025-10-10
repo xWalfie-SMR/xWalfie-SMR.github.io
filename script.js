@@ -206,7 +206,7 @@ function drawParticleLines() {
       const distanceOpacity = 1 - (distance / radius);
 
       let lineStrength = 0;
-      if (particleOpacity >= 0.3) {
+      if (particleOpacity >= 0.5) {
         lineStrength = Math.pow(particleOpacity, 0.7);
       }
 
@@ -241,7 +241,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// Start particle animations after page fully loads (performance optimization)
 window.addEventListener("load", () => {
   // Add canvas to bg-particles
   const bgParticles = document.querySelector('.bg-particles');
@@ -249,29 +248,26 @@ window.addEventListener("load", () => {
     bgParticles.appendChild(canvas);
   }
 
-  // Start line drawing animation
   drawParticleLines();
 
-  // Spawn delay before particles start appearing
   setTimeout(() => {
     setInterval(createFloatingParticle, 150); // More frequent spawning (every 150ms)
-  }, 800); // 800ms initial delay
+  }, 400);
 });
 
 window.addEventListener("resize", checkTabletOrientation);
 
-// Ultra-smooth scroll with perfect frame timing
 let targetScrollPosition = window.scrollY;
 let currentScrollPosition = window.scrollY;
 let scrollAnimationFrame = null;
 let scrollLastFrameTime = performance.now();
 
 function smoothScrollAnimation(currentTime) {
-  const deltaTime = (currentTime - scrollLastFrameTime) / 16.67; // Normalize to 60fps
+  const deltaTime = (currentTime - scrollLastFrameTime) / 16.67;
   scrollLastFrameTime = currentTime;
 
   const diff = targetScrollPosition - currentScrollPosition;
-  const delta = diff * 0.12 * Math.min(deltaTime, 2); // Frame-independent, capped at 2x
+  const delta = diff * 0.12 * Math.min(deltaTime, 2);
 
   if (Math.abs(diff) < 0.5) {
     currentScrollPosition = targetScrollPosition;
