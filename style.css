@@ -12,6 +12,145 @@
   --terminal-bg: #111122;
 }
 
+/* Light Theme */
+:root.light-theme {
+  --primary-blue: #3b82f6;
+  --secondary-blue: #60a5fa;
+  --dark-blue: #f1f5f9;
+  --card-bg: #f8fafc;
+  --button-primary: #3b82f6;
+  --button-secondary: #60a5fa;
+  --text-primary: #1e293b;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --gradient-bg: linear-gradient(0deg, #93c5fd 0%, #7dd3fc 100%);
+  --terminal-bg: #bfdbfe;
+}
+
+/* Light Theme Card Overrides */
+:root.light-theme .card {
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+:root.light-theme .card:hover {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+:root.light-theme #terminal-banner {
+  background: #e0f2fe;
+  color: #1e40af;
+  border: 1px solid rgba(30, 64, 175, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+:root.light-theme .tech-item {
+  color: #334155;
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+:root.light-theme .tech-item:hover {
+  color: #1e3a8a;
+  background: rgba(59, 130, 246, 0.25);
+  border-color: rgba(59, 130, 246, 0.5);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3),
+    0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+:root.light-theme .tech-item::after {
+  color: #ffffff;
+  background: rgba(30, 30, 47, 0.95);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+:root.light-theme .tech-item::before {
+  border-bottom-color: rgba(30, 30, 47, 0.95);
+}
+
+:root.light-theme .card-button {
+  color: #ffffff;
+}
+
+:root.light-theme .skill-tag {
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  color: #1e40af;
+}
+
+:root.light-theme .skill-tag:hover {
+  background: rgba(59, 130, 246, 0.25);
+  color: #1e3a8a;
+}
+
+:root.light-theme footer {
+  background: linear-gradient(0deg, #93c5fd 0%, #7dd3fc 100%);
+  background-size: 100% 100vh;
+  background-attachment: fixed;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 -10px 10px rgba(0, 0, 0, 0.05);
+  color: #334155;
+}
+
+:root.light-theme .footer-tag {
+  color: #3b82f6;
+}
+
+
+/* Theme Toggle Button */
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10000;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid rgba(59, 130, 246, 0.3);
+  background: rgba(42, 42, 64, 0.7);
+  backdrop-filter: blur(10px);
+  color: var(--primary-blue);
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1) rotate(15deg);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
+  background: rgba(59, 130, 246, 0.15);
+}
+
+.theme-toggle:active {
+  transform: scale(0.95);
+}
+
+:root.light-theme .theme-toggle {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(37, 99, 235, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+:root.light-theme .theme-toggle:hover {
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.2);
+}
+
+@media (max-width: 768px) {
+  .theme-toggle {
+    width: 44px;
+    height: 44px;
+    font-size: 1rem;
+    top: 15px;
+    right: 15px;
+  }
+}
+
 /* Skip to main content link (accessibility) */
 .skip-link {
   position: absolute;
@@ -38,13 +177,40 @@
   outline: 2px solid var(--primary-blue);
   outline-offset: 4px;
   border-radius: 4px;
+  transition: outline 0.2s ease, outline-offset 0.2s ease;
 }
 
 button:focus-visible,
 a:focus-visible {
-  outline: 3px solid var(--primary-blue);
-  outline-offset: 2px;
+  outline: 2px solid var(--primary-blue);
+  outline-offset: 3px;
+  transition: outline 0.2s ease, outline-offset 0.2s ease;
 }
+
+.card:focus-visible {
+  outline: 2px solid var(--primary-blue);
+  outline-offset: 6px;
+}
+
+.tech-item:focus-visible {
+  outline: 2px solid var(--primary-blue);
+  outline-offset: 4px;
+  border-radius: 12px;
+}
+
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--primary-blue);
+  outline-offset: 2px;
+  border-color: var(--primary-blue);
+}
+
+.card-button:focus-visible,
+.contact-btn:focus-visible {
+  outline: 2px solid var(--secondary-blue);
+  outline-offset: 4px;
+}
+
 
 /* Wrapper */
 #wrapper {

@@ -108,6 +108,9 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
       />
     </noscript>
+
+    <!-- reCAPTCHA site key -->
+    <script src="https://www.google.com/recaptcha/api.js?render=6Lcy4eYrAAAAAFZ6seRTrRtGDPWc8qXfK7ZfTcEo"></script>
   </head>
 
   <body>
@@ -175,6 +178,16 @@
           </div>
         </header>
 
+        <!-- Theme Toggle Button -->
+        <button
+          id="theme-toggle"
+          class="theme-toggle"
+          aria-label="Toggle dark/light theme"
+          title="Toggle theme"
+        >
+          <i class="fas fa-moon" aria-hidden="true"></i>
+        </button>
+
         <section id="cards">
           <!-- Main Title Card -->
           <div class="card" id="title-card">
@@ -232,10 +245,11 @@
                 <div class="detail-section">
                   <h4><i class="fas fa-code"></i> Who I Am</h4>
                   <p>
-                    Hi, I'm xWalfie, a student learning Python and AI/ML.
-                    I'm working through the fundamentals of machine learning and data science.
-                    I use web technologies like HTML/CSS/JS when needed (like this portfolio),
-                    but my main focus is mastering Python and artificial intelligence.
+                    Hi, I'm xWalfie, a student learning Python and AI/ML. I'm
+                    working through the fundamentals of machine learning and
+                    data science. I use web technologies like HTML/CSS/JS when
+                    needed (like this portfolio), but my main focus is mastering
+                    Python and artificial intelligence.
                   </p>
                 </div>
 
@@ -261,7 +275,12 @@
                       <i class="fas fa-graduation-cap"></i>
                       <span>SMR Local Networks U2 Quiz</span>
                     </a>
-                    <a href="https://github.com/xWalfie-SMR" class="mini-project" target="_blank" rel="noopener noreferrer">
+                    <a
+                      href="https://github.com/xWalfie-SMR"
+                      class="mini-project"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <i class="fab fa-github"></i>
                       <span>More on GitHub</span>
                     </a>
@@ -303,24 +322,62 @@
           </p>
         </footer>
         <!-- Contact Modal -->
-        <div id="contact-modal" class="modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="contact-modal-title">
+        <div
+          id="contact-modal"
+          class="modal"
+          role="dialog"
+          aria-modal="true"
+          aria-hidden="true"
+          aria-labelledby="contact-modal-title"
+        >
           <div class="modal-content" role="document">
-            <button class="modal-close" aria-label="Close contact form">&times;</button>
+            <button class="modal-close" aria-label="Close contact form">
+              &times;
+            </button>
             <h2 id="contact-modal-title">Contact Me</h2>
-            <p class="modal-subtitle">Send me a message - I'll reply as soon as I can.</p>
+            <p class="modal-subtitle">
+              Send me a message - I'll reply as soon as I can.
+            </p>
             <form id="contact-form">
               <label for="contact-name">Name</label>
-              <input id="contact-name" name="name" type="text" required minlength="2" placeholder="Your name">
+              <input
+                id="contact-name"
+                name="name"
+                type="text"
+                required
+                minlength="2"
+                placeholder="Your name"
+              />
 
               <label for="contact-email">Email</label>
-              <input id="contact-email" name="email" type="email" required placeholder="you@example.com">
+              <input
+                id="contact-email"
+                name="email"
+                type="email"
+                required
+                placeholder="you@example.com"
+              />
 
               <label for="contact-message">Message</label>
-              <textarea id="contact-message" name="message" rows="6" required placeholder="Write a short message..."></textarea>
+              <textarea
+                id="contact-message"
+                name="message"
+                rows="6"
+                required
+                placeholder="Write a short message..."
+              ></textarea>
 
               <div class="modal-actions">
-                <button type="submit" class="contact-btn primary">Send Message</button>
-                <button type="button" class="contact-btn secondary" id="contact-cancel">Cancel</button>
+                <button type="submit" class="contact-btn primary">
+                  Send Message
+                </button>
+                <button
+                  type="button"
+                  class="contact-btn secondary"
+                  id="contact-cancel"
+                >
+                  Cancel
+                </button>
               </div>
             </form>
           </div>

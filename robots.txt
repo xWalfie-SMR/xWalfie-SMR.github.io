@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://xwalfie-smr.github.io/sitemap.xml
