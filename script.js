@@ -508,9 +508,24 @@ document.querySelectorAll(".card").forEach((card) => {
     const name = document.getElementById("contact-name").value.trim();
     const email = document.getElementById("contact-email").value.trim();
     const message = document.getElementById("contact-message").value.trim();
+
+    // Name: require at least two parts (first + last) and each part at least 2 chars
     if (!name) return "Please enter your name.";
-    if (!email) return "Please enter a valid email.";
-    if (!message) return "Please enter a message.";
+    const nameParts = name.split(/\s+/).filter(Boolean);
+    if (nameParts.length < 2 || nameParts.some(part => part.length < 2)) {
+      return "Please enter your full name (first and last name).";
+    }
+
+    // Email: basic RFC-like validation (not exhaustive). Accept common emails like "user+tag@example.co.uk"
+    const emailRegex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+    if (!email) return "Please enter your email.";
+    if (!emailRegex.test(email)) return "Please enter a valid email address.";
+
+    // Message length: min 30 chars, max 2000 chars
+    const len = message.length;
+    if (len < 30) return "Message is too short — please write at least 30 characters.";
+    if (len > 2000) return "Message is too long — please keep it under 2000 characters.";
+
     return "";
   }
 
