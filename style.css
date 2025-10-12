@@ -12,6 +12,42 @@
   --terminal-bg: #111122;
 }
 
+/* Toggle Recaptcha Button Styles */
+.toggle-recaptcha-btn {
+  position: fixed;
+  margin-bottom: 3rem;
+  right: 24px;
+  transform: none;
+  z-index: 10001;
+  padding: 12px 28px;
+  font-size: 1rem;
+  font-family: inherit;
+  border-radius: 8px;
+  border: 2px solid var(--primary-blue);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  box-shadow: 0 4px 16px rgba(59,130,246,0.15);
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+}
+.toggle-recaptcha-btn:hover {
+  background: var(--primary-blue);
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(59,130,246,0.25);
+}
+
+:root.light-theme .toggle-recaptcha-btn {
+  background: #f8fafc;
+  color: #1e293b;
+  border-color: #3b82f6;
+  box-shadow: 0 4px 16px rgba(59,130,246,0.10);
+}
+:root.light-theme .toggle-recaptcha-btn:hover {
+  background: #3b82f6;
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(59,130,246,0.18);
+}
+
 /* Light Theme */
 :root.light-theme {
   --primary-blue: #3b82f6;
@@ -101,6 +137,41 @@
 /* reCAPTCHA hide badge */
 .grecaptcha-badge { 
   visibility: hidden; 
+}
+
+/* Toggle Recaptcha Button Styles */
+.toggle-recaptcha-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 10001;
+  padding: 12px 28px;
+  font-size: 1rem;
+  font-family: inherit;
+  border-radius: 8px;
+  border: 2px solid var(--primary-blue);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  box-shadow: 0 4px 16px rgba(59,130,246,0.15);
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+}
+.toggle-recaptcha-btn:hover {
+  background: var(--primary-blue);
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(59,130,246,0.25);
+}
+
+:root.light-theme .toggle-recaptcha-btn {
+  background: #f8fafc;
+  color: #1e293b;
+  border-color: #3b82f6;
+  box-shadow: 0 4px 16px rgba(59,130,246,0.10);
+}
+:root.light-theme .toggle-recaptcha-btn:hover {
+  background: #3b82f6;
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(59,130,246,0.18);
 }
 
 

@@ -386,5 +386,20 @@
     </div>
 
     <script src="script.js" defer></script>
+    <script>
+      if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+        const btn = document.createElement("button");
+        btn.id = "toggleRecaptcha";
+        btn.className = "toggle-recaptcha-btn";
+        btn.textContent = "Toggle Recaptcha";
+        document.body.appendChild(btn);
+
+        btn.onclick = async () => {
+          const res = await fetch("/api/toggle-recaptcha", { method: "POST" });
+          const data = await res.json();
+          console.log("Recaptcha enabled:", data.recaptchaEnabled);
+        };
+      }
+    </script>
   </body>
 </html>
