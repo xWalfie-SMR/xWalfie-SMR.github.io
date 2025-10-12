@@ -1,4 +1,5 @@
 const RECAPTCHA_SITE_KEY = "6Lcy4eYrAAAAAFZ6seRTrRtGDPWc8qXfK7ZfTcEo";
+const host = location.hostname;
 
 const terminalText = "import xWalfie as developer";
 
@@ -591,7 +592,7 @@ document.querySelectorAll(".card").forEach((card) => {
 
 /* reCAPTCHA toggle for localhost */
 
-if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+if (host === "localhost" || host === "127.0.0.1") {
   const btn = document.createElement("button");
   btn.id = "toggleRecaptcha";
   btn.className = "toggle-recaptcha-btn";
@@ -599,11 +600,17 @@ if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
   document.body.appendChild(btn);
 
   btn.onclick = async () => {
-    const res = await fetch("http://localhost:3000/api/toggle-recaptcha", {
-      method: "POST",
-    });
-    const data = await res.json();
-    console.log("Recaptcha enabled:", data.recaptchaEnabled);
+    try {
+      const res = await fetch("https://portfolio-backend-sadj.onrender.com/api/toggle-recaptcha", {
+        method: "POST",
+      });
+      const data = await res.json();
+      console.log("Recaptcha enabled:", data.recaptchaEnabled);
+      alert(`Recaptcha is now ${data.recaptchaEnabled ? "ENABLED" : "DISABLED"}`);
+    } catch (error) {
+      console.error("Toggle failed:", error);
+      alert("Failed to toggle recaptcha: " + error.message);
+    }
   };
 }
 
