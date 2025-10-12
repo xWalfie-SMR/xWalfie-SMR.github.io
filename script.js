@@ -558,14 +558,14 @@ document.querySelectorAll(".card").forEach((card) => {
 
       const result = await res.json().catch(() => ({}));
 
-      if (res.ok) {
+      if (result.success && result.emailSent && result.aiDecision === "ALLOW") {
         status.textContent = "Message sent successfully!";
         status.classList.add("success");
         form.reset();
         setTimeout(() => closeModal(), 900);
       } else {
         status.textContent =
-          "Error: " + (result.error || "Something went wrong");
+          "Message not sent: " + (result.aiReason || result.error || "Unknown error");
         status.classList.add("error");
       }
     } catch (err) {
