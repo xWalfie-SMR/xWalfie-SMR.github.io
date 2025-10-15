@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Currículum Vitae — Aram Aljundi</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      /* Professional, compact CV styles — optimized for A4 print */
+      :root {
+        --primary-blue: #2f6ac9;
+        --secondary-blue: #60a5fa;
+        --dark-blue: #0f1724;
+        --card-bg: rgba(42, 42, 64, 0.7);
+        --paper: linear-gradient(0deg, #1e1e2f 0%, #2f6ac9 100%);
+        --text: #f5f5f7;
+        --muted-text: #a1a1aa;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+
+      /* A4 print rules */
+      @page {
+        size: A4;
+        margin: 12mm;
+      }
+
+      @media print {
+        html,
+        body {
+          background: var(--paper);
+        }
+        body {
+          padding: 0;
+          margin: 0;
+        }
+        .cv-container {
+          box-shadow: none;
+          border: none;
+          background: transparent;
+        }
+        .terminal-banner {
+          display: none;
+        }
+        .download-cv-btn {
+          display: none;
+        }
+      }
+
+      body {
+        font-family: "Montserrat", sans-serif;
+        background: var(--paper);
+        color: var(--text);
+        -webkit-font-smoothing: antialiased;
+        padding: 18px;
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      .cv-container {
+        max-width: 210mm;
+        margin: 0 auto;
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        padding: 14px;
+        box-shadow: 0 10px 30px rgba(14, 30, 60, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      /* Header */
+      .cv-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 12px;
+        border-bottom: 2px solid rgba(11, 61, 145, 0.06);
+      }
+
+      .cv-left {
+        flex: 1;
+      }
+
+      .cv-name {
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      .cv-contact {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: flex-start;
+        margin-top: 10px;
+      }
+      .contact-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--muted-text);
+        font-size: 12px;
+      }
+      .contact-item i {
+        color: #89bbf8;
+      }
+
+      .cv-container a,
+      .cv-container a:link,
+      .cv-container a:visited,
+      .cv-container a:hover,
+      .cv-container a:active {
+        text-decoration: none !important;
+        color: inherit !important;
+      }
+
+      /* Section */
+      .cv-section {
+        padding: 10px 12px;
+        margin-top: 10px;
+        border-radius: 12px;
+        background: rgba(59, 130, 246, 0.1);
+        border: 1px solid rgba(59, 130, 246, 0.15);
+        box-shadow: 0 6px 12px rgba(14, 30, 60, 0.03);
+      }
+      .section-title {
+        font-size: 13px;
+        color: var(--navy);
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+      .cv-item {
+        margin-bottom: 8px;
+        /* remove left padding and border so items align with section content
+           (skills and other blocks start at the container padding). */
+        padding-left: 0;
+        border-left: none;
+      }
+      .item-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start; /* align to top so multi-line left content lines up with date */
+        gap: 8px;
+      }
+      .item-header > div:first-child {
+        flex: 1 1 auto; /* left column expands */
+      }
+      .item-date {
+        flex: 0 0 auto; /* keep date fixed */
+        white-space: nowrap;
+        text-align: right;
+        align-self: flex-start; /* ensure date sits at top */
+      }
+      .item-title {
+        font-weight: 600;
+        color: var(--text);
+        font-size: 12.5px;
+      }
+      .item-company {
+        color: var(--accent);
+        font-size: 12px;
+        margin-top: 3px;
+      }
+      .item-date {
+        font-size: 11px;
+        /* match skill-tag styling */
+        color: #60a5fa;
+        background: rgba(59, 130, 246, 0.1);
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        padding: 4px 6px;
+        border-radius: 6px;
+      }
+      .item-description {
+        color: var(--muted-text);
+        font-size: 12px;
+        margin-top: 6px;
+      }
+
+      .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+        grid-auto-rows: 1fr; /* equal-height rows */
+        align-items: stretch;
+      }
+      .skill-category {
+        background: rgba(59, 130, 246, 0.05);
+        padding: 8px;
+        border-radius: 10px;
+        border: 1px solid rgba(59, 130, 246, 0.18);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 88px;
+      }
+      .skill-category-title {
+        font-weight: 700;
+        font-size: 12px;
+        margin-bottom: 6px;
+      }
+      .skill-tag {
+        display: inline-block;
+        background: rgba(59, 130, 246, 0.1);
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        padding: 4px 6px;
+        border-radius: 6px;
+        font-size: 11px;
+        color: #60a5fa;
+        margin: 2px;
+      }
+      .skill-category .skill-tags,
+      .skill-category > div[style],
+      .skill-category > div {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: auto;
+        align-items: flex-end;
+      }
+
+      .download-cv-btn {
+        position: fixed;
+        right: 18px;
+        bottom: 18px;
+        z-index: 2000;
+        background: var(--primary-blue);
+        color: #fff;
+        padding: 8px 12px;
+        border-radius: 8px;
+        border: none;
+        box-shadow: 0 6px 18px rgba(11, 61, 145, 0.12);
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 13px;
+      }
+      .download-cv-btn i {
+        margin-right: 8px;
+      }
+
+      @media (max-width: 900px) {
+        .cv-right {
+          display: none;
+        }
+        .skills-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      .cv-container {
+        page-break-inside: avoid;
+      }
+      .cv-section {
+        page-break-inside: avoid;
+      }
+
+      @media print {
+        body {
+          font-size: 11px;
+        }
+        .cv-name {
+          font-size: 17px;
+        }
+        .cv-container {
+          padding: 8px;
+        }
+        .cv-header {
+          padding: 8px;
+        }
+        .cv-section {
+          padding: 6px;
+          margin-top: 6px;
+        }
+        .skills-grid {
+          gap: 6px;
+        }
+      }
+      #languages-section {
+        height: auto;
+        min-height: 0;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+      }
+      #languages-section .skill-category,
+      #languages-section .skill-tags {
+        margin-top: 0 !important;
+        align-items: flex-start !important;
+      }
+      /* Projects: more space above the project title, and smaller gap between title and description */
+      #projects-section .item-title {
+        margin-top: 8px;
+      }
+      #projects-section .item-description {
+        margin-top: 4px; /* smaller gap below the title */
+      }
+      /* Make the two side-by-side sections (Projects / Languages) fill the same column height */
+      .cv-section.full-height {
+        height: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="cv-container">
+      <div class="cv-header">
+        <div class="cv-left">
+          <div class="cv-name">Aram Aljundi Alkhouli</div>
+
+          <div class="cv-contact" style="margin-top: 8px">
+            <div class="contact-item">
+              <i class="fas fa-envelope" aria-hidden="true"></i
+              ><span
+                ><a href="mailto:aaljalk223@g.educaand.es"
+                  >aaljalk223@g.educaand.es</a
+                ></span
+              >
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-phone" aria-hidden="true"></i
+              ><span><a href="tel:+34691360673">+34 691 360 673</a></span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-map-marker-alt" aria-hidden="true"></i
+              ><span>Sevilla, España</span>
+            </div>
+            <div class="contact-item">
+              <i class="fab fa-linkedin" aria-hidden="true"></i
+              ><span
+                ><a href="https://linkedin.com/in/xwalfie-smr"
+                  >LinkedIn</a
+                ></span
+              >
+            </div>
+            <div class="contact-item">
+              <i class="fab fa-github" aria-hidden="true"></i
+              ><span><a href="https://github.com/xwalfie-smr">GitHub</a></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile -->
+      <div class="cv-section" style="margin-top: 12px">
+        <h2 class="section-title">
+          <i class="fas fa-user"></i> Perfil Profesional
+        </h2>
+        <p class="profile-text item-description">
+          Soy un estudiante de 16 años apasionado por la tecnología y el
+          desarrollo de software. Actualmente, estoy cursando un Grado Medio en
+          Sistemas Microinformáticos y Redes, con sólidos conocimientos en
+          hardware, redes y administración de sistemas. Busco especializarme en
+          Python y la inteligencia artificial. Proactivo y con ganas de
+          aprender.
+        </p>
+      </div>
+
+      <!-- Education -->
+      <div class="cv-section">
+        <h2 class="section-title">
+          <i class="fas fa-graduation-cap"></i> Formación Académica
+        </h2>
+
+        <div class="cv-item">
+          <div class="item-header">
+            <div>
+              <div class="item-title">
+                Grado Medio en Sistemas Microinformáticos y Redes
+              </div>
+              <div class="item-company">IES Martínez Montañés</div>
+            </div>
+            <div class="item-date">2025 - Actualidad</div>
+          </div>
+        </div>
+
+        <div class="cv-item">
+          <div class="item-header">
+            <div>
+              <div class="item-title">Educación Secundaria</div>
+              <div class="item-company">IES San Isidoro</div>
+            </div>
+            <div class="item-date">2021 - 2025</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Experience -->
+      <div class="cv-section">
+        <h2 class="section-title">
+          <i class="fas fa-briefcase"></i> Experiencia
+        </h2>
+
+        <div class="cv-item">
+          <div class="item-header">
+            <div>
+              <div class="item-title">Desarrollador Web (colaboración)</div>
+              <div class="item-company">
+                Veloptix Consulting — Tobías Holoch
+              </div>
+            </div>
+            <div class="item-date">2025</div>
+          </div>
+          <div class="item-description">
+            <ul style="margin-top: 6px;">
+              <p>
+                Participé en el desarrollo del sitio web
+                <a
+                  href="https://www.veloptix-consulting.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >veloptix-consulting.com</a
+                >
+                colaborando en maquetación, integración de contenido y pruebas.
+              </p>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skills -->
+      <div class="cv-section">
+        <h2 class="section-title">
+          <i class="fas fa-code"></i> Habilidades Técnicas
+        </h2>
+
+        <div class="skills-grid">
+          <div class="skill-category">
+            <div class="skill-category-title">Frontend</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px">
+              <span class="skill-tag">JavaScript - 70%</span>
+              <span class="skill-tag">HTML/CSS - 80%</span>
+            </div>
+          </div>
+
+          <div class="skill-category">
+            <div class="skill-category-title">Backend</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px">
+              <span class="skill-tag">Node.js - 20%</span>
+              <span class="skill-tag">Express - 30%</span>
+              <span class="skill-tag">REST APIs - 10%</span>
+            </div>
+          </div>
+
+          <div class="skill-category">
+            <div class="skill-category-title">Herramientas</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px">
+              <span class="skill-tag">GitHub - 90%</span>
+              <span class="skill-tag">Git - 80%</span>
+              <span class="skill-tag">VSCode - 100%</span>
+            </div>
+          </div>
+
+          <div class="skill-category">
+            <div class="skill-category-title">Otros</div>
+            <div class="skill-tags">
+              <span class="skill-tag">Producción de música - 30%</span>
+              <span class="skill-tag">Modelado 3D - 50%</span>
+              <span class="skill-tag">Montaje de ordenadores - 75%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Projects & Languages -->
+      <div
+        style="
+          display: flex;
+          gap: 8px;
+          flex-wrap: nowrap;
+          align-items: stretch; /* allow children to stretch to equal height */
+        "
+      >
+        <div
+          style="
+            flex: 1 1 50%;
+            max-width: 50%;
+            min-width: 160px;
+            display: flex;
+            flex-direction: column;
+          "
+        >
+          <div
+            id="projects-section"
+            class="cv-section full-height"
+            style="display: flex; flex-direction: column"
+          >
+            <h2 class="section-title">
+              <i class="fas fa-rocket"></i> Proyectos
+            </h2>
+            <div class="cv-item">
+              <div class="item-header">
+                <div>
+                  <div class="item-title">Portfolio Personal</div>
+                  <!-- company/title unified to avoid duplicate phrasing -->
+                </div>
+                <div class="item-date">2025</div>
+              </div>
+              <div class="item-description" style="margin-top: 6px">
+                Ver portfolio en
+                <a
+                  href="https://xwalfie-smr.github.io/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >xwalfie-smr.github.io</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          style="
+            flex: 1 1 50%;
+            max-width: 50%;
+            min-width: 160px;
+            display: flex;
+            flex-direction: column;
+          "
+        >
+          <div
+            id="languages-section"
+            class="cv-section full-height"
+            style="display: flex; flex-direction: column"
+          >
+            <h2 class="section-title">
+              <i class="fas fa-language"></i> Idiomas
+            </h2>
+            <div
+              class="skill-category"
+              style="background: transparent; border: none; padding: 0"
+            >
+              <div class="skill-tags">
+                <span class="skill-tag">Español — Nativo</span>
+                <span class="skill-tag">Inglés — B2</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button
+      class="download-cv-btn"
+      onclick="window.print()"
+      aria-label="Descargar CV como PDF"
+    >
+      <i class="fas fa-download" aria-hidden="true"></i>Descargar CV (PDF)
+    </button>
+    
+  </body>
+</html>

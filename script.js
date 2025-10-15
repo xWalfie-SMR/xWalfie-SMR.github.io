@@ -512,7 +512,7 @@ document.querySelectorAll(".card").forEach((card) => {
     // Name: require at least two parts (first + last) and each part at least 2 chars
     if (!name) return "Please enter your name.";
     const nameParts = name.split(/\s+/).filter(Boolean);
-    if (nameParts.length < 2 || nameParts.some(part => part.length < 2)) {
+    if (nameParts.length < 2 || nameParts.some((part) => part.length < 2)) {
       return "Please enter your full name (first and last name).";
     }
 
@@ -523,8 +523,10 @@ document.querySelectorAll(".card").forEach((card) => {
 
     // Message length: min 30 chars, max 2000 chars
     const len = message.length;
-    if (len < 30) return "Message is too short — please write at least 30 characters.";
-    if (len > 2000) return "Message is too long — please keep it under 2000 characters.";
+    if (len < 30)
+      return "Message is too short — please write at least 30 characters.";
+    if (len > 2000)
+      return "Message is too long — please keep it under 2000 characters.";
 
     return "";
   }
@@ -580,7 +582,8 @@ document.querySelectorAll(".card").forEach((card) => {
         setTimeout(() => closeModal(), 900);
       } else {
         status.textContent =
-          "Message not sent: " + (result.aiReason || result.error || "Unknown error");
+          "Message not sent: " +
+          (result.aiReason || result.error || "Unknown error");
         status.classList.add("error");
       }
     } catch (err) {
@@ -616,12 +619,17 @@ if (host === "localhost" || host === "127.0.0.1") {
 
   btn.onclick = async () => {
     try {
-      const res = await fetch("https://portfolio-backend-sadj.onrender.com/api/toggle-recaptcha", {
-        method: "POST",
-      });
+      const res = await fetch(
+        "https://portfolio-backend-sadj.onrender.com/api/toggle-recaptcha",
+        {
+          method: "POST",
+        }
+      );
       const data = await res.json();
       console.log("Recaptcha enabled:", data.recaptchaEnabled);
-      alert(`Recaptcha is now ${data.recaptchaEnabled ? "ENABLED" : "DISABLED"}`);
+      alert(
+        `Recaptcha is now ${data.recaptchaEnabled ? "ENABLED" : "DISABLED"}`
+      );
     } catch (error) {
       console.error("Toggle failed:", error);
       alert("Failed to toggle recaptcha: " + error.message);
@@ -634,33 +642,76 @@ if (host === "localhost" || host === "127.0.0.1") {
   const themeToggle = document.getElementById("theme-toggle");
   const root = document.documentElement;
   const themeIcon = themeToggle.querySelector("i");
-
-  const currentTheme = localStorage.getItem("theme") || "dark";
-
-  if (currentTheme === "light") {
-    root.classList.add("light-theme");
-    themeIcon.classList.remove("fa-moon");
-    themeIcon.classList.add("fa-sun");
+  // Determine initial state: stored preference > system preference > default dark
+  function applyTheme(theme) {
+    if (theme === "light") {
+      root.classList.add("light-theme");
+      root.setAttribute("data-theme", "light");
+      themeIcon.classList.remove("fa-moon");
+      themeIcon.classList.add("fa-sun");
+    } else {
+      root.classList.remove("light-theme");
+      root.setAttribute("data-theme", "dark");
+      themeIcon.classList.remove("fa-sun");
+      themeIcon.classList.add("fa-moon");
+    }
   }
 
+  function getStoredTheme() {
+    try {
+      return localStorage.getItem("theme");
+    } catch (e) {
+      return null;
+    }
+  }
+
+  const stored = getStoredTheme();
+  const prefersLight =
+    window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: light)").matches;
+
+  if (stored === "light" || stored === "dark") {
+    applyTheme(stored);
+  } else {
+    applyTheme(prefersLight ? "light" : "dark");
+  }
+
+  // Toggle handler stores explicit choice
   themeToggle.addEventListener("click", () => {
     const isLight = root.classList.toggle("light-theme");
-
     themeIcon.style.transform = "rotate(180deg) scale(0)";
 
     setTimeout(() => {
-      if (isLight) {
-        themeIcon.classList.remove("fa-moon");
-        themeIcon.classList.add("fa-sun");
-        localStorage.setItem("theme", "light");
-      } else {
-        themeIcon.classList.remove("fa-sun");
-        themeIcon.classList.add("fa-moon");
-        localStorage.setItem("theme", "dark");
+      const newTheme = isLight ? "light" : "dark";
+      applyTheme(newTheme);
+      try {
+        localStorage.setItem("theme", newTheme);
+      } catch (e) {
+        /* ignore */
       }
       themeIcon.style.transform = "rotate(0deg) scale(1)";
     }, 150);
   });
+
+  // Listen for system preference changes when user hasn't set an explicit choice
+  try {
+    if (window.matchMedia) {
+      const mq = window.matchMedia("(prefers-color-scheme: light)");
+      mq.addEventListener
+        ? mq.addEventListener("change", (e) => {
+            if (!getStoredTheme()) {
+              applyTheme(e.matches ? "light" : "dark");
+            }
+          })
+        : mq.addListener((e) => {
+            if (!getStoredTheme()) {
+              applyTheme(e.matches ? "light" : "dark");
+            }
+          });
+    }
+  } catch (e) {
+    // ignore
+  }
 
   themeIcon.style.transition = "transform 0.3s ease";
 })();

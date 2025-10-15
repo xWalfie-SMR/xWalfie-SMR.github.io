@@ -85,6 +85,35 @@
     </noscript>
 
     <!-- Styles: Load with media print then switch to all (faster initial render) -->
+    <!-- Early theme detection to avoid flash: apply stored or system preference before CSS loads -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("theme");
+          var prefersLight =
+            window.matchMedia &&
+            window.matchMedia("(prefers-color-scheme: light)").matches;
+          var root = document.documentElement;
+          if (stored === "light") {
+            root.classList.add("light-theme");
+            root.setAttribute("data-theme", "light");
+          } else if (stored === "dark") {
+            root.classList.remove("light-theme");
+            root.setAttribute("data-theme", "dark");
+          } else {
+            if (prefersLight) {
+              root.classList.add("light-theme");
+              root.setAttribute("data-theme", "light");
+            } else {
+              root.classList.remove("light-theme");
+              root.setAttribute("data-theme", "dark");
+            }
+          }
+        } catch (e) {
+          // localStorage may throw in some privacy modes - ignore
+        }
+      })();
+    </script>
     <link
       rel="stylesheet"
       href="style.css"
@@ -384,7 +413,7 @@
         </div>
       </main>
     </div>
-    
+
     <script src="script.js" defer></script>
   </body>
 </html>
