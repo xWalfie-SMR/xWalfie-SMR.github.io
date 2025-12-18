@@ -1,3 +1,8 @@
+/* =============================================================================
+   CSS CUSTOM PROPERTIES (VARIABLES)
+   ============================================================================= */
+
+/* Dark Theme Colors (Default) */
 :root {
   --primary-blue: #3b82f6;
   --secondary-blue: #60a5fa;
@@ -12,43 +17,7 @@
   --terminal-bg: #111122;
 }
 
-/* Toggle Recaptcha Button Styles */
-.toggle-recaptcha-btn {
-  position: fixed;
-  margin-bottom: 3rem;
-  right: 24px;
-  transform: none;
-  z-index: 10001;
-  padding: 12px 28px;
-  font-size: 1rem;
-  font-family: inherit;
-  border-radius: 8px;
-  border: 2px solid var(--primary-blue);
-  background: var(--card-bg);
-  color: var(--text-primary);
-  box-shadow: 0 4px 16px rgba(59,130,246,0.15);
-  cursor: pointer;
-  transition: background 0.3s, color 0.3s, box-shadow 0.3s;
-}
-.toggle-recaptcha-btn:hover {
-  background: var(--primary-blue);
-  color: #fff;
-  box-shadow: 0 8px 24px rgba(59,130,246,0.25);
-}
-
-:root.light-theme .toggle-recaptcha-btn {
-  background: #f8fafc;
-  color: #1e293b;
-  border-color: #3b82f6;
-  box-shadow: 0 4px 16px rgba(59,130,246,0.10);
-}
-:root.light-theme .toggle-recaptcha-btn:hover {
-  background: #3b82f6;
-  color: #fff;
-  box-shadow: 0 8px 24px rgba(59,130,246,0.18);
-}
-
-/* Light Theme */
+/* Light Theme Colors */
 :root.light-theme {
   --primary-blue: #3b82f6;
   --secondary-blue: #60a5fa;
@@ -63,7 +32,57 @@
   --terminal-bg: #bfdbfe;
 }
 
-/* Light Theme Card Overrides */
+/* =============================================================================
+   RECAPTCHA CUSTOMIZATION
+   ============================================================================= */
+
+/* Hide reCAPTCHA badge */
+.grecaptcha-badge {
+  visibility: hidden;
+}
+
+/* Toggle Recaptcha Button (Development Mode) */
+.toggle-recaptcha-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 10001;
+  padding: 12px 28px;
+  font-size: 1rem;
+  font-family: inherit;
+  border-radius: 8px;
+  border: 2px solid var(--primary-blue);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.15);
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+}
+
+.toggle-recaptcha-btn:hover {
+  background: var(--primary-blue);
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.25);
+}
+
+:root.light-theme .toggle-recaptcha-btn {
+  background: #f8fafc;
+  color: #1e293b;
+  border-color: #3b82f6;
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.1);
+}
+
+:root.light-theme .toggle-recaptcha-btn:hover {
+  background: #3b82f6;
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.18);
+}
+
+/* =============================================================================
+   LIGHT THEME OVERRIDES
+   ============================================================================= */
+
+/* Card Overrides */
 :root.light-theme .card {
   background: rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(10px);
@@ -75,6 +94,7 @@
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
 
+/* Terminal Banner Override */
 :root.light-theme #terminal-banner {
   background: #e0f2fe;
   color: #1e40af;
@@ -82,6 +102,7 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
+/* Tech Item Overrides */
 :root.light-theme .tech-item {
   color: #334155;
   background: rgba(59, 130, 246, 0.15);
@@ -106,10 +127,12 @@
   border-bottom-color: rgba(30, 30, 47, 0.95);
 }
 
+/* Button Overrides */
 :root.light-theme .card-button {
   color: #ffffff;
 }
 
+/* Skill Tag Overrides */
 :root.light-theme .skill-tag {
   background: rgba(59, 130, 246, 0.15);
   border: 1px solid rgba(59, 130, 246, 0.3);
@@ -121,6 +144,7 @@
   color: #1e3a8a;
 }
 
+/* Footer Override */
 :root.light-theme footer {
   background: linear-gradient(0deg, #93c5fd 0%, #7dd3fc 100%);
   background-size: 100% 100vh;
@@ -134,49 +158,10 @@
   color: #3b82f6;
 }
 
-/* reCAPTCHA hide badge */
-.grecaptcha-badge { 
-  visibility: hidden; 
-}
+/* =============================================================================
+   THEME TOGGLE BUTTON
+   ============================================================================= */
 
-/* Toggle Recaptcha Button Styles */
-.toggle-recaptcha-btn {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  z-index: 10001;
-  padding: 12px 28px;
-  font-size: 1rem;
-  font-family: inherit;
-  border-radius: 8px;
-  border: 2px solid var(--primary-blue);
-  background: var(--card-bg);
-  color: var(--text-primary);
-  box-shadow: 0 4px 16px rgba(59,130,246,0.15);
-  cursor: pointer;
-  transition: background 0.3s, color 0.3s, box-shadow 0.3s;
-}
-.toggle-recaptcha-btn:hover {
-  background: var(--primary-blue);
-  color: #fff;
-  box-shadow: 0 8px 24px rgba(59,130,246,0.25);
-}
-
-:root.light-theme .toggle-recaptcha-btn {
-  background: #f8fafc;
-  color: #1e293b;
-  border-color: #3b82f6;
-  box-shadow: 0 4px 16px rgba(59,130,246,0.10);
-}
-:root.light-theme .toggle-recaptcha-btn:hover {
-  background: #3b82f6;
-  color: #fff;
-  box-shadow: 0 8px 24px rgba(59,130,246,0.18);
-}
-
-
-
-/* Theme Toggle Button */
 .theme-toggle {
   position: fixed;
   top: 20px;
@@ -228,7 +213,11 @@
   }
 }
 
-/* Skip to main content link (accessibility) */
+/* =============================================================================
+   ACCESSIBILITY
+   ============================================================================= */
+
+/* Skip to main content link */
 .skip-link {
   position: absolute;
   opacity: 0;
@@ -250,6 +239,7 @@
   outline-offset: 2px;
 }
 
+/* Focus Styles */
 *:focus-visible {
   outline: 2px solid var(--primary-blue);
   outline-offset: 4px;
@@ -288,8 +278,9 @@ textarea:focus-visible {
   outline-offset: 4px;
 }
 
-
-/* Wrapper */
+/* =============================================================================
+   BASE STYLES & LAYOUT
+   ============================================================================= */
 #wrapper {
   transform-origin: top left;
   width: 100vw;
@@ -612,7 +603,8 @@ html {
   border-radius: 6px;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   white-space: nowrap;
   font-family: "Montserrat", sans-serif;
   font-weight: 500;
@@ -634,7 +626,8 @@ html {
   border-bottom: 6px solid rgba(30, 30, 47, 0.95);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 101;
 }
 

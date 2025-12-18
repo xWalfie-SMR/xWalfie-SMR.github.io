@@ -1,119 +1,183 @@
+// =============================================================================
+// CONFIGURATION CONSTANTS
+// =============================================================================
 const RECAPTCHA_SITE_KEY = "6Lcy4eYrAAAAAFZ6seRTrRtGDPWc8qXfK7ZfTcEo";
-const host = location.hostname;
+const HOSTNAME = location.hostname;
 
-const terminalText = "import xWalfie as developer";
+// =============================================================================
+// TERMINAL TYPING ANIMATION
+// =============================================================================
+const TERMINAL_TEXT = "import xWalfie as developer";
+const TYPING_SPEED = 80;
+const PAUSE_DURATION = 1500;
 
-let commandIndex = 0;
-let charIndex = 0;
+let characterIndex = 0;
 let isDeleting = false;
-let typingSpeed = 80;
+let currentTypingSpeed = TYPING_SPEED;
 
-function typeCommand() {
+/**
+ * Animates typing effect in the terminal banner
+ */
+function animateTerminalTyping() {
   const typingElement = document.getElementById("typing-code");
 
-  if (typingElement) {
-    if (!isDeleting) {
-      typingElement.textContent = terminalText.substring(0, charIndex);
-      charIndex++;
+  if (!typingElement) {
+    return;
+  }
 
-      if (charIndex > terminalText.length) {
-        isDeleting = true;
-        typingSpeed = 1500;
-      } else {
-        typingSpeed = 80;
-      }
+  if (!isDeleting) {
+    typingElement.textContent = TERMINAL_TEXT.substring(0, characterIndex);
+    characterIndex++;
+
+    if (characterIndex > TERMINAL_TEXT.length) {
+      isDeleting = true;
+      currentTypingSpeed = PAUSE_DURATION;
+    } else {
+      currentTypingSpeed = TYPING_SPEED;
     }
   }
 
-  setTimeout(typeCommand, typingSpeed);
+  setTimeout(animateTerminalTyping, currentTypingSpeed);
 }
 
-// Expandable card functionality
-const button = document.querySelector("#content-card .card-button");
-const cardDetails = document.querySelector("#content-card .card-details");
+// =============================================================================
+// EXPANDABLE CARD FUNCTIONALITY
+// =============================================================================
+const CARD_ANIMATION_DURATION = 600;
 
-let animating = false;
-let open = false;
-const duration = 600;
+const expandableButton = document.querySelector("#content-card .card-button");
+const cardDetailsElement = document.querySelector(
+  "#content-card .card-details"
+);
 
-if (button && cardDetails) {
-  button.addEventListener("click", () => {
-    if (animating) return;
-    animating = true;
+let isCardAnimating = false;
+let isCardOpen = false;
 
-    button.classList.toggle("expanded");
-    cardDetails.classList.toggle("expanded");
+/**
+ * Handles card expand/collapse transition end
+ */
+function handleCardTransitionEnd(event) {
+  if (event.propertyName === "max-height") {
+    cardDetailsElement.style.overflow = "visible";
 
-    open = !open;
-
-    // Update ARIA attributes for accessibility
-    button.setAttribute("aria-expanded", open);
-    cardDetails.setAttribute("aria-hidden", !open);
-
-    // Prevent tabbing to hidden elements
-    if (open) {
-      cardDetails.removeAttribute("inert");
-    } else {
-      cardDetails.setAttribute("inert", "");
+    // Direct focus to new content for screen readers
+    const firstHeading = cardDetailsElement.querySelector("h4");
+    if (firstHeading) {
+      firstHeading.setAttribute("tabindex", "-1");
+      firstHeading.focus();
     }
 
-    // If opening, set overflow to visible after animation and focus on content
-    if (open) {
-      const handleTransitionEnd = (e) => {
-        if (e.propertyName === "max-height") {
-          cardDetails.style.overflow = "visible";
-          // Direct focus to new content for screen readers
-          const firstHeading = cardDetails.querySelector("h4");
-          if (firstHeading) {
-            firstHeading.setAttribute("tabindex", "-1");
-            firstHeading.focus();
-          }
-          cardDetails.removeEventListener("transitionend", handleTransitionEnd);
-        }
-      };
-      cardDetails.addEventListener("transitionend", handleTransitionEnd);
-    } else {
-      // If closing, set overflow to hidden immediately
-      cardDetails.style.overflow = "hidden";
-    }
-
-    setTimeout(() => {
-      animating = false;
-    }, duration);
-  });
+    cardDetailsElement.removeEventListener(
+      "transitionend",
+      handleCardTransitionEnd
+    );
+  }
 }
 
-// Check tablet orientation
-function checkTabletOrientation() {
-  const width = window.innerWidth;
-  const height = window.innerHeight;
-  const popup = document.getElementById("rotate-popup");
+/**
+ * Toggle card expansion state
+ */
+function toggleCard() {
+  if (isCardAnimating) {
+    return;
+  }
 
-  if (width >= 768 && width < 1400 && height > width) {
-    popup.style.display = "flex";
+  isCardAnimating = true;
+  isCardOpen = !isCardOpen;
+
+  expandableButton.classList.toggle("expanded");
+  cardDetailsElement.classList.toggle("expanded");
+
+  // Update ARIA attributes for accessibility
+  expandableButton.setAttribute("aria-expanded", isCardOpen);
+  cardDetailsElement.setAttribute("aria-hidden", !isCardOpen);
+
+  // Prevent tabbing to hidden elements
+  if (isCardOpen) {
+    cardDetailsElement.removeAttribute("inert");
+    cardDetailsElement.addEventListener(
+      "transitionend",
+      handleCardTransitionEnd
+    );
   } else {
-    popup.style.display = "none";
+    cardDetailsElement.setAttribute("inert", "");
+    cardDetailsElement.style.overflow = "hidden";
   }
+
+  setTimeout(() => {
+    isCardAnimating = false;
+  }, CARD_ANIMATION_DURATION);
 }
 
-// Add hover effects to social links
-document.querySelectorAll(".social-link").forEach((link) => {
-  link.addEventListener("mouseenter", function () {
-    this.style.transform = "translateY(-5px) scale(1.1)";
-  });
+// Initialize expandable card
+if (expandableButton && cardDetailsElement) {
+  expandableButton.addEventListener("click", toggleCard);
+}
 
-  link.addEventListener("mouseleave", function () {
-    this.style.transform = "translateY(0) scale(1)";
-  });
-});
+// =============================================================================
+// TABLET ORIENTATION CHECK
+// =============================================================================
+const TABLET_MIN_WIDTH = 768;
+const TABLET_MAX_WIDTH = 1400;
 
-// Particle System - Complete Implementation
+/**
+ * Shows rotation popup for tablets in portrait mode
+ */
+function checkTabletOrientation() {
+  const windowWidth = window.innerWidth;
+  const windowHeight = window.innerHeight;
+  const rotatePopup = document.getElementById("rotate-popup");
+
+  const isTabletPortrait =
+    windowWidth >= TABLET_MIN_WIDTH &&
+    windowWidth < TABLET_MAX_WIDTH &&
+    windowHeight > windowWidth;
+
+  rotatePopup.style.display = isTabletPortrait ? "flex" : "none";
+}
+
+// =============================================================================
+// SOCIAL LINKS HOVER EFFECTS
+// =============================================================================
+/**
+ * Initialize hover effects for social media links
+ */
+function initializeSocialLinksHoverEffects() {
+  document.querySelectorAll(".social-link").forEach((link) => {
+    link.addEventListener("mouseenter", function () {
+      this.style.transform = "translateY(-5px) scale(1.1)";
+    });
+
+    link.addEventListener("mouseleave", function () {
+      this.style.transform = "translateY(0) scale(1)";
+    });
+  });
+}
+
+initializeSocialLinksHoverEffects();
+
+// =============================================================================
+// PARTICLE SYSTEM
+// =============================================================================
+const PARTICLE_CONFIG = {
+  maxParticles: 60,
+  spawnProbability: 0.2,
+  connectionRadius: 0.35, // Multiplied by min viewport dimension
+  interConnectionRadius: 150,
+  maxConnections: 12,
+  particleDensity: 25000, // pixels² per particle
+};
+
 const particles = [];
 let mouseX = window.innerWidth / 2;
 let mouseY = window.innerHeight / 2;
-let particleCanvas, particleCtx;
+let particleCanvas = null;
+let particleContext = null;
 let animationFrameId = null;
 
+/**
+ * Particle class representing a single animated particle
+ */
 class Particle {
   constructor() {
     this.x = Math.random() * window.innerWidth;
@@ -130,12 +194,18 @@ class Particle {
     this.hue = 217 + (Math.random() - 0.5) * 10;
   }
 
+  /**
+   * Updates particle position and lifecycle
+   * @returns {boolean} True if particle is still alive
+   */
   update() {
+    // Update position with velocity and wave motion
     this.x += this.vx;
     this.y += this.vy;
     this.x += Math.sin(this.life * 0.02) * 0.2;
     this.y += Math.cos(this.life * 0.015) * 0.2;
 
+    // Wrap around screen edges
     if (this.x < -50) this.x = window.innerWidth + 50;
     if (this.x > window.innerWidth + 50) this.x = -50;
     if (this.y < -50) this.y = window.innerHeight + 50;
@@ -143,6 +213,7 @@ class Particle {
 
     this.life++;
 
+    // Handle opacity transitions (fade in/out)
     if (this.life < this.fadeInDuration) {
       this.opacity = (this.life / this.fadeInDuration) * this.baseOpacity;
     } else if (this.life > this.maxLife - this.fadeOutDuration) {
@@ -155,12 +226,19 @@ class Particle {
     return this.life < this.maxLife;
   }
 
+  /**
+   * Draws the particle on canvas
+   * @param {CanvasRenderingContext2D} ctx - Canvas rendering context
+   */
   draw(ctx) {
-    if (this.opacity < 0.01) return;
+    if (this.opacity < 0.01) {
+      return;
+    }
 
     ctx.save();
     ctx.globalAlpha = this.opacity;
 
+    // Draw particle glow
     const gradient = ctx.createRadialGradient(
       this.x,
       this.y,
@@ -178,6 +256,7 @@ class Particle {
     ctx.arc(this.x, this.y, this.size * 3, 0, Math.PI * 2);
     ctx.fill();
 
+    // Draw particle core
     ctx.fillStyle = `hsla(${this.hue}, 100%, 70%, 1)`;
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
@@ -186,6 +265,10 @@ class Particle {
     ctx.restore();
   }
 
+  /**
+   * Calculates distance from particle to mouse cursor
+   * @returns {number} Distance in pixels
+   */
   getDistanceToMouse() {
     const dx = this.x - mouseX;
     const dy = this.y - mouseY;
@@ -193,6 +276,9 @@ class Particle {
   }
 }
 
+/**
+ * Initializes the particle system canvas
+ */
 function initParticleSystem() {
   particleCanvas = document.createElement("canvas");
   particleCanvas.style.position = "fixed";
@@ -203,99 +289,124 @@ function initParticleSystem() {
   particleCanvas.style.pointerEvents = "none";
   particleCanvas.style.zIndex = "1";
 
-  particleCtx = particleCanvas.getContext("2d", {
+  particleContext = particleCanvas.getContext("2d", {
     alpha: true,
     desynchronized: true,
   });
 
   resizeParticleCanvas();
 
-  const bgParticles = document.querySelector(".bg-particles");
-  if (bgParticles) {
-    bgParticles.appendChild(particleCanvas);
+  const backgroundParticlesContainer = document.querySelector(".bg-particles");
+  if (backgroundParticlesContainer) {
+    backgroundParticlesContainer.appendChild(particleCanvas);
   }
 
+  // Initialize particles based on screen size
   const initialCount = Math.floor(
-    (window.innerWidth * window.innerHeight) / 25000
+    (window.innerWidth * window.innerHeight) / PARTICLE_CONFIG.particleDensity
   );
+
   for (let i = 0; i < initialCount; i++) {
-    particles.push(new Particle());
-    particles[particles.length - 1].life = Math.random() * 60;
+    const particle = new Particle();
+    particle.life = Math.random() * 60;
+    particles.push(particle);
   }
 }
 
+/**
+ * Resizes particle canvas to match viewport
+ */
 function resizeParticleCanvas() {
-  if (!particleCanvas) return;
-  const viewportWidth = window.innerWidth;
-  const viewportHeight = window.innerHeight;
-  particleCanvas.width = viewportWidth;
-  particleCanvas.height = viewportHeight;
+  if (!particleCanvas) {
+    return;
+  }
+
+  particleCanvas.width = window.innerWidth;
+  particleCanvas.height = window.innerHeight;
 }
 
+/**
+ * Animates all particles and draws connections
+ */
 function animateParticles() {
-  if (!particleCtx || !particleCanvas) return;
+  if (!particleContext || !particleCanvas) {
+    return;
+  }
 
-  particleCtx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+  particleContext.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
 
   drawConnectionLines();
 
-  if (Math.random() < 0.2 && particles.length < 60) {
+  // Spawn new particles probabilistically
+  if (
+    Math.random() < PARTICLE_CONFIG.spawnProbability &&
+    particles.length < PARTICLE_CONFIG.maxParticles
+  ) {
     particles.push(new Particle());
   }
 
+  // Update and draw particles, removing dead ones
   for (let i = particles.length - 1; i >= 0; i--) {
     const particle = particles[i];
-    const alive = particle.update();
+    const isAlive = particle.update();
 
-    if (!alive) {
+    if (!isAlive) {
       particles.splice(i, 1);
       continue;
     }
 
-    particle.draw(particleCtx);
+    particle.draw(particleContext);
   }
 
   animationFrameId = requestAnimationFrame(animateParticles);
 }
 
+/**
+ * Draws connection lines between nearby particles and mouse
+ */
 function drawConnectionLines() {
   const connectionRadius =
-    Math.min(window.innerWidth, window.innerHeight) * 0.35;
-  const maxConnections = 12;
+    Math.min(window.innerWidth, window.innerHeight) *
+    PARTICLE_CONFIG.connectionRadius;
 
-  particleCtx.save();
-  particleCtx.lineCap = "round";
+  particleContext.save();
+  particleContext.lineCap = "round";
 
+  // Find particles near mouse cursor
   const nearbyParticles = particles
     .map((p) => ({ particle: p, distance: p.getDistanceToMouse() }))
     .filter((p) => p.distance < connectionRadius && p.particle.opacity > 0.2)
     .sort((a, b) => a.distance - b.distance)
-    .slice(0, maxConnections);
+    .slice(0, PARTICLE_CONFIG.maxConnections);
 
+  // Draw lines from mouse to nearby particles
   nearbyParticles.forEach(({ particle, distance }) => {
     const distanceFactor = 1 - distance / connectionRadius;
     const opacity = distanceFactor * particle.opacity * 0.7;
 
-    if (opacity < 0.03) return;
+    if (opacity < 0.03) {
+      return;
+    }
 
-    particleCtx.strokeStyle = `rgba(59, 130, 246, ${opacity * 0.3})`;
-    particleCtx.lineWidth = 3 + distanceFactor * 2;
-    particleCtx.beginPath();
-    particleCtx.moveTo(mouseX, mouseY);
-    particleCtx.lineTo(particle.x, particle.y);
-    particleCtx.stroke();
+    // Draw outer glow line
+    particleContext.strokeStyle = `rgba(59, 130, 246, ${opacity * 0.3})`;
+    particleContext.lineWidth = 3 + distanceFactor * 2;
+    particleContext.beginPath();
+    particleContext.moveTo(mouseX, mouseY);
+    particleContext.lineTo(particle.x, particle.y);
+    particleContext.stroke();
 
-    particleCtx.strokeStyle = `rgba(147, 197, 253, ${opacity})`;
-    particleCtx.lineWidth = 1.5 + distanceFactor;
-    particleCtx.beginPath();
-    particleCtx.moveTo(mouseX, mouseY);
-    particleCtx.lineTo(particle.x, particle.y);
-    particleCtx.stroke();
+    // Draw inner bright line
+    particleContext.strokeStyle = `rgba(147, 197, 253, ${opacity})`;
+    particleContext.lineWidth = 1.5 + distanceFactor;
+    particleContext.beginPath();
+    particleContext.moveTo(mouseX, mouseY);
+    particleContext.lineTo(particle.x, particle.y);
+    particleContext.stroke();
   });
 
+  // Draw connections between nearby particles
   if (nearbyParticles.length > 1) {
-    const interConnectionRadius = 150;
-
     for (let i = 0; i < nearbyParticles.length; i++) {
       for (let j = i + 1; j < nearbyParticles.length; j++) {
         const p1 = nearbyParticles[i].particle;
@@ -303,77 +414,65 @@ function drawConnectionLines() {
 
         const dx = p2.x - p1.x;
         const dy = p2.y - p1.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
+        const distance = Math.sqrt(dx * dx + dy * dy);
 
-        if (dist < interConnectionRadius) {
+        if (distance < PARTICLE_CONFIG.interConnectionRadius) {
           const opacity =
-            (1 - dist / interConnectionRadius) *
+            (1 - distance / PARTICLE_CONFIG.interConnectionRadius) *
             0.2 *
             Math.min(p1.opacity, p2.opacity);
 
           if (opacity > 0.02) {
-            particleCtx.strokeStyle = `rgba(59, 130, 246, ${opacity})`;
-            particleCtx.lineWidth = 1;
-            particleCtx.beginPath();
-            particleCtx.moveTo(p1.x, p1.y);
-            particleCtx.lineTo(p2.x, p2.y);
-            particleCtx.stroke();
+            particleContext.strokeStyle = `rgba(59, 130, 246, ${opacity})`;
+            particleContext.lineWidth = 1;
+            particleContext.beginPath();
+            particleContext.moveTo(p1.x, p1.y);
+            particleContext.lineTo(p2.x, p2.y);
+            particleContext.stroke();
           }
         }
       }
     }
   }
 
-  particleCtx.restore();
+  particleContext.restore();
 }
 
-document.addEventListener("mousemove", (e) => {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
+/**
+ * Updates mouse position for particle interactions
+ */
+document.addEventListener("mousemove", (event) => {
+  mouseX = event.clientX;
+  mouseY = event.clientY;
 });
 
+/**
+ * Resets mouse position when cursor leaves window
+ */
 document.addEventListener("mouseleave", () => {
   mouseX = window.innerWidth / 2;
   mouseY = window.innerHeight / 2;
 });
 
-// Initialize on DOM ready (better performance)
-document.addEventListener("DOMContentLoaded", () => {
-  typeCommand();
-  checkTabletOrientation();
-
-  // Set initial inert state on collapsed card details
-  const cardDetails = document.querySelector("#content-card .card-details");
-  if (cardDetails) {
-    cardDetails.setAttribute("inert", "");
-  }
-});
-
-window.addEventListener("load", () => {
-  initParticleSystem();
-  setTimeout(() => {
-    animateParticles();
-  }, 300);
-});
-
-window.addEventListener("resize", () => {
-  checkTabletOrientation();
-  resizeParticleCanvas();
-});
-
+// =============================================================================
+// SMOOTH SCROLLING
+// =============================================================================
 let targetScrollPosition = window.scrollY;
 let currentScrollPosition = window.scrollY;
 let scrollAnimationFrame = null;
 let scrollLastFrameTime = performance.now();
 
+/**
+ * Smooth scroll animation using requestAnimationFrame
+ */
 function smoothScrollAnimation(currentTime) {
   const deltaTime = (currentTime - scrollLastFrameTime) / 16.67;
   scrollLastFrameTime = currentTime;
 
-  const diff = targetScrollPosition - currentScrollPosition;
-  const delta = diff * 0.12 * Math.min(deltaTime, 2);
+  const difference = targetScrollPosition - currentScrollPosition;
+  const delta = difference * 0.12 * Math.min(deltaTime, 2);
 
-  if (Math.abs(diff) < 0.5) {
+  if (Math.abs(difference) < 0.5) {
     currentScrollPosition = targetScrollPosition;
     window.scrollTo(0, currentScrollPosition);
     scrollAnimationFrame = null;
@@ -385,12 +484,15 @@ function smoothScrollAnimation(currentTime) {
   scrollAnimationFrame = requestAnimationFrame(smoothScrollAnimation);
 }
 
+/**
+ * Handle wheel events for smooth scrolling
+ */
 window.addEventListener(
   "wheel",
-  (e) => {
-    e.preventDefault();
+  (event) => {
+    event.preventDefault();
 
-    const scrollAmount = e.deltaY * 1.2;
+    const scrollAmount = event.deltaY * 1.2;
     targetScrollPosition += scrollAmount;
 
     // Clamp to valid scroll range
@@ -411,221 +513,282 @@ window.addEventListener(
   { passive: false }
 );
 
-// Add smooth hover for cards
-document.querySelectorAll(".card").forEach((card) => {
-  card.addEventListener("mouseenter", function () {
-    this.style.transform = "translateY(-10px) scale(1.02)";
-  });
+// =============================================================================
+// CARD HOVER EFFECTS
+// =============================================================================
+/**
+ * Initialize hover effects for all cards
+ */
+function initializeCardHoverEffects() {
+  document.querySelectorAll(".card").forEach((card) => {
+    card.addEventListener("mouseenter", function () {
+      this.style.transform = "translateY(-10px) scale(1.02)";
+    });
 
-  card.addEventListener("mouseleave", function () {
-    this.style.transform = "translateY(0) scale(1)";
+    card.addEventListener("mouseleave", function () {
+      this.style.transform = "translateY(0) scale(1)";
+    });
   });
-});
+}
 
-/* Contact Modal Behavior */
+initializeCardHoverEffects();
+
+// =============================================================================
+// CONTACT MODAL
+// =============================================================================
 (() => {
-  const openBtn = document.getElementById("contact-open");
+  const openButton = document.getElementById("contact-open");
   const modal = document.getElementById("contact-modal");
-  const closeBtns = modal
+  const closeButtons = modal
     ? modal.querySelectorAll(".modal-close, #contact-cancel")
     : [];
   const form = document.getElementById("contact-form");
-  let lastFocused = null;
+  let lastFocusedElement = null;
 
-  if (!modal || !openBtn) return;
+  if (!modal || !openButton) {
+    return;
+  }
 
-  function setAriaOpen(isOpen) {
+  /**
+   * Updates ARIA attributes for modal state
+   */
+  function setModalAriaState(isOpen) {
     modal.setAttribute("aria-hidden", String(!isOpen));
-    openBtn.setAttribute("aria-expanded", String(isOpen));
+    openButton.setAttribute("aria-expanded", String(isOpen));
   }
 
+  /**
+   * Opens the contact modal
+   */
   function openModal() {
-    lastFocused = document.activeElement;
-    setAriaOpen(true);
+    lastFocusedElement = document.activeElement;
+    setModalAriaState(true);
     document.body.style.overflow = "hidden";
-    const first = modal.querySelector("input, textarea, button");
-    if (first) first.focus();
+
+    const firstFocusable = modal.querySelector("input, textarea, button");
+    if (firstFocusable) {
+      firstFocusable.focus();
+    }
   }
 
+  /**
+   * Closes the contact modal
+   */
   function closeModal() {
-    setAriaOpen(false);
+    setModalAriaState(false);
     document.body.style.overflow = "";
-    if (lastFocused && typeof lastFocused.focus === "function")
-      lastFocused.focus();
+
+    if (lastFocusedElement && typeof lastFocusedElement.focus === "function") {
+      lastFocusedElement.focus();
+    }
   }
 
-  openBtn.addEventListener("click", () => {
-    openModal();
-  });
+  // Event listeners
+  openButton.addEventListener("click", openModal);
+  closeButtons.forEach((btn) => btn.addEventListener("click", closeModal));
 
-  closeBtns.forEach((btn) => btn.addEventListener("click", () => closeModal()));
-
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal) closeModal();
-  });
-
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && modal.getAttribute("aria-hidden") === "false") {
-      e.preventDefault();
+  modal.addEventListener("click", (event) => {
+    if (event.target === modal) {
       closeModal();
     }
   });
 
-  modal.addEventListener("keydown", (e) => {
-    if (e.key !== "Tab" || modal.getAttribute("aria-hidden") === "true") return;
-    const focusable = modal.querySelectorAll(
+  // Close on Escape key
+  document.addEventListener("keydown", (event) => {
+    if (
+      event.key === "Escape" &&
+      modal.getAttribute("aria-hidden") === "false"
+    ) {
+      event.preventDefault();
+      closeModal();
+    }
+  });
+
+  // Trap focus within modal
+  modal.addEventListener("keydown", (event) => {
+    if (event.key !== "Tab" || modal.getAttribute("aria-hidden") === "true") {
+      return;
+    }
+
+    const focusableElements = modal.querySelectorAll(
       'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
     );
-    if (!focusable.length) return;
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
 
-    if (e.shiftKey) {
-      if (document.activeElement === first) {
-        e.preventDefault();
-        last.focus();
+    if (!focusableElements.length) {
+      return;
+    }
+
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+
+    if (event.shiftKey) {
+      if (document.activeElement === firstElement) {
+        event.preventDefault();
+        lastElement.focus();
       }
     } else {
-      if (document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
+      if (document.activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus();
       }
     }
   });
 
-  const status = document.createElement("p");
-  status.className = "contact-status";
-  form.parentElement.appendChild(status);
+  // Form status and spinner setup
+  const statusElement = document.createElement("p");
+  statusElement.className = "contact-status";
+  form.parentElement.appendChild(statusElement);
 
-  const submitBtn = form.querySelector('button[type="submit"]');
+  const submitButton = form.querySelector('button[type="submit"]');
   const spinner = document.createElement("span");
   spinner.className = "btn-spinner";
   spinner.setAttribute("aria-hidden", "true");
 
-  if (submitBtn) submitBtn.appendChild(spinner);
+  if (submitButton) {
+    submitButton.appendChild(spinner);
+  }
 
-  function validate() {
+  /**
+   * Validates form input fields
+   * @returns {string} Error message or empty string if valid
+   */
+  function validateForm() {
     const name = document.getElementById("contact-name").value.trim();
     const email = document.getElementById("contact-email").value.trim();
     const message = document.getElementById("contact-message").value.trim();
 
-    // Name: require at least two parts (first + last) and each part at least 2 chars
-    if (!name) return "Please enter your name.";
+    // Name validation: require at least two parts (first + last) and each part at least 2 chars
+    if (!name) {
+      return "Please enter your name.";
+    }
+
     const nameParts = name.split(/\s+/).filter(Boolean);
     if (nameParts.length < 2 || nameParts.some((part) => part.length < 2)) {
       return "Please enter your full name (first and last name).";
     }
 
-    // Email: basic RFC-like validation (not exhaustive). Accept common emails like "user+tag@example.co.uk"
+    // Email validation: basic RFC-like validation
     const emailRegex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-    if (!email) return "Please enter your email.";
-    if (!emailRegex.test(email)) return "Please enter a valid email address.";
+    if (!email) {
+      return "Please enter your email.";
+    }
+    if (!emailRegex.test(email)) {
+      return "Please enter a valid email address.";
+    }
 
-    // Message length: min 30 chars, max 2000 chars
-    const len = message.length;
-    if (len < 30)
+    // Message length validation: min 30 chars, max 2000 chars
+    const messageLength = message.length;
+    if (messageLength < 30) {
       return "Message is too short — please write at least 30 characters.";
-    if (len > 2000)
+    }
+    if (messageLength > 2000) {
       return "Message is too long — please keep it under 2000 characters.";
+    }
 
     return "";
   }
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+  /**
+   * Handles form submission
+   */
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
 
-    status.textContent = "";
-    status.classList.remove("success", "error");
+    statusElement.textContent = "";
+    statusElement.classList.remove("success", "error");
 
-    const validationError = validate();
+    const validationError = validateForm();
     if (validationError) {
-      status.textContent = validationError;
-      status.classList.add("error");
+      statusElement.textContent = validationError;
+      statusElement.classList.add("error");
       return;
     }
 
-    const data = {
+    const formData = {
       name: document.getElementById("contact-name").value.trim(),
       email: document.getElementById("contact-email").value.trim(),
       message: document.getElementById("contact-message").value.trim(),
     };
 
     try {
-      if (submitBtn) {
-        submitBtn.disabled = true;
+      if (submitButton) {
+        submitButton.disabled = true;
         spinner.classList.add("spinning");
       }
 
-      status.textContent = "Verifying...";
+      statusElement.textContent = "Verifying...";
 
-      // recaptcha v3
+      // Execute reCAPTCHA v3
       const recaptchaToken = await grecaptcha.execute(RECAPTCHA_SITE_KEY, {
         action: "contact",
       });
-      data.recaptchaToken = recaptchaToken;
+      formData.recaptchaToken = recaptchaToken;
 
-      const res = await fetch(
+      const response = await fetch(
         "https://portfolio-backend-sadj.onrender.com/api/contact",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
+          body: JSON.stringify(formData),
         }
       );
 
-      const result = await res.json().catch(() => ({}));
+      const result = await response.json().catch(() => ({}));
 
       if (result.success && result.emailSent && result.aiDecision === "ALLOW") {
-        status.textContent = "Message sent successfully!";
-        status.classList.add("success");
+        statusElement.textContent = "Message sent successfully!";
+        statusElement.classList.add("success");
         form.reset();
         setTimeout(() => closeModal(), 900);
       } else {
-        status.textContent =
+        statusElement.textContent =
           "Message not sent: " +
           (result.aiReason || result.error || "Unknown error");
-        status.classList.add("error");
+        statusElement.classList.add("error");
       }
-    } catch (err) {
-      status.textContent = "Error: " + err.message;
-      status.classList.add("error");
+    } catch (error) {
+      statusElement.textContent = "Error: " + error.message;
+      statusElement.classList.add("error");
     } finally {
-      if (submitBtn) {
-        submitBtn.disabled = false;
+      if (submitButton) {
+        submitButton.disabled = false;
         spinner.classList.remove("spinning");
       }
     }
   });
 
-  const cancelBtn = document.getElementById("contact-cancel");
-  if (cancelBtn) {
-    cancelBtn.addEventListener("click", () => {
+  // Cancel button handler
+  const cancelButton = document.getElementById("contact-cancel");
+  if (cancelButton) {
+    cancelButton.addEventListener("click", () => {
       form.reset();
-      status.textContent = "";
-      status.classList.remove("success", "error");
+      statusElement.textContent = "";
+      statusElement.classList.remove("success", "error");
       closeModal();
     });
   }
 })();
 
-/* reCAPTCHA toggle for localhost */
+// =============================================================================
+// RECAPTCHA TOGGLE (DEVELOPMENT ONLY)
+// =============================================================================
+if (HOSTNAME === "localhost" || HOSTNAME === "127.0.0.1") {
+  const toggleButton = document.createElement("button");
+  toggleButton.id = "toggleRecaptcha";
+  toggleButton.className = "toggle-recaptcha-btn";
+  toggleButton.textContent = "Toggle Recaptcha";
+  document.body.appendChild(toggleButton);
 
-if (host === "localhost" || host === "127.0.0.1") {
-  const btn = document.createElement("button");
-  btn.id = "toggleRecaptcha";
-  btn.className = "toggle-recaptcha-btn";
-  btn.textContent = "Toggle Recaptcha";
-  document.body.appendChild(btn);
-
-  btn.onclick = async () => {
+  toggleButton.onclick = async () => {
     try {
-      const res = await fetch(
+      const response = await fetch(
         "https://portfolio-backend-sadj.onrender.com/api/toggle-recaptcha",
         {
           method: "POST",
         }
       );
-      const data = await res.json();
+
+      const data = await response.json();
       console.log("Recaptcha enabled:", data.recaptchaEnabled);
       alert(
         `Recaptcha is now ${data.recaptchaEnabled ? "ENABLED" : "DISABLED"}`
@@ -637,58 +800,71 @@ if (host === "localhost" || host === "127.0.0.1") {
   };
 }
 
-/* Theme Toggle Functionality */
+// =============================================================================
+// THEME TOGGLE
+// =============================================================================
 (() => {
-  const themeToggle = document.getElementById("theme-toggle");
-  const root = document.documentElement;
-  const themeIcon = themeToggle.querySelector("i");
-  // Determine initial state: stored preference > system preference > default dark
+  const themeToggleButton = document.getElementById("theme-toggle");
+  const rootElement = document.documentElement;
+  const themeIcon = themeToggleButton.querySelector("i");
+
+  /**
+   * Applies the specified theme to the page
+   * @param {string} theme - Either 'light' or 'dark'
+   */
   function applyTheme(theme) {
     if (theme === "light") {
-      root.classList.add("light-theme");
-      root.setAttribute("data-theme", "light");
+      rootElement.classList.add("light-theme");
+      rootElement.setAttribute("data-theme", "light");
       themeIcon.classList.remove("fa-moon");
       themeIcon.classList.add("fa-sun");
     } else {
-      root.classList.remove("light-theme");
-      root.setAttribute("data-theme", "dark");
+      rootElement.classList.remove("light-theme");
+      rootElement.setAttribute("data-theme", "dark");
       themeIcon.classList.remove("fa-sun");
       themeIcon.classList.add("fa-moon");
     }
   }
 
+  /**
+   * Gets stored theme preference from localStorage
+   * @returns {string|null} Stored theme or null
+   */
   function getStoredTheme() {
     try {
       return localStorage.getItem("theme");
-    } catch (e) {
+    } catch (error) {
       return null;
     }
   }
 
-  const stored = getStoredTheme();
-  const prefersLight =
+  // Determine initial theme: stored preference > system preference > default dark
+  const storedTheme = getStoredTheme();
+  const prefersLightTheme =
     window.matchMedia &&
     window.matchMedia("(prefers-color-scheme: light)").matches;
 
-  if (stored === "light" || stored === "dark") {
-    applyTheme(stored);
+  if (storedTheme === "light" || storedTheme === "dark") {
+    applyTheme(storedTheme);
   } else {
-    applyTheme(prefersLight ? "light" : "dark");
+    applyTheme(prefersLightTheme ? "light" : "dark");
   }
 
-  // Toggle handler stores explicit choice
-  themeToggle.addEventListener("click", () => {
-    const isLight = root.classList.toggle("light-theme");
+  // Theme toggle button event listener
+  themeToggleButton.addEventListener("click", () => {
+    const isLight = rootElement.classList.toggle("light-theme");
     themeIcon.style.transform = "rotate(180deg) scale(0)";
 
     setTimeout(() => {
       const newTheme = isLight ? "light" : "dark";
       applyTheme(newTheme);
+
       try {
         localStorage.setItem("theme", newTheme);
-      } catch (e) {
-        /* ignore */
+      } catch (error) {
+        // Ignore localStorage errors
       }
+
       themeIcon.style.transform = "rotate(0deg) scale(1)";
     }, 150);
   });
@@ -696,22 +872,61 @@ if (host === "localhost" || host === "127.0.0.1") {
   // Listen for system preference changes when user hasn't set an explicit choice
   try {
     if (window.matchMedia) {
-      const mq = window.matchMedia("(prefers-color-scheme: light)");
-      mq.addEventListener
-        ? mq.addEventListener("change", (e) => {
-            if (!getStoredTheme()) {
-              applyTheme(e.matches ? "light" : "dark");
-            }
-          })
-        : mq.addListener((e) => {
-            if (!getStoredTheme()) {
-              applyTheme(e.matches ? "light" : "dark");
-            }
-          });
+      const mediaQuery = window.matchMedia("(prefers-color-scheme: light)");
+
+      const handleSystemThemeChange = (event) => {
+        if (!getStoredTheme()) {
+          applyTheme(event.matches ? "light" : "dark");
+        }
+      };
+
+      if (mediaQuery.addEventListener) {
+        mediaQuery.addEventListener("change", handleSystemThemeChange);
+      } else {
+        // Fallback for older browsers
+        mediaQuery.addListener(handleSystemThemeChange);
+      }
     }
-  } catch (e) {
-    // ignore
+  } catch (error) {
+    // Ignore errors
   }
 
   themeIcon.style.transition = "transform 0.3s ease";
 })();
+
+// =============================================================================
+// INITIALIZATION
+// =============================================================================
+/**
+ * Initialize on DOM ready
+ */
+document.addEventListener("DOMContentLoaded", () => {
+  animateTerminalTyping();
+  checkTabletOrientation();
+
+  // Set initial inert state on collapsed card details
+  const cardDetailsElement = document.querySelector(
+    "#content-card .card-details"
+  );
+  if (cardDetailsElement) {
+    cardDetailsElement.setAttribute("inert", "");
+  }
+});
+
+/**
+ * Initialize particle system after page load
+ */
+window.addEventListener("load", () => {
+  initParticleSystem();
+  setTimeout(() => {
+    animateParticles();
+  }, 300);
+});
+
+/**
+ * Handle window resize events
+ */
+window.addEventListener("resize", () => {
+  checkTabletOrientation();
+  resizeParticleCanvas();
+});
