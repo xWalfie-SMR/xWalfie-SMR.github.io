@@ -395,7 +395,7 @@ html {
 
 /* Terminal Banner */
 #terminal-banner {
-  font-family: "Fira Code", monospace;
+  font-family: "JetBrains Mono", monospace;
   position: relative;
   background: var(--terminal-bg);
   color: var(--primary-blue);
