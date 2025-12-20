@@ -1057,6 +1057,7 @@ initializeCardHoverEffects();
             code = JSON.stringify(JSON.parse(text), null, 2);
           } catch (e) {
             // If parsing fails, use original code
+            console.warn('Failed to format JSON:', e);
           }
         }
         
@@ -1068,7 +1069,7 @@ initializeCardHoverEffects();
         const preElement = document.createElement('pre');
         preElement.appendChild(codeElement);
         
-        previewContent.innerHTML = '';
+        previewContent.textContent = '';
         previewContent.appendChild(preElement);
         
         // Highlight with Prism if available
