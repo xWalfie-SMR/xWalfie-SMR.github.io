@@ -871,32 +871,56 @@ initializeCardHoverEffects();
       css: "fa-file-code",
       html: "fa-file-code",
       md: "fa-file-alt",
+      py: "fa-file-code",
     };
     return iconMap[ext] || "fa-file";
   }
 
   /**
-   * Applies syntax highlighting to JSON content
+   * Gets Prism.js language identifier based on file extension
    */
-  function highlightJSON(json) {
-    return json.replace(
-      /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
-      function (match) {
-        let cls = "json-number";
-        if (/^"/.test(match)) {
-          if (/:$/.test(match)) {
-            cls = "json-key";
-          } else {
-            cls = "json-string";
-          }
-        } else if (/true|false/.test(match)) {
-          cls = "json-boolean";
-        } else if (/null/.test(match)) {
-          cls = "json-null";
-        }
-        return '<span class="' + cls + '">' + match + "</span>";
+  function getLanguage(filename) {
+    const ext = filename.split(".").pop().toLowerCase();
+    const languageMap = {
+      json: "json",
+      js: "javascript",
+      jsx: "javascript",
+      ts: "javascript",
+      tsx: "javascript",
+      py: "python",
+      css: "css",
+      scss: "css",
+      html: "markup",
+      xml: "markup",
+      svg: "markup",
+      md: "markdown",
+      txt: "none",
+    };
+    return languageMap[ext] || "none";
+  }
+
+  /**
+   * Applies syntax highlighting to code content
+   */
+  function highlightCode(code, language) {
+    if (language === "none" || !window.Prism) {
+      return code;
+    }
+
+    // Format JSON for better readability
+    if (language === "json") {
+      try {
+        code = JSON.stringify(JSON.parse(code), null, 2);
+      } catch (e) {
+        // If parsing fails, use original code
       }
-    );
+    }
+
+    const grammar = window.Prism.languages[language];
+    if (grammar) {
+      return window.Prism.highlight(code, grammar, language);
+    }
+    return code;
   }
 
   /**
@@ -975,15 +999,11 @@ initializeCardHoverEffects();
       const response = await fetch(filepath);
       const text = await response.text();
 
-      const ext = filename.split(".").pop().toLowerCase();
-
-      if (ext === "json") {
-        try {
-          const formatted = JSON.stringify(JSON.parse(text), null, 2);
-          previewContent.innerHTML = `<pre>${highlightJSON(formatted)}</pre>`;
-        } catch (e) {
-          previewContent.textContent = text;
-        }
+      const language = getLanguage(filename);
+      
+      if (language !== "none") {
+        const highlighted = highlightCode(text, language);
+        previewContent.innerHTML = `<pre><code class="language-${language}">${highlighted}</code></pre>`;
       } else {
         previewContent.textContent = text;
       }

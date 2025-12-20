@@ -1376,35 +1376,73 @@ footer p {
   font-size: 0.85rem;
   line-height: 1.6;
   color: var(--text-primary);
-  white-space: pre-wrap;
-  word-wrap: break-word;
 }
 
 .preview-content pre {
   margin: 0;
-  white-space: pre-wrap;
-  word-wrap: break-word;
+  background: transparent !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
 }
 
-/* Syntax highlighting for JSON */
-.preview-content .json-key {
-  color: #93c5fd;
+.preview-content code {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 0.85rem !important;
+  background: transparent !important;
+  text-shadow: none !important;
 }
 
-.preview-content .json-string {
-  color: #86efac;
+/* Override Prism.js theme for dark mode */
+.preview-content .token.comment,
+.preview-content .token.prolog,
+.preview-content .token.doctype,
+.preview-content .token.cdata {
+  color: #6b7280;
 }
 
-.preview-content .json-number {
+.preview-content .token.property,
+.preview-content .token.tag,
+.preview-content .token.boolean,
+.preview-content .token.number,
+.preview-content .token.constant,
+.preview-content .token.symbol,
+.preview-content .token.deleted {
   color: #fbbf24;
 }
 
-.preview-content .json-boolean {
+.preview-content .token.selector,
+.preview-content .token.attr-name,
+.preview-content .token.string,
+.preview-content .token.char,
+.preview-content .token.builtin,
+.preview-content .token.inserted {
+  color: #86efac;
+}
+
+.preview-content .token.operator,
+.preview-content .token.entity,
+.preview-content .token.url,
+.preview-content .language-css .token.string,
+.preview-content .style .token.string {
+  color: #93c5fd;
+}
+
+.preview-content .token.atrule,
+.preview-content .token.attr-value,
+.preview-content .token.keyword {
+  color: #93c5fd;
+}
+
+.preview-content .token.function,
+.preview-content .token.class-name {
   color: #f87171;
 }
 
-.preview-content .json-null {
-  color: #9ca3af;
+.preview-content .token.regex,
+.preview-content .token.important,
+.preview-content .token.variable {
+  color: #fb923c;
 }
 
 /* Light Theme Overrides for Files Modal */
@@ -1424,22 +1462,54 @@ footer p {
   color: #1e293b;
 }
 
-:root.light-theme .preview-content .json-key {
-  color: #1e40af;
+/* Override Prism.js theme for light mode */
+:root.light-theme .preview-content .token.comment,
+:root.light-theme .preview-content .token.prolog,
+:root.light-theme .preview-content .token.doctype,
+:root.light-theme .preview-content .token.cdata {
+  color: #64748b;
 }
 
-:root.light-theme .preview-content .json-string {
-  color: #15803d;
-}
-
-:root.light-theme .preview-content .json-number {
+:root.light-theme .preview-content .token.property,
+:root.light-theme .preview-content .token.tag,
+:root.light-theme .preview-content .token.boolean,
+:root.light-theme .preview-content .token.number,
+:root.light-theme .preview-content .token.constant,
+:root.light-theme .preview-content .token.symbol,
+:root.light-theme .preview-content .token.deleted {
   color: #b45309;
 }
 
-:root.light-theme .preview-content .json-boolean {
+:root.light-theme .preview-content .token.selector,
+:root.light-theme .preview-content .token.attr-name,
+:root.light-theme .preview-content .token.string,
+:root.light-theme .preview-content .token.char,
+:root.light-theme .preview-content .token.builtin,
+:root.light-theme .preview-content .token.inserted {
+  color: #15803d;
+}
+
+:root.light-theme .preview-content .token.operator,
+:root.light-theme .preview-content .token.entity,
+:root.light-theme .preview-content .token.url,
+:root.light-theme .preview-content .language-css .token.string,
+:root.light-theme .preview-content .style .token.string {
+  color: #1e40af;
+}
+
+:root.light-theme .preview-content .token.atrule,
+:root.light-theme .preview-content .token.attr-value,
+:root.light-theme .preview-content .token.keyword {
+  color: #1e40af;
+}
+
+:root.light-theme .preview-content .token.function,
+:root.light-theme .preview-content .token.class-name {
   color: #b91c1c;
 }
 
-:root.light-theme .preview-content .json-null {
-  color: #64748b;
+:root.light-theme .preview-content .token.regex,
+:root.light-theme .preview-content .token.important,
+:root.light-theme .preview-content .token.variable {
+  color: #c2410c;
 }
