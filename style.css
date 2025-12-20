@@ -1282,33 +1282,44 @@ footer p {
    FILES MODAL
    ============================================================================= */
 
-.files-list {
-  max-height: 400px;
-  overflow-y: auto;
-  margin-top: 1rem;
-  /* Custom scrollbar styling */
+/* =============================================================================
+   FILES MODAL
+   ============================================================================= */
+
+/* Shared scrollbar styling for modal containers */
+.files-list,
+.preview-content {
   scrollbar-width: thin;
   scrollbar-color: rgba(59, 130, 246, 0.5) rgba(59, 130, 246, 0.1);
 }
 
-/* Webkit scrollbar styling for files-list */
-.files-list::-webkit-scrollbar {
+.files-list::-webkit-scrollbar,
+.preview-content::-webkit-scrollbar {
   width: 8px;
 }
 
-.files-list::-webkit-scrollbar-track {
+.files-list::-webkit-scrollbar-track,
+.preview-content::-webkit-scrollbar-track {
   background: rgba(59, 130, 246, 0.1);
   border-radius: 10px;
 }
 
-.files-list::-webkit-scrollbar-thumb {
+.files-list::-webkit-scrollbar-thumb,
+.preview-content::-webkit-scrollbar-thumb {
   background: rgba(59, 130, 246, 0.5);
   border-radius: 10px;
   transition: background 0.3s ease;
 }
 
-.files-list::-webkit-scrollbar-thumb:hover {
+.files-list::-webkit-scrollbar-thumb:hover,
+.preview-content::-webkit-scrollbar-thumb:hover {
   background: rgba(59, 130, 246, 0.7);
+}
+
+.files-list {
+  max-height: 400px;
+  overflow-y: auto;
+  margin-top: 1rem;
 }
 
 .file-item {
@@ -1352,6 +1363,7 @@ footer p {
 .file-type-icon {
   width: 2rem;
   height: 2rem;
+  font-size: 2rem;
   color: inherit;
 }
 
@@ -1408,29 +1420,6 @@ footer p {
   font-size: 0.85rem;
   line-height: 1.6;
   color: var(--text-primary);
-  /* Custom scrollbar styling */
-  scrollbar-width: thin;
-  scrollbar-color: rgba(59, 130, 246, 0.5) rgba(59, 130, 246, 0.1);
-}
-
-/* Webkit scrollbar styling for preview-content */
-.preview-content::-webkit-scrollbar {
-  width: 8px;
-}
-
-.preview-content::-webkit-scrollbar-track {
-  background: rgba(59, 130, 246, 0.1);
-  border-radius: 10px;
-}
-
-.preview-content::-webkit-scrollbar-thumb {
-  background: rgba(59, 130, 246, 0.5);
-  border-radius: 10px;
-  transition: background 0.3s ease;
-}
-
-.preview-content::-webkit-scrollbar-thumb:hover {
-  background: rgba(59, 130, 246, 0.7);
 }
 
 .preview-content pre {
@@ -1511,20 +1500,24 @@ footer p {
   border-color: rgba(59, 130, 246, 0.4);
 }
 
-/* Light theme scrollbar for files-list */
-:root.light-theme .files-list {
+/* Light theme scrollbar for both files-list and preview-content */
+:root.light-theme .files-list,
+:root.light-theme .preview-content {
   scrollbar-color: rgba(59, 130, 246, 0.6) rgba(59, 130, 246, 0.15);
 }
 
-:root.light-theme .files-list::-webkit-scrollbar-track {
+:root.light-theme .files-list::-webkit-scrollbar-track,
+:root.light-theme .preview-content::-webkit-scrollbar-track {
   background: rgba(59, 130, 246, 0.15);
 }
 
-:root.light-theme .files-list::-webkit-scrollbar-thumb {
+:root.light-theme .files-list::-webkit-scrollbar-thumb,
+:root.light-theme .preview-content::-webkit-scrollbar-thumb {
   background: rgba(59, 130, 246, 0.6);
 }
 
-:root.light-theme .files-list::-webkit-scrollbar-thumb:hover {
+:root.light-theme .files-list::-webkit-scrollbar-thumb:hover,
+:root.light-theme .preview-content::-webkit-scrollbar-thumb:hover {
   background: rgba(59, 130, 246, 0.8);
 }
 
@@ -1532,21 +1525,6 @@ footer p {
   background: rgba(224, 242, 254, 0.4);
   border-color: rgba(59, 130, 246, 0.3);
   color: #1e293b;
-  /* Custom scrollbar for light theme */
-  scrollbar-color: rgba(59, 130, 246, 0.6) rgba(59, 130, 246, 0.15);
-}
-
-/* Webkit scrollbar styling for light theme */
-:root.light-theme .preview-content::-webkit-scrollbar-track {
-  background: rgba(59, 130, 246, 0.15);
-}
-
-:root.light-theme .preview-content::-webkit-scrollbar-thumb {
-  background: rgba(59, 130, 246, 0.6);
-}
-
-:root.light-theme .preview-content::-webkit-scrollbar-thumb:hover {
-  background: rgba(59, 130, 246, 0.8);
 }
 
 /* Override Prism.js theme for light mode */
