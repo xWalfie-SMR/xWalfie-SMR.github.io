@@ -997,6 +997,11 @@ initializeCardHoverEffects();
 
     try {
       const response = await fetch(filepath);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
       const text = await response.text();
 
       const language = getLanguage(filename);
