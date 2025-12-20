@@ -1361,10 +1361,11 @@ footer p {
 }
 
 .file-type-icon {
-  width: 2rem;
-  height: 2rem;
-  font-size: 2rem;
-  color: inherit;
+  font-size: 1.5rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .file-details {
