@@ -1277,3 +1277,169 @@ footer p {
 :root.light-theme .contact-status.error {
   color: #ef4444;
 }
+
+/* =============================================================================
+   FILES MODAL
+   ============================================================================= */
+
+.files-list {
+  max-height: 400px;
+  overflow-y: auto;
+  margin-top: 1rem;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1rem;
+  margin-bottom: 0.6rem;
+  background: rgba(59, 130, 246, 0.05);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.file-item:hover {
+  background: rgba(59, 130, 246, 0.12);
+  border-color: rgba(59, 130, 246, 0.3);
+  transform: translateX(5px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+
+.file-item-info {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex: 1;
+}
+
+.file-icon {
+  font-size: 1.5rem;
+  color: var(--primary-blue);
+  width: 2rem;
+  text-align: center;
+}
+
+.file-details {
+  flex: 1;
+}
+
+.file-name {
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  margin-bottom: 0.2rem;
+}
+
+.file-size {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.file-arrow {
+  color: var(--text-muted);
+  font-size: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.file-item:hover .file-arrow {
+  transform: translateX(5px);
+  color: var(--primary-blue);
+}
+
+.file-preview {
+  margin-top: 1rem;
+}
+
+.file-info h3 {
+  color: var(--primary-blue);
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+}
+
+.file-info .file-size {
+  margin: 0 0 1rem 0;
+}
+
+.preview-content {
+  background: rgba(17, 17, 34, 0.6);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 10px;
+  padding: 1.2rem;
+  max-height: 400px;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.preview-content pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Syntax highlighting for JSON */
+.preview-content .json-key {
+  color: #93c5fd;
+}
+
+.preview-content .json-string {
+  color: #86efac;
+}
+
+.preview-content .json-number {
+  color: #fbbf24;
+}
+
+.preview-content .json-boolean {
+  color: #f87171;
+}
+
+.preview-content .json-null {
+  color: #9ca3af;
+}
+
+/* Light Theme Overrides for Files Modal */
+:root.light-theme .file-item {
+  background: rgba(59, 130, 246, 0.08);
+  border-color: rgba(59, 130, 246, 0.2);
+}
+
+:root.light-theme .file-item:hover {
+  background: rgba(59, 130, 246, 0.15);
+  border-color: rgba(59, 130, 246, 0.4);
+}
+
+:root.light-theme .preview-content {
+  background: rgba(224, 242, 254, 0.4);
+  border-color: rgba(59, 130, 246, 0.3);
+  color: #1e293b;
+}
+
+:root.light-theme .preview-content .json-key {
+  color: #1e40af;
+}
+
+:root.light-theme .preview-content .json-string {
+  color: #15803d;
+}
+
+:root.light-theme .preview-content .json-number {
+  color: #b45309;
+}
+
+:root.light-theme .preview-content .json-boolean {
+  color: #b91c1c;
+}
+
+:root.light-theme .preview-content .json-null {
+  color: #64748b;
+}

@@ -770,6 +770,296 @@ initializeCardHoverEffects();
 })();
 
 // =============================================================================
+// FILES MODAL
+// =============================================================================
+(() => {
+  const openButton = document.getElementById("files-open");
+  const modal = document.getElementById("files-modal");
+  const closeButtons = modal
+    ? modal.querySelectorAll(".modal-close")
+    : [];
+  const filesList = document.getElementById("files-list");
+  const filePreview = document.getElementById("file-preview");
+  const backToListButton = document.getElementById("back-to-list");
+  const downloadButton = document.getElementById("download-file");
+  let lastFocusedElement = null;
+  let currentFile = null;
+
+  if (!modal || !openButton) {
+    return;
+  }
+
+  /**
+   * Updates ARIA attributes for modal state
+   */
+  function setModalAriaState(isOpen) {
+    modal.setAttribute("aria-hidden", String(!isOpen));
+    openButton.setAttribute("aria-expanded", String(isOpen));
+  }
+
+  /**
+   * Opens the files modal
+   */
+  function openModal() {
+    lastFocusedElement = document.activeElement;
+    setModalAriaState(true);
+    document.body.style.overflow = "hidden";
+    loadFiles();
+
+    const firstFocusable = modal.querySelector("button");
+    if (firstFocusable) {
+      firstFocusable.focus();
+    }
+  }
+
+  /**
+   * Closes the files modal
+   */
+  function closeModal() {
+    setModalAriaState(false);
+    document.body.style.overflow = "";
+    showFilesList();
+
+    if (lastFocusedElement && typeof lastFocusedElement.focus === "function") {
+      lastFocusedElement.focus();
+    }
+  }
+
+  /**
+   * Shows the files list view
+   */
+  function showFilesList() {
+    filesList.style.display = "block";
+    filePreview.style.display = "none";
+    currentFile = null;
+  }
+
+  /**
+   * Shows the file preview view
+   */
+  function showFilePreview() {
+    filesList.style.display = "none";
+    filePreview.style.display = "block";
+  }
+
+  /**
+   * Formats file size in human-readable format
+   */
+  function formatFileSize(bytes) {
+    if (bytes === 0) return "0 Bytes";
+    const k = 1024;
+    const sizes = ["Bytes", "KB", "MB", "GB"];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + " " + sizes[i];
+  }
+
+  /**
+   * Gets file icon based on file extension
+   */
+  function getFileIcon(filename) {
+    const ext = filename.split(".").pop().toLowerCase();
+    const iconMap = {
+      json: "fa-file-code",
+      txt: "fa-file-alt",
+      pdf: "fa-file-pdf",
+      zip: "fa-file-archive",
+      jpg: "fa-file-image",
+      jpeg: "fa-file-image",
+      png: "fa-file-image",
+      gif: "fa-file-image",
+      js: "fa-file-code",
+      css: "fa-file-code",
+      html: "fa-file-code",
+      md: "fa-file-alt",
+    };
+    return iconMap[ext] || "fa-file";
+  }
+
+  /**
+   * Applies syntax highlighting to JSON content
+   */
+  function highlightJSON(json) {
+    return json.replace(
+      /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
+      function (match) {
+        let cls = "json-number";
+        if (/^"/.test(match)) {
+          if (/:$/.test(match)) {
+            cls = "json-key";
+          } else {
+            cls = "json-string";
+          }
+        } else if (/true|false/.test(match)) {
+          cls = "json-boolean";
+        } else if (/null/.test(match)) {
+          cls = "json-null";
+        }
+        return '<span class="' + cls + '">' + match + "</span>";
+      }
+    );
+  }
+
+  /**
+   * Loads files from the downloadable folder
+   */
+  async function loadFiles() {
+    filesList.innerHTML = '<p style="text-align: center; color: var(--text-muted);">Loading files...</p>';
+
+    try {
+      const files = [
+        { name: "monkeytype.json", path: "downloadable/monkeytype.json" },
+      ];
+
+      if (files.length === 0) {
+        filesList.innerHTML = '<p style="text-align: center; color: var(--text-muted);">No files available</p>';
+        return;
+      }
+
+      filesList.innerHTML = "";
+
+      for (const file of files) {
+        const fileItem = document.createElement("div");
+        fileItem.className = "file-item";
+        fileItem.setAttribute("role", "button");
+        fileItem.setAttribute("tabindex", "0");
+
+        const response = await fetch(file.path);
+        const blob = await response.blob();
+        const fileSize = blob.size;
+
+        fileItem.innerHTML = `
+          <div class="file-item-info">
+            <i class="fas ${getFileIcon(file.name)} file-icon" aria-hidden="true"></i>
+            <div class="file-details">
+              <div class="file-name">${file.name}</div>
+              <div class="file-size">${formatFileSize(fileSize)}</div>
+            </div>
+          </div>
+          <i class="fas fa-chevron-right file-arrow" aria-hidden="true"></i>
+        `;
+
+        fileItem.addEventListener("click", () => {
+          previewFile(file.name, file.path, fileSize);
+        });
+
+        fileItem.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            previewFile(file.name, file.path, fileSize);
+          }
+        });
+
+        filesList.appendChild(fileItem);
+      }
+    } catch (error) {
+      filesList.innerHTML = '<p style="text-align: center; color: var(--text-muted);">Error loading files</p>';
+      console.error("Error loading files:", error);
+    }
+  }
+
+  /**
+   * Previews a file
+   */
+  async function previewFile(filename, filepath, filesize) {
+    currentFile = { name: filename, path: filepath };
+
+    document.getElementById("preview-filename").textContent = filename;
+    document.getElementById("preview-filesize").textContent = formatFileSize(filesize);
+
+    const previewContent = document.getElementById("preview-content");
+    previewContent.innerHTML = '<p style="text-align: center; color: var(--text-muted);">Loading preview...</p>';
+
+    showFilePreview();
+
+    try {
+      const response = await fetch(filepath);
+      const text = await response.text();
+
+      const ext = filename.split(".").pop().toLowerCase();
+
+      if (ext === "json") {
+        try {
+          const formatted = JSON.stringify(JSON.parse(text), null, 2);
+          previewContent.innerHTML = `<pre>${highlightJSON(formatted)}</pre>`;
+        } catch (e) {
+          previewContent.textContent = text;
+        }
+      } else {
+        previewContent.textContent = text;
+      }
+    } catch (error) {
+      previewContent.innerHTML = '<p style="text-align: center; color: var(--text-muted);">Error loading preview</p>';
+      console.error("Error loading file preview:", error);
+    }
+  }
+
+  /**
+   * Downloads the current file
+   */
+  function downloadFile() {
+    if (!currentFile) return;
+
+    const link = document.createElement("a");
+    link.href = currentFile.path;
+    link.download = currentFile.name;
+    link.click();
+  }
+
+  // Event listeners
+  openButton.addEventListener("click", openModal);
+  closeButtons.forEach((btn) => btn.addEventListener("click", closeModal));
+  backToListButton.addEventListener("click", showFilesList);
+  downloadButton.addEventListener("click", downloadFile);
+
+  modal.addEventListener("click", (event) => {
+    if (event.target === modal) {
+      closeModal();
+    }
+  });
+
+  // Close on Escape key
+  document.addEventListener("keydown", (event) => {
+    if (
+      event.key === "Escape" &&
+      modal.getAttribute("aria-hidden") === "false"
+    ) {
+      event.preventDefault();
+      closeModal();
+    }
+  });
+
+  // Trap focus within modal
+  modal.addEventListener("keydown", (event) => {
+    if (event.key !== "Tab" || modal.getAttribute("aria-hidden") === "true") {
+      return;
+    }
+
+    const focusableElements = modal.querySelectorAll(
+      'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+    );
+
+    if (!focusableElements.length) {
+      return;
+    }
+
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+
+    if (event.shiftKey) {
+      if (document.activeElement === firstElement) {
+        event.preventDefault();
+        lastElement.focus();
+      }
+    } else {
+      if (document.activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus();
+      }
+    }
+  });
+})();
+
+// =============================================================================
 // RECAPTCHA TOGGLE (DEVELOPMENT ONLY)
 // =============================================================================
 if (HOSTNAME === "localhost" || HOSTNAME === "127.0.0.1") {
