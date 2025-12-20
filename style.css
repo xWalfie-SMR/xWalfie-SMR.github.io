@@ -1339,7 +1339,6 @@ footer p {
 .file-item:hover {
   background: rgba(59, 130, 246, 0.12);
   border-color: rgba(59, 130, 246, 0.3);
-  transform: translateX(5px);
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
 }
 
@@ -1351,8 +1350,8 @@ footer p {
 }
 
 .file-icon {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 3.5rem;
+  height: 3.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1391,7 +1390,6 @@ footer p {
 }
 
 .file-item:hover .file-arrow {
-  transform: translateX(5px);
   color: var(--primary-blue);
 }
 
