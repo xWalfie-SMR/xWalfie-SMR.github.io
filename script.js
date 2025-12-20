@@ -1050,8 +1050,31 @@ initializeCardHoverEffects();
       const language = getLanguage(filename);
       
       if (language !== "none") {
-        const highlighted = highlightCode(text, language);
-        previewContent.innerHTML = `<pre><code class="language-${language}">${highlighted}</code></pre>`;
+        // Format JSON for better readability before highlighting
+        let code = text;
+        if (language === "json") {
+          try {
+            code = JSON.stringify(JSON.parse(text), null, 2);
+          } catch (e) {
+            // If parsing fails, use original code
+          }
+        }
+        
+        // Create code element and let Prism highlight it
+        const codeElement = document.createElement('code');
+        codeElement.className = `language-${language}`;
+        codeElement.textContent = code;
+        
+        const preElement = document.createElement('pre');
+        preElement.appendChild(codeElement);
+        
+        previewContent.innerHTML = '';
+        previewContent.appendChild(preElement);
+        
+        // Highlight with Prism if available
+        if (window.Prism && window.Prism.highlightElement) {
+          window.Prism.highlightElement(codeElement);
+        }
       } else {
         previewContent.textContent = text;
       }
