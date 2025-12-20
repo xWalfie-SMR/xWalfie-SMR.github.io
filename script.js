@@ -770,6 +770,336 @@ initializeCardHoverEffects();
 })();
 
 // =============================================================================
+// FILES MODAL
+// =============================================================================
+(() => {
+  const openButton = document.getElementById("files-open");
+  const modal = document.getElementById("files-modal");
+  const closeButtons = modal
+    ? modal.querySelectorAll(".modal-close")
+    : [];
+  const filesList = document.getElementById("files-list");
+  const filePreview = document.getElementById("file-preview");
+  const backToListButton = document.getElementById("back-to-list");
+  const downloadButton = document.getElementById("download-file");
+  let lastFocusedElement = null;
+  let currentFile = null;
+
+  if (!modal || !openButton) {
+    return;
+  }
+
+  /**
+   * Updates ARIA attributes for modal state
+   */
+  function setModalAriaState(isOpen) {
+    modal.setAttribute("aria-hidden", String(!isOpen));
+    openButton.setAttribute("aria-expanded", String(isOpen));
+  }
+
+  /**
+   * Opens the files modal
+   */
+  function openModal() {
+    lastFocusedElement = document.activeElement;
+    setModalAriaState(true);
+    document.body.style.overflow = "hidden";
+    loadFiles();
+
+    const firstFocusable = modal.querySelector("button");
+    if (firstFocusable) {
+      firstFocusable.focus();
+    }
+  }
+
+  /**
+   * Closes the files modal
+   */
+  function closeModal() {
+    setModalAriaState(false);
+    document.body.style.overflow = "";
+    showFilesList();
+
+    if (lastFocusedElement && typeof lastFocusedElement.focus === "function") {
+      lastFocusedElement.focus();
+    }
+  }
+
+  /**
+   * Shows the files list view
+   */
+  function showFilesList() {
+    filesList.style.display = "block";
+    filePreview.style.display = "none";
+    currentFile = null;
+  }
+
+  /**
+   * Shows the file preview view
+   */
+  function showFilePreview() {
+    filesList.style.display = "none";
+    filePreview.style.display = "block";
+  }
+
+  /**
+   * Formats file size in human-readable format
+   */
+  function formatFileSize(bytes) {
+    if (bytes === 0) return "0 Bytes";
+    const k = 1024;
+    const sizes = ["Bytes", "KB", "MB", "GB"];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + " " + sizes[i];
+  }
+
+  /**
+   * Gets file icon based on file extension
+   */
+  function getFileIcon(filename) {
+    const ext = filename.split(".").pop().toLowerCase();
+    
+    // SVG icons for different file types
+    const svgIcons = {
+      json: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="file-type-icon">
+        <path d="M5 3C3.89 3 3 3.89 3 5V19C3 20.11 3.89 21 5 21H19C20.11 21 21 20.11 21 19V5C21 3.89 20.11 3 19 3H5ZM5 5H19V19H5V5ZM7 7V9H9V7H7ZM11 7V9H17V7H11ZM7 11V13H13V11H7ZM15 11V13H17V11H15ZM7 15V17H11V15H7ZM13 15V17H17V15H13Z" fill="currentColor"/>
+      </svg>`,
+      js: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="file-type-icon">
+        <path d="M3 3H21V21H3V3ZM7.73 18.04C8.13 18.89 8.92 19.59 10.27 19.59C11.77 19.59 12.8 18.79 12.8 17.04V11.26H11.1V17C11.1 17.86 10.75 18.08 10.2 18.08C9.62 18.08 9.38 17.68 9.11 17.21L7.73 18.04ZM13.71 17.86C14.21 18.84 15.22 19.59 16.8 19.59C18.4 19.59 19.6 18.76 19.6 17.23C19.6 15.82 18.79 15.19 17.35 14.57L16.93 14.39C16.2 14.08 15.89 13.87 15.89 13.37C15.89 12.96 16.2 12.64 16.7 12.64C17.18 12.64 17.5 12.85 17.79 13.37L19.1 12.5C18.55 11.54 17.77 11.17 16.7 11.17C15.19 11.17 14.22 12.13 14.22 13.4C14.22 14.78 15.03 15.43 16.25 15.95L16.67 16.13C17.45 16.47 17.91 16.68 17.91 17.26C17.91 17.74 17.46 18.09 16.76 18.09C15.93 18.09 15.45 17.66 15.09 17.06L13.71 17.86Z" fill="currentColor"/>
+      </svg>`,
+      py: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="file-type-icon">
+        <path d="M9.585 11.692h4.328s2.432.039 2.432-2.35V5.391S16.714 3 11.936 3C7.362 3 7.157 3 7.157 3S4.726 3.078 4.726 5.391v2.779h4.859v.616H3.839S2 8.746 2 12.308c0 3.562.486 3.425.486 3.425s.24 2.154 2.671 2.154h1.835v-2.491s-.094-2.704 2.593-2.704zm-.542-5.388c-.471 0-.852-.382-.852-.853s.381-.853.852-.853c.472 0 .853.382.853.853s-.381.853-.853.853z" fill="currentColor"/>
+        <path d="M14.415 12.308h-4.328s-2.432-.039-2.432 2.35v3.951S7.286 21 12.064 21c4.574 0 4.779 0 4.779 0s2.431-.078 2.431-2.391v-2.779h-4.859v-.616h5.746s1.839.04 1.839-3.522c0-3.562-.486-3.425-.486-3.425s-.24-2.154-2.671-2.154h-1.835v2.491s.094 2.704-2.593 2.704zm.542 5.388c.471 0 .852.382.852.853s-.381.853-.852.853c-.472 0-.853-.382-.853-.853s.381-.853.853-.853z" fill="currentColor"/>
+      </svg>`,
+      css: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="file-type-icon">
+        <path d="M5 3L4.35 6.34H17.94L17.5 8.5H3.92L3.26 11.83H16.85L16.09 15.64L10.61 17.45L5.86 15.64L6.19 14H2.85L2.06 18L9.91 21L18.96 18L20.16 11.97L20.4 10.76L21.94 3H5Z" fill="currentColor"/>
+      </svg>`,
+      html: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="file-type-icon">
+        <path d="M12 17.56L16.07 16.43L16.5 12H10.5V14.45H14.3L14.03 16.43L12 16.95L9.97 16.43L9.85 15.3H7.4L7.7 17.57L12 17.56ZM7.8 9.8L8.2 11.5H16.2L16.5 9.8H7.8ZM3.2 3L4.6 18.5L12 21L19.4 18.5L20.8 3H3.2ZM5 5H18.8L17.8 16.5L12 18.3L6.2 16.5L5 5Z" fill="currentColor"/>
+      </svg>`,
+      md: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="file-type-icon">
+        <path d="M20.56 18H3.44C2.65 18 2 17.37 2 16.59V7.41C2 6.63 2.65 6 3.44 6H20.56C21.35 6 22 6.63 22 7.41V16.59C22 17.37 21.35 18 20.56 18ZM13.5 9L11 13L8.5 9H6.5V15H8V11.5L10 14.5H12L14 11.5V15H15.5V9H13.5ZM18.5 9H17V15H18.5V9Z" fill="currentColor"/>
+      </svg>`,
+      txt: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="file-type-icon">
+        <path d="M14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V8L14 2ZM6 20V4H13V9H18V20H6ZM8 12V14H16V12H8ZM8 16V18H13V16H8Z" fill="currentColor"/>
+      </svg>`,
+      default: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="file-type-icon">
+        <path d="M14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V8L14 2ZM18 20H6V4H13V9H18V20Z" fill="currentColor"/>
+      </svg>`
+    };
+
+    return svgIcons[ext] || svgIcons.default;
+  }
+
+  /**
+   * Gets Prism.js language identifier based on file extension
+   */
+  function getLanguage(filename) {
+    const ext = filename.split(".").pop().toLowerCase();
+    const languageMap = {
+      json: "json",
+      js: "javascript",
+      jsx: "javascript",
+      ts: "javascript",
+      tsx: "javascript",
+      py: "python",
+      css: "css",
+      scss: "css",
+      html: "markup",
+      xml: "markup",
+      svg: "markup",
+      md: "markdown",
+      txt: "none",
+    };
+    return languageMap[ext] || "none";
+  }
+
+  /**
+   * Applies syntax highlighting to code content
+   */
+  function highlightCode(code, language) {
+    if (language === "none" || !window.Prism) {
+      return code;
+    }
+
+    // Format JSON for better readability
+    if (language === "json") {
+      try {
+        code = JSON.stringify(JSON.parse(code), null, 2);
+      } catch (e) {
+        // If parsing fails, use original code
+      }
+    }
+
+    const grammar = window.Prism.languages[language];
+    if (grammar) {
+      return window.Prism.highlight(code, grammar, language);
+    }
+    return code;
+  }
+
+  /**
+   * Loads files from the downloadable folder
+   */
+  async function loadFiles() {
+    filesList.innerHTML = '<p style="text-align: center; color: var(--text-muted);">Loading files...</p>';
+
+    try {
+      const files = [
+        { name: "monkeytype.json", path: "downloadable/monkeytype.json" },
+      ];
+
+      if (files.length === 0) {
+        filesList.innerHTML = '<p style="text-align: center; color: var(--text-muted);">No files available</p>';
+        return;
+      }
+
+      filesList.innerHTML = "";
+
+      for (const file of files) {
+        const fileItem = document.createElement("div");
+        fileItem.className = "file-item";
+        fileItem.setAttribute("role", "button");
+        fileItem.setAttribute("tabindex", "0");
+
+        const response = await fetch(file.path);
+        const blob = await response.blob();
+        const fileSize = blob.size;
+
+        fileItem.innerHTML = `
+          <div class="file-item-info">
+            <div class="file-icon">${getFileIcon(file.name)}</div>
+            <div class="file-details">
+              <div class="file-name">${file.name}</div>
+              <div class="file-size">${formatFileSize(fileSize)}</div>
+            </div>
+          </div>
+          <i class="fas fa-chevron-right file-arrow" aria-hidden="true"></i>
+        `;
+
+        fileItem.addEventListener("click", () => {
+          previewFile(file.name, file.path, fileSize);
+        });
+
+        fileItem.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            previewFile(file.name, file.path, fileSize);
+          }
+        });
+
+        filesList.appendChild(fileItem);
+      }
+    } catch (error) {
+      filesList.innerHTML = '<p style="text-align: center; color: var(--text-muted);">Error loading files</p>';
+      console.error("Error loading files:", error);
+    }
+  }
+
+  /**
+   * Previews a file
+   */
+  async function previewFile(filename, filepath, filesize) {
+    currentFile = { name: filename, path: filepath };
+
+    document.getElementById("preview-filename").textContent = filename;
+    document.getElementById("preview-filesize").textContent = formatFileSize(filesize);
+
+    const previewContent = document.getElementById("preview-content");
+    previewContent.innerHTML = '<p style="text-align: center; color: var(--text-muted);">Loading preview...</p>';
+
+    showFilePreview();
+
+    try {
+      const response = await fetch(filepath);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const text = await response.text();
+
+      const language = getLanguage(filename);
+      
+      if (language !== "none") {
+        const highlighted = highlightCode(text, language);
+        previewContent.innerHTML = `<pre><code class="language-${language}">${highlighted}</code></pre>`;
+      } else {
+        previewContent.textContent = text;
+      }
+    } catch (error) {
+      previewContent.innerHTML = '<p style="text-align: center; color: var(--text-muted);">Error loading preview</p>';
+      console.error("Error loading file preview:", error);
+    }
+  }
+
+  /**
+   * Downloads the current file
+   */
+  function downloadFile() {
+    if (!currentFile) return;
+
+    const link = document.createElement("a");
+    link.href = currentFile.path;
+    link.download = currentFile.name;
+    link.click();
+  }
+
+  // Event listeners
+  openButton.addEventListener("click", openModal);
+  closeButtons.forEach((btn) => btn.addEventListener("click", closeModal));
+  backToListButton.addEventListener("click", showFilesList);
+  downloadButton.addEventListener("click", downloadFile);
+
+  modal.addEventListener("click", (event) => {
+    if (event.target === modal) {
+      closeModal();
+    }
+  });
+
+  // Close on Escape key
+  document.addEventListener("keydown", (event) => {
+    if (
+      event.key === "Escape" &&
+      modal.getAttribute("aria-hidden") === "false"
+    ) {
+      event.preventDefault();
+      closeModal();
+    }
+  });
+
+  // Trap focus within modal
+  modal.addEventListener("keydown", (event) => {
+    if (event.key !== "Tab" || modal.getAttribute("aria-hidden") === "true") {
+      return;
+    }
+
+    const focusableElements = modal.querySelectorAll(
+      'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+    );
+
+    if (!focusableElements.length) {
+      return;
+    }
+
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+
+    if (event.shiftKey) {
+      if (document.activeElement === firstElement) {
+        event.preventDefault();
+        lastElement.focus();
+      }
+    } else {
+      if (document.activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus();
+      }
+    }
+  });
+})();
+
+// =============================================================================
 // RECAPTCHA TOGGLE (DEVELOPMENT ONLY)
 // =============================================================================
 if (HOSTNAME === "localhost" || HOSTNAME === "127.0.0.1") {

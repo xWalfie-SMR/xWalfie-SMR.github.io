@@ -138,6 +138,12 @@
       />
     </noscript>
 
+    <!-- Prism.js for syntax highlighting -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"
+    />
+
     <!-- reCAPTCHA site key -->
     <script src="https://www.google.com/recaptcha/api.js?render=6Lcy4eYrAAAAAFZ6seRTrRtGDPWc8qXfK7ZfTcEo"></script>
   </head>
@@ -356,6 +362,16 @@
                     <i class="fas fa-download"></i>
                     My CV
                   </a>
+                  <button
+                    id="files-open"
+                    type="button"
+                    class="contact-btn secondary"
+                    aria-haspopup="dialog"
+                    aria-controls="files-modal"
+                  >
+                    <i class="fas fa-folder-open"></i>
+                    Downloadable Files
+                  </button>
                 </div>
               </div>
             </div>
@@ -429,9 +445,57 @@
             </form>
           </div>
         </div>
+
+        <!-- Files Modal -->
+        <div
+          id="files-modal"
+          class="modal"
+          role="dialog"
+          aria-modal="true"
+          aria-hidden="true"
+          aria-labelledby="files-modal-title"
+        >
+          <div class="modal-content" role="document">
+            <button class="modal-close" aria-label="Close files modal">
+              &times;
+            </button>
+            <h2 id="files-modal-title">Downloadable Files</h2>
+            <p class="modal-subtitle">
+              Browse and download available files
+            </p>
+            
+            <div id="files-list" class="files-list">
+              <!-- Files will be dynamically loaded here -->
+            </div>
+
+            <div id="file-preview" class="file-preview" style="display: none;">
+              <button id="back-to-list" class="contact-btn secondary" style="margin-bottom: 1rem;">
+                <i class="fas fa-arrow-left"></i>
+                Back to List
+              </button>
+              <div class="file-info">
+                <h3 id="preview-filename"></h3>
+                <p id="preview-filesize" class="file-size"></p>
+              </div>
+              <div id="preview-content" class="preview-content"></div>
+              <div class="modal-actions">
+                <button id="download-file" class="contact-btn primary">
+                  <i class="fas fa-download"></i>
+                  Download File
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </main>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js" integrity="sha512-828c0G5ESRfwn7eH4n2vxJPqmYJ4pkJTmSJrSVi1o5P7SBFfJhcNLFJIRzh4rT0Gln2n3n4DuLwl2LQIhuINHA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js" integrity="sha512-IXKu3yhbT1UM7D5z/gjD3hJKU3P6wvqVgwQKzKaKhQ1WVqLSPSa6zGTtQ1vPQODZYSVnCqhKnSxYEb8nkSjpFg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js" integrity="sha512-AKaNmg8COK0zEbjTdMHJAPJ0z6VeNqvRvH4mfRRWDrXk1yaT8+Y5aO2TsJlZhR3pC3uqgdBkZSaK7MRGjj6SvA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js" integrity="sha512-Z2l4kMHyXkSPi36kYdV0qHG/EJfTAZ/lZYT4xh/LDVHWnf+wTmLWJPM/WUvAkOGVHVG6V4mPYw8FNrQjHaP6Ow==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js" integrity="sha512-jIYJOxiQnR+3DHo0jZf+yH5lPnbm2NXQeprFCbHnNPOeJqJWCF1PZC0bgAaRo57PoJa05Ym7bHdOBmCGcjp66w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="script.js" defer></script>
   </body>
 </html>
