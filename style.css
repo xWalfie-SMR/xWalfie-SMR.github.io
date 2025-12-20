@@ -1317,10 +1317,19 @@ footer p {
 }
 
 .file-icon {
-  font-size: 1.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--primary-blue);
+  flex-shrink: 0;
+}
+
+.file-type-icon {
   width: 2rem;
-  text-align: center;
+  height: 2rem;
+  color: inherit;
 }
 
 .file-details {
