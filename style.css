@@ -1287,15 +1287,22 @@ footer p {
    ============================================================================= */
 
 /* Shared scrollbar styling for modal containers */
-.files-list,
-.preview-content {
+.files-list {
   scrollbar-width: thin;
   scrollbar-color: rgba(59, 130, 246, 0.5) rgba(59, 130, 246, 0.1);
 }
 
-.files-list::-webkit-scrollbar,
-.preview-content::-webkit-scrollbar {
+.preview-content {
+  scrollbar-width: auto;
+  scrollbar-color: rgba(59, 130, 246, 0.5) rgba(59, 130, 246, 0.1);
+}
+
+.files-list::-webkit-scrollbar {
   width: 8px;
+}
+
+.preview-content::-webkit-scrollbar {
+  width: 16px;
 }
 
 .files-list::-webkit-scrollbar-track,
@@ -1337,9 +1344,8 @@ footer p {
 }
 
 .file-item:hover {
-  background: rgba(59, 130, 246, 0.12);
-  border-color: rgba(59, 130, 246, 0.3);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+  background: rgba(59, 131, 246, 0.205);
+  border-color: rgba(59, 131, 246, 0.514);
 }
 
 .file-item-info {
@@ -1357,10 +1363,11 @@ footer p {
   justify-content: center;
   color: var(--primary-blue);
   flex-shrink: 0;
+  font-size: 3rem;
 }
 
 .file-type-icon {
-  font-size: 4rem;
+  font-size: 2.5rem !important;
   line-height: 1;
   display: inline-flex;
   align-items: center;
@@ -1413,12 +1420,13 @@ footer p {
   border-radius: 10px;
   padding: 1.2rem;
   max-height: 400px;
-  overflow-y: auto;
+  overflow-y: scroll;
   margin-bottom: 1rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.85rem;
   line-height: 1.6;
   color: var(--text-primary);
+  -webkit-overflow-scrolling: touch;
 }
 
 .preview-content pre {
@@ -1427,10 +1435,13 @@ footer p {
   padding: 0 !important;
   border: none !important;
   border-radius: 0 !important;
+  overflow: visible !important;
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
 .preview-content code {
-  font-family: 'JetBrains Mono', monospace !important;
+  font-family: "JetBrains Mono", monospace !important;
   font-size: 0.85rem !important;
   background: transparent !important;
   text-shadow: none !important;

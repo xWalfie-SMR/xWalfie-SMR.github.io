@@ -775,9 +775,7 @@ initializeCardHoverEffects();
 (() => {
   const openButton = document.getElementById("files-open");
   const modal = document.getElementById("files-modal");
-  const closeButtons = modal
-    ? modal.querySelectorAll(".modal-close")
-    : [];
+  const closeButtons = modal ? modal.querySelectorAll(".modal-close") : [];
   const filesList = document.getElementById("files-list");
   const filePreview = document.getElementById("file-preview");
   const backToListButton = document.getElementById("back-to-list");
@@ -825,6 +823,30 @@ initializeCardHoverEffects();
     }
   }
 
+  // Prevent scroll propagation on modal and preview content
+  const modalContent = modal.querySelector(".modal-content");
+  const previewContent = document.getElementById("preview-content");
+
+  if (modalContent) {
+    modalContent.addEventListener(
+      "wheel",
+      (e) => {
+        e.stopPropagation();
+      },
+      { passive: true }
+    );
+  }
+
+  if (previewContent) {
+    previewContent.addEventListener(
+      "wheel",
+      (e) => {
+        e.stopPropagation();
+      },
+      { passive: true }
+    );
+  }
+
   /**
    * Shows the files list view
    */
@@ -858,7 +880,7 @@ initializeCardHoverEffects();
    */
   function getFileIcon(filename) {
     const ext = filename.split(".").pop().toLowerCase();
-    
+
     // VSCode Codicon classes for different file types
     const iconMap = {
       // Code files
@@ -876,21 +898,21 @@ initializeCardHoverEffects();
       rb: "codicon-symbol-method",
       go: "codicon-symbol-method",
       rs: "codicon-symbol-method",
-      
+
       // Web files
       html: "codicon-symbol-method",
       css: "codicon-symbol-method",
       scss: "codicon-symbol-method",
       sass: "codicon-symbol-method",
       less: "codicon-symbol-method",
-      
+
       // Documents
       pdf: "codicon-file-pdf",
       doc: "codicon-file-text",
       docx: "codicon-file-text",
       txt: "codicon-file-text",
       md: "codicon-markdown",
-      
+
       // Images
       jpg: "codicon-file-media",
       jpeg: "codicon-file-media",
@@ -898,14 +920,14 @@ initializeCardHoverEffects();
       gif: "codicon-file-media",
       svg: "codicon-file-media",
       webp: "codicon-file-media",
-      
+
       // Archives
       zip: "codicon-file-zip",
       rar: "codicon-file-zip",
       "7z": "codicon-file-zip",
       tar: "codicon-file-zip",
       gz: "codicon-file-zip",
-      
+
       // Media
       mp4: "codicon-file-media",
       avi: "codicon-file-media",
@@ -970,7 +992,8 @@ initializeCardHoverEffects();
    * Loads files from the downloadable folder
    */
   async function loadFiles() {
-    filesList.innerHTML = '<p style="text-align: center; color: var(--text-muted);">Loading files...</p>';
+    filesList.innerHTML =
+      '<p style="text-align: center; color: var(--text-muted);">Loading files...</p>';
 
     try {
       const files = [
@@ -978,7 +1001,8 @@ initializeCardHoverEffects();
       ];
 
       if (files.length === 0) {
-        filesList.innerHTML = '<p style="text-align: center; color: var(--text-muted);">No files available</p>';
+        filesList.innerHTML =
+          '<p style="text-align: center; color: var(--text-muted);">No files available</p>';
         return;
       }
 
@@ -1019,7 +1043,8 @@ initializeCardHoverEffects();
         filesList.appendChild(fileItem);
       }
     } catch (error) {
-      filesList.innerHTML = '<p style="text-align: center; color: var(--text-muted);">Error loading files</p>';
+      filesList.innerHTML =
+        '<p style="text-align: center; color: var(--text-muted);">Error loading files</p>';
       console.error("Error loading files:", error);
     }
   }
@@ -1031,24 +1056,26 @@ initializeCardHoverEffects();
     currentFile = { name: filename, path: filepath };
 
     document.getElementById("preview-filename").textContent = filename;
-    document.getElementById("preview-filesize").textContent = formatFileSize(filesize);
+    document.getElementById("preview-filesize").textContent =
+      formatFileSize(filesize);
 
     const previewContent = document.getElementById("preview-content");
-    previewContent.innerHTML = '<p style="text-align: center; color: var(--text-muted);">Loading preview...</p>';
+    previewContent.innerHTML =
+      '<p style="text-align: center; color: var(--text-muted);">Loading preview...</p>';
 
     showFilePreview();
 
     try {
       const response = await fetch(filepath);
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       const text = await response.text();
 
       const language = getLanguage(filename);
-      
+
       if (language !== "none") {
         // Format JSON for better readability before highlighting
         let code = text;
@@ -1057,21 +1084,21 @@ initializeCardHoverEffects();
             code = JSON.stringify(JSON.parse(text), null, 2);
           } catch (e) {
             // If parsing fails, use original code
-            console.warn('Failed to format JSON:', e);
+            console.warn("Failed to format JSON:", e);
           }
         }
-        
+
         // Create code element and let Prism highlight it
-        const codeElement = document.createElement('code');
+        const codeElement = document.createElement("code");
         codeElement.className = `language-${language}`;
         codeElement.textContent = code;
-        
-        const preElement = document.createElement('pre');
+
+        const preElement = document.createElement("pre");
         preElement.appendChild(codeElement);
-        
-        previewContent.textContent = '';
+
+        previewContent.textContent = "";
         previewContent.appendChild(preElement);
-        
+
         // Highlight with Prism if available
         if (window.Prism && window.Prism.highlightElement) {
           window.Prism.highlightElement(codeElement);
@@ -1080,7 +1107,8 @@ initializeCardHoverEffects();
         previewContent.textContent = text;
       }
     } catch (error) {
-      previewContent.innerHTML = '<p style="text-align: center; color: var(--text-muted);">Error loading preview</p>';
+      previewContent.innerHTML =
+        '<p style="text-align: center; color: var(--text-muted);">Error loading preview</p>';
       console.error("Error loading file preview:", error);
     }
   }
