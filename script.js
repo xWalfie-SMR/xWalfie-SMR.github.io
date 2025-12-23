@@ -3,6 +3,7 @@
 // =============================================================================
 const RECAPTCHA_SITE_KEY = "6Lcy4eYrAAAAAFZ6seRTrRtGDPWc8qXfK7ZfTcEo";
 const HOSTNAME = location.hostname;
+const GITHUB_REPO = "xWalfie-SMR/xWalfie-SMR.github.io";
 
 // =============================================================================
 // TERMINAL TYPING ANIMATION
@@ -928,6 +929,9 @@ initializeCardHoverEffects();
       tar: "codicon-file-zip",
       gz: "codicon-file-zip",
 
+      // VPN/Config files
+      ovpn: "codicon-file-text",
+
       // Media
       mp4: "codicon-file-media",
       avi: "codicon-file-media",
@@ -960,6 +964,7 @@ initializeCardHoverEffects();
       svg: "markup",
       md: "markdown",
       txt: "none",
+      ovpn: "none",
     };
     return languageMap[ext] || "none";
   }
@@ -989,16 +994,32 @@ initializeCardHoverEffects();
   }
 
   /**
-   * Loads files from the downloadable folder
+   * Loads files from the downloadable folder dynamically using GitHub API
    */
   async function loadFiles() {
     filesList.innerHTML =
       '<p style="text-align: center; color: var(--text-muted);">Loading files...</p>';
 
     try {
-      const files = [
-        { name: "monkeytype.json", path: "downloadable/monkeytype.json" },
-      ];
+      // Fetch file list from GitHub API
+      const apiUrl = `https://api.github.com/repos/${GITHUB_REPO}/contents/downloadable`;
+      const response = await fetch(apiUrl);
+      
+      if (!response.ok) {
+        const statusText = response.statusText || 'Unknown error';
+        throw new Error(`GitHub API error: ${response.status} ${statusText}`);
+      }
+      
+      const filesData = await response.json();
+      
+      // Filter to only include files (not directories)
+      const files = filesData
+        .filter(item => item.type === 'file')
+        .map(item => ({
+          name: item.name,
+          path: `downloadable/${item.name}`,
+          size: item.size
+        }));
 
       if (files.length === 0) {
         filesList.innerHTML =
@@ -1014,29 +1035,25 @@ initializeCardHoverEffects();
         fileItem.setAttribute("role", "button");
         fileItem.setAttribute("tabindex", "0");
 
-        const response = await fetch(file.path);
-        const blob = await response.blob();
-        const fileSize = blob.size;
-
         fileItem.innerHTML = `
           <div class="file-item-info">
             <div class="file-icon">${getFileIcon(file.name)}</div>
             <div class="file-details">
               <div class="file-name">${file.name}</div>
-              <div class="file-size">${formatFileSize(fileSize)}</div>
+              <div class="file-size">${formatFileSize(file.size)}</div>
             </div>
           </div>
           <i class="fas fa-chevron-right file-arrow" aria-hidden="true"></i>
         `;
 
         fileItem.addEventListener("click", () => {
-          previewFile(file.name, file.path, fileSize);
+          previewFile(file.name, file.path, file.size);
         });
 
         fileItem.addEventListener("keydown", (e) => {
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
-            previewFile(file.name, file.path, fileSize);
+            previewFile(file.name, file.path, file.size);
           }
         });
 
