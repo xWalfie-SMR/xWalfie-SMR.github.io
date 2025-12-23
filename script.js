@@ -3,6 +3,7 @@
 // =============================================================================
 const RECAPTCHA_SITE_KEY = "6Lcy4eYrAAAAAFZ6seRTrRtGDPWc8qXfK7ZfTcEo";
 const HOSTNAME = location.hostname;
+const GITHUB_REPO = "xWalfie-SMR/xWalfie-SMR.github.io";
 
 // =============================================================================
 // TERMINAL TYPING ANIMATION
@@ -1001,16 +1002,17 @@ initializeCardHoverEffects();
 
     try {
       // Fetch file list from GitHub API
-      const apiUrl = 'https://api.github.com/repos/xWalfie-SMR/xWalfie-SMR.github.io/contents/downloadable';
+      const apiUrl = `https://api.github.com/repos/${GITHUB_REPO}/contents/downloadable`;
       const response = await fetch(apiUrl);
       
       if (!response.ok) {
-        throw new Error(`GitHub API error: ${response.status}`);
+        const statusText = response.statusText || 'Unknown error';
+        throw new Error(`GitHub API error: ${response.status} ${statusText}`);
       }
       
       const filesData = await response.json();
       
-      // Filter to only include files (not directories) and exclude the manifest itself
+      // Filter to only include files (not directories)
       const files = filesData
         .filter(item => item.type === 'file')
         .map(item => ({
