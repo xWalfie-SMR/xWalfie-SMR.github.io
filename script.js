@@ -993,17 +993,31 @@ initializeCardHoverEffects();
   }
 
   /**
-   * Loads files from the downloadable folder
+   * Loads files from the downloadable folder dynamically using GitHub API
    */
   async function loadFiles() {
     filesList.innerHTML =
       '<p style="text-align: center; color: var(--text-muted);">Loading files...</p>';
 
     try {
-      const files = [
-        { name: "monkeytype.json", path: "downloadable/monkeytype.json" },
-        { name: "xwalfie-udp.ovpn", path: "downloadable/xwalfie-udp.ovpn" },
-      ];
+      // Fetch file list from GitHub API
+      const apiUrl = 'https://api.github.com/repos/xWalfie-SMR/xWalfie-SMR.github.io/contents/downloadable';
+      const response = await fetch(apiUrl);
+      
+      if (!response.ok) {
+        throw new Error(`GitHub API error: ${response.status}`);
+      }
+      
+      const filesData = await response.json();
+      
+      // Filter to only include files (not directories) and exclude the manifest itself
+      const files = filesData
+        .filter(item => item.type === 'file')
+        .map(item => ({
+          name: item.name,
+          path: `downloadable/${item.name}`,
+          size: item.size
+        }));
 
       if (files.length === 0) {
         filesList.innerHTML =
@@ -1019,29 +1033,25 @@ initializeCardHoverEffects();
         fileItem.setAttribute("role", "button");
         fileItem.setAttribute("tabindex", "0");
 
-        const response = await fetch(file.path);
-        const blob = await response.blob();
-        const fileSize = blob.size;
-
         fileItem.innerHTML = `
           <div class="file-item-info">
             <div class="file-icon">${getFileIcon(file.name)}</div>
             <div class="file-details">
               <div class="file-name">${file.name}</div>
-              <div class="file-size">${formatFileSize(fileSize)}</div>
+              <div class="file-size">${formatFileSize(file.size)}</div>
             </div>
           </div>
           <i class="fas fa-chevron-right file-arrow" aria-hidden="true"></i>
         `;
 
         fileItem.addEventListener("click", () => {
-          previewFile(file.name, file.path, fileSize);
+          previewFile(file.name, file.path, file.size);
         });
 
         fileItem.addEventListener("keydown", (e) => {
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
-            previewFile(file.name, file.path, fileSize);
+            previewFile(file.name, file.path, file.size);
           }
         });
 
