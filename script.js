@@ -928,6 +928,9 @@ initializeCardHoverEffects();
       tar: "codicon-file-zip",
       gz: "codicon-file-zip",
 
+      // VPN/Config files
+      ovpn: "codicon-file-text",
+
       // Media
       mp4: "codicon-file-media",
       avi: "codicon-file-media",
@@ -960,6 +963,7 @@ initializeCardHoverEffects();
       svg: "markup",
       md: "markdown",
       txt: "none",
+      ovpn: "none",
     };
     return languageMap[ext] || "none";
   }
@@ -998,6 +1002,7 @@ initializeCardHoverEffects();
     try {
       const files = [
         { name: "monkeytype.json", path: "downloadable/monkeytype.json" },
+        { name: "xwalfie-udp.ovpn", path: "downloadable/xwalfie-udp.ovpn" },
       ];
 
       if (files.length === 0) {
